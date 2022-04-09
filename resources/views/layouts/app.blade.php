@@ -100,6 +100,10 @@
                     <a class="dropdown-item" href="{{url('/aula_curso_profesor')}}">
                       <i class="fas fa-house-user"></i>
                     <span>Asignados</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{url('/empresas_telefonicas')}}">
+                      <i class="fas fa-blender-phone"></i>
+                    <span>Empresas Telefónicas</span></a>
                   
                 </div>
                 

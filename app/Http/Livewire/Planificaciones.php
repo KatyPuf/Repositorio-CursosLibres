@@ -22,7 +22,7 @@ class Planificaciones extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $Trimestre, $Anyo, $FechaInicio, $FechaFin, $HorarioInicio, 
     $HorarioFin, $curso_id, $curso, $celular, $nombres,$apellidos,$cedula, $correo, $telefonia, $idp,
-    $cod, $imagen, $imag, $image, $imTemp, $modalidad;
+    $cod, $imagen, $imag, $image, $imTemp, $modalidad, $btnInscripcion;
     public $updateMode = false;
     public $Cursos = null;
     
@@ -35,6 +35,7 @@ class Planificaciones extends Component
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
         $trimestres = Trimestre::all();
+       
         return view('livewire.planificaciones.view', [
             'planificaciones' => Planificacione::latest('id')
 						->orWhere('Trimestre', 'LIKE', $keyWord)
@@ -330,6 +331,18 @@ class Planificaciones extends Component
         return $resultado;
     }
 
+    public function VerificarEstudianteInscrito( $id)
+    {
+        $estudiante = Inscripcione::get()
+                    ->where('estudiante_id', $id)
+                    ->count('estudiante_id');
+
+                    if($estudiante > 0)
+                    {
+                      $this->btnInscripcion = "Inscrito";
+                    }
+        return $estudiante;
+    }
    /* public function createForm(){
         return view('image-upload');
     }

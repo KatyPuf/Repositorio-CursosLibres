@@ -32,6 +32,7 @@ Route::get('/sendemail', [App\Http\Controllers\HomeController::class, 'sendEmail
 //Route::get('validar/{tri}/{id}', [App\Http\Livewire\Inscripciones::class, 'validar']);
 
 //Route Hooks - Do not delete//
+	Route::view('empresas_telefonicas', 'livewire.empresas-telefonicas.index')->middleware('auth');
 	Route::view('aula_curso_profesor', 'livewire.aula-curso-profesors.index')->middleware('auth');
 	Route::view('cursos_ejecutados', 'livewire.cursos-ejecutados.index')->middleware('auth');
 	Route::view('inscripciones', 'livewire.inscripciones.index');
@@ -49,5 +50,6 @@ Route::get('/sendemail', [App\Http\Controllers\HomeController::class, 'sendEmail
 	Route::get('/exportar/{id}', [App\Http\Controllers\HomeController::class, 'export']);
 	Route::match(['get', 'post'], '/botman', [App\Http\Controllers\BotManController::class, 'handle']);
 	Route::get('/image-upload', [App\Http\Livewire\Planificaciones::class, 'createForm']);
+	Route::get('/VerificarEstudianteInscrito/{id}', [App\Http\Livewire\Planificaciones::class, 'VerificarEstudianteInscrito']);
 	Route::post('/image-upload', [App\Http\Livewire\Planificaciones::class, 'fileUpload'])->name('imageUpload');
 	//Route::get('/misInscripciones', [App\Http\Livewire\Inscripciones::class, 'misInscripciones']);

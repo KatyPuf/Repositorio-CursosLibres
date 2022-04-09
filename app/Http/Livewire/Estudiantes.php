@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Estudiante;
+use App\Models\EmpresasTelefonica;
 use Illuminate\Support\Facades\Gate;
 class Estudiantes extends Component
 {
@@ -18,6 +19,7 @@ class Estudiantes extends Component
     {
         
 		$keyWord = '%'.$this->keyWord .'%';
+        $telefonias = EmpresasTelefonica::all();
         return view('livewire.estudiantes.view', [
             'estudiantes' => Estudiante::latest('id')
 						->orWhere('Cedula', 'LIKE', $keyWord)
@@ -27,7 +29,7 @@ class Estudiantes extends Component
 						->orWhere('Celular', 'LIKE', $keyWord)
 						->orWhere('EmpresaTelefonica', 'LIKE', $keyWord)
 						->paginate(10),
-        ]);
+          ],compact('telefonias'));
     }
 	
     public function cancel()

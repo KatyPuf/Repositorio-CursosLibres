@@ -54,6 +54,7 @@
 						</thead>
 						<tbody>
 							@foreach($inscripciones as $row)
+
 							<tr>
 								<td>{{ $loop->iteration }}</td> 
 								<td>{{ $row->Trimestre }}</td>

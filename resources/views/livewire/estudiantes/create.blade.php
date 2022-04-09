@@ -35,10 +35,9 @@
                 <label for="EmpresaTelefonica"></label>
                 <select wire:model.defer="EmpresaTelefonica" class="form-control @error('EmpresaTelefonica') is-invalid @enderror">
                     <option value="">Seleccionar telefonía</option>
-                    <option value="Claro">Claro</option>
-                    <option value="Movistar">Movistar</option>
-                    <option value="Tigo">Tigo</option>
-                    <option value="Otro">Otro</option>
+                    @foreach ($telefonias as $telefonia)
+                    <option value="{{$telefonia->Nombre}}">{{$telefonia->Nombre}}</option>
+                @endforeach
                 </select>
                 @error('EmpresaTelefonica')
                     <div class="invalid-feedback">

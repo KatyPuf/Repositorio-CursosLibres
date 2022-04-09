@@ -1,0 +1,361 @@
+<?php
+
+namespace App\Http\Livewire;
+use Illuminate\Http\Request;
+use Livewire\Component;
+use Livewire\WithPagination;
+use App\Models\Planificacione;
+use App\Models\Inscripcione;
+use App\Models\Curso;
+use App\Models\Estudiante;
+use App\Models\AnyosLectivo;
+use App\Models\Modalidade;
+use App\Models\Trimestre;
+use App\Models\CursosEjecutado;
+use Illuminate\Support\Facades\DB;
+use Livewire\WithFileUploads;
+
+class Planificaciones extends Component
+{
+    use WithPagination;
+    use WithFileUploads;
+	protected $paginationTheme = 'bootstrap';
+    public $selected_id, $keyWord, $Trimestre, $Anyo, $FechaInicio, $FechaFin, $HorarioInicio, 
+    $HorarioFin, $curso_id, $curso, $celular, $nombres,$apellidos,$cedula, $correo, $telefonia, $idp,
+    $cod, $imagen, $imag, $image, $imTemp, $modalidad;
+    public $updateMode = false;
+    public $Cursos = null;
+    
+    public function render()
+    {
+        
+        
+		$keyWord = '%'.$this->keyWord .'%';
+        $cursos = Curso::all();
+        $modalidades = Modalidade::all();
+        $anyos = AnyosLectivo::all();
+        $trimestres = Trimestre::all();
+        return view('livewire.planificaciones.view', [
+            'planificaciones' => Planificacione::latest('id')
+						->orWhere('Trimestre', 'LIKE', $keyWord)
+						->orWhere('Anyo', 'LIKE', $keyWord)
+                        ->orWhere('modalidad', 'LIKE', $keyWord)
+						->orWhere('FechaInicio', 'LIKE', $keyWord)
+						->orWhere('FechaFin', 'LIKE', $keyWord)
+						->orWhere('HorarioInicio', 'LIKE', $keyWord)
+                        ->orWhere('HorarioFin', 'LIKE', $keyWord)
+						->orWhere('curso_id', 'LIKE', $keyWord)
+						->paginate(10),
+        ],compact('cursos', 'modalidades', 'anyos','trimestres'));
+    }
+	
+    public function cancel()
+    {
+        $this->resetInput();
+        $this->updateMode = false;
+    }
+	
+    private function resetInput()
+    {		
+		$this->Trimestre = null;
+		$this->Anyo = null;
+        $this->modalidad = null;
+		$this->FechaInicio = null;
+		$this->FechaFin = null;
+		$this->HorarioInicio = null;
+        $this->HorarioFin = null;
+		$this->curso_id = null;
+        $this->imagen = null;
+
+    }
+
+    public function store(Request $request)
+    {
+        
+        $this->validate([
+		'Trimestre' => 'required',
+		'Anyo' => 'required',
+        'modalidad' => 'required',
+		'FechaInicio' => 'required',
+		'FechaFin' => 'required',
+		'HorarioInicio' => 'required',
+        'HorarioFin' => 'required',
+		'curso_id' => 'required',
+        'imagen' => 'required|image|max:2048',
+        ]);
+
+       if($this->verificarPlanificacion($this->Trimestre, $this->curso_id, $this->modalidad) >0){
+            $this->resetInput();
+            $this->emit('closeModal');
+            session()->flash('message2', 'No se creó. La planificación ya existe en este trimestre.');
+       }else{
+           
+            $image = $this->imagen->store('planificacion', 'public');
+            
+            Planificacione::create([ 
+                'Trimestre' => $this-> Trimestre,
+                'Anyo' => $this-> Anyo,
+                'modalidad' => $this-> modalidad,
+                'FechaInicio' => $this-> FechaInicio,
+                'FechaFin' => $this-> FechaFin,
+                'HorarioInicio' => $this-> HorarioInicio,
+                'HorarioFin' => $this-> HorarioFin,
+                'curso_id' => $this-> curso_id,
+                'imagen' => $image
+            ]);
+            
+            $this->resetInput();
+            $this->emit('closeModal');
+            session()->flash('message', 'Planificación creada correctamente.');
+        
+       }
+        
+    }
+
+    public function edit($id)
+    {
+        $record = Planificacione::findOrFail($id);
+
+        $this->selected_id = $id; 
+		$this->Trimestre = $record-> Trimestre;
+		$this->Anyo = $record-> Anyo;
+        $this->modalidad = $record-> modalidad;
+		$this->FechaInicio = $record-> FechaInicio;
+		$this->FechaFin = $record-> FechaFin;
+		$this->HorarioInicio = $record-> HorarioInicio;
+        $this->HorarioFin = $record-> HorarioFin;
+		$this->curso_id = $record-> curso_id;
+        $this->imag = $record->imagen;
+        $this->updateMode = true;
+    }
+
+    public function update()
+    {
+        $this->validate([
+		'Trimestre' => 'required',
+		'Anyo' => 'required',
+        'modalidad' => 'required',
+		'FechaInicio' => 'required',
+		'FechaFin' => 'required',
+		'HorarioInicio' => 'required',
+        'HorarioFin' => 'required',
+		'curso_id' => 'required',
+        
+        ]);
+
+        if ($this->selected_id) {
+           if($this->imagen == null){
+               $this->image = $this->imag;
+           }else{
+                $this->image = $this->imagen->store('planificacion', 'public');
+           }
+            
+			$record = Planificacione::find($this->selected_id);
+            $record->update([ 
+			'Trimestre' => $this-> Trimestre,
+			'Anyo' => $this-> Anyo,
+            'modalidad' => $this-> modalidad,
+			'FechaInicio' => $this-> FechaInicio,
+			'FechaFin' => $this-> FechaFin,
+			'HorarioInicio' => $this-> HorarioInicio,
+            'HorarioFin' => $this-> HorarioFin,
+			'curso_id' => $this-> curso_id,
+            'imagen' =>$this->image
+            ]);
+
+            $this->resetInput();
+            $this->updateMode = false;
+			session()->flash('message', 'Planificación actualizada correctamente.');
+        }
+    }
+
+    public function destroy($id)
+    {
+        if ($id) {
+            $record = Planificacione::where('id', $id);
+            $record->delete();
+        }
+    }
+
+    public function verificarPlanificacion($tri, $curso_id,$modalidad){
+
+        $resultado = Planificacione::get()
+                    ->where('Trimestre',$tri)
+                    ->where('curso_id',$curso_id)
+                    ->where('modalidad', $modalidad)
+                    ->count('curso_id');
+                    error_log('------'.$resultado);
+        return $resultado;
+    }
+    public function contar($id){
+        $resultado = Inscripcione::get()->where('planificacione_id',$id)->count('estudiante_id');
+        return $resultado;
+    }
+
+    public function aperturar($id){
+        $record = Planificacione::findOrFail($id);
+        CursosEjecutado::create([ 
+			'Trimestre' => $record-> Trimestre,
+			'Anyo' => $record-> Anyo,
+            'modalidad' => $record-> modalidad,
+			'FechaInicio' => $record-> FechaInicio,
+			'FechaFin' => $record-> FechaFin,
+			'HorarioInicio' => $record-> HorarioInicio,
+            'HorarioFin' => $record-> HorarioFin,
+			'curso_id' => $record-> curso_id,
+        ]);
+        session()->flash('message', 'Curso aperturado.');
+
+    }
+   public function buscar($curso_id, $trimestre){
+       
+    $resultado = CursosEjecutado::where("curso_id", $curso_id)
+                ->where("Trimestre", $trimestre)
+                ->count("curso_id");
+
+        error_log('resultado---'.$resultado);
+    
+        
+       if($resultado >0){
+            $response = 1;
+        }else{
+            $response  = 0;
+        }
+        return $response;
+    }
+
+    public function newInscripcion($id){
+        
+        $record = Planificacione::findOrFail($id);
+        $this->idp = $id; 
+       // $this->curso = $record->Trimestre;
+        $this->nombres = auth()->user()->name; 
+        $this->apellidos = auth()->user()->lastname; 
+        $this->correo = auth()->user()->email; 
+        $this->Trimestre = $record->Trimestre;
+        $this->Anyo = $record->Anyo;
+        $this->curso = $record->curso->Nombre;
+        $this->updateMode = true;
+        /*$resultado = Curso::find($id);
+        
+        error_log('message');
+        error_log('message2-'.$resultado->Nombre);
+       return view('NuevaInscripcion',['nom' => $resultado->Nombre],['tri' => $resultado->Trimestre]);*/
+    }
+
+    public function ValidarInscripcion($id)
+    {
+        $value =  Inscripcione::findOrFail($id);
+        return $value;
+    }
+    private function resetInputEstudiante()
+    {		
+		$this->cedula = null;
+		$this->nombres = null;
+		$this->apellidos = null;
+		$this->correo = null;
+		$this->celular = null;
+		$this->telefonia = null;
+    }
+
+    public function RegisterInscription(){
+    
+       $this->validate([
+            'cedula' => 'required',
+            'nombres' => 'required',
+            'apellidos' => 'required',
+            'correo' => 'required',
+            'celular' => 'required',
+            'telefonia' => 'required',
+            
+            
+        ]);
+    
+        if($this->comprobarEstudiante($this->cedula) > 0){
+            
+            $est= Estudiante::where('Cedula', $this->cedula)->get();
+            $this->cod = $est[0]->id;
+            //error_log("Codigooooo 1  --".$est[0]->id );
+        }else{
+            $est = Estudiante::create([ 
+                'Cedula' => $this-> cedula,
+                'Nombres' => $this-> nombres,
+                'Apellidos' => $this-> apellidos,
+                'Correo' => $this-> correo,
+                'Celular' => $this-> celular,
+                'EmpresaTelefonica' => $this-> telefonia
+            ]);
+            $this->cod = $est->id;
+            error_log("Cedulaaaaa ".$this->cedula);
+            error_log("Codigooooo 1".$this->cod);
+            
+        }
+
+        if($this->validar($this->Trimestre, $this->cod)==0){
+        Inscripcione::create([ 
+                'Trimestre' => $this-> Trimestre,
+                'Anyo' => $this-> Anyo,
+                'estudiante_id' => $this->cod,
+                'planificacione_id' => $this-> idp
+            ]);
+
+            $this->resetInputEstudiante();
+            $this->updateMode = false;
+            session()->flash('message', 'Inscripción realizada correctamente.');
+        }else{
+            $this->resetInputEstudiante();
+             $this->updateMode = false;
+             session()->flash('message2', 'No se realizón la inscripción. Usted tiene matricula en este trimestre.');
+        }
+
+    
+        
+    }
+
+    public function comprobarEstudiante($cedula){
+
+        $ced = Estudiante::get('Cedula')
+                ->where('Cedula', $cedula)
+                ->count('Cedula');
+        return $ced;
+    }
+
+    public function validar($tri, $id){
+
+        $resultado = Inscripcione::get()
+                    ->where('Trimestre',$tri)
+                    ->where('estudiante_id',$id)
+                    ->count('estudiante_id');
+                    error_log('------'.$resultado);
+        return $resultado;
+    }
+
+   /* public function createForm(){
+        return view('image-upload');
+    }
+    
+    public function fileUpload(Request $req){
+        if($req->hasfile('imageFile')){
+            foreach($req->file('imageFile') as $file)
+        
+            $name = $file->getClientOriginalName();
+            $file->move(public_path().'/uploads/', $name);  
+            $imgData[] = $name;  
+        
+    
+        $fileModal = new Image();
+        $fileModal->name = json_encode($imgData);
+        $fileModal->image_path = json_encode($imgData);
+        
+       
+        $fileModal->save();
+    
+       return back()->with('success', 'File has successfully uploaded!');
+        }
+    }*/
+
+
+  
+}
+
+

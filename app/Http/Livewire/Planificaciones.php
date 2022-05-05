@@ -14,15 +14,37 @@ use App\Models\Trimestre;
 use App\Models\CursosEjecutado;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
+use App\Models\EmpresasTelefonica;
 
 class Planificaciones extends Component
 {
     use WithPagination;
     use WithFileUploads;
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $Trimestre, $Anyo, $FechaInicio, $FechaFin, $HorarioInicio, 
-    $HorarioFin, $curso_id, $curso, $celular, $nombres,$apellidos,$cedula, $correo, $telefonia, $idp,
-    $cod, $imagen, $imag, $image, $imTemp, $modalidad, $btnInscripcion;
+    public $selected_id, 
+            $keyWord, 
+            $Trimestre, 
+            $Anyo,
+            $FechaInicio, 
+            $FechaFin, 
+            $HorarioInicio, 
+            $HorarioFin, 
+            $curso_id, $curso,
+            $celular, 
+            $nombres,
+            $apellidos,
+            $cedula, 
+            $correo, 
+            $telefonia,
+            $idp,
+            $cod, 
+            $imagen, 
+            $imag,
+            $image,
+            $imTemp, 
+            $modalidad, 
+            $btnInscripcion,
+            $EmpresaTelefonica;
     public $updateMode = false;
     public $Cursos = null;
     
@@ -35,7 +57,7 @@ class Planificaciones extends Component
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
         $trimestres = Trimestre::all();
-       
+        $telefonias = EmpresasTelefonica::all();
         return view('livewire.planificaciones.view', [
             'planificaciones' => Planificacione::latest('id')
 						->orWhere('Trimestre', 'LIKE', $keyWord)
@@ -47,7 +69,7 @@ class Planificaciones extends Component
                         ->orWhere('HorarioFin', 'LIKE', $keyWord)
 						->orWhere('curso_id', 'LIKE', $keyWord)
 						->paginate(10),
-        ],compact('cursos', 'modalidades', 'anyos','trimestres'));
+        ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }
 	
     public function cancel()
@@ -232,6 +254,7 @@ class Planificaciones extends Component
        // $this->curso = $record->Trimestre;
         $this->nombres = auth()->user()->name; 
         $this->apellidos = auth()->user()->lastname; 
+        $this->cedula = auth()->user()->IdentificationCard; 
         $this->correo = auth()->user()->email; 
         $this->Trimestre = $record->Trimestre;
         $this->Anyo = $record->Anyo;

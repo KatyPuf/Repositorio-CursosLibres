@@ -40,8 +40,8 @@
                         <input wire:model="celular" type="text" class="form-control" id="celular" placeholder="celular">@error('celular') <span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                        
-                    <div class="form-group">
-                        <label for="EmpresaTelefonica"></label>
+                    <div class="form-group col-md-5">
+                        <label for="EmpresaTelefonica">Telefonía</label>
                         <select wire:model.defer="EmpresaTelefonica" class="form-control @error('EmpresaTelefonica') is-invalid @enderror">
                             <option value="">Seleccionar telefonía</option>
                             @foreach ($telefonias as $telefonia)
@@ -60,8 +60,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>
-                <button type="button" wire:loading.attr="disabled" wire:target="imagen" wire:click.prevent="RegisterInscription()" class="btn btn-primary" >Guardar</button>
+                <button type="button"  wire:click.prevent="RegisterInscription" class="btn btn-primary close-modal" >Guardar</button>
             </div>
         </div>
     </div>
 </div>
+

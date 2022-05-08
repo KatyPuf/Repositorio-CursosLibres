@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCedulaToUsers extends Migration
+class AddUserIdToEstudiantes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddCedulaToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string("IdentificationCard")->after("lastname");
+        Schema::table('estudiantes', function (Blueprint $table) {
+            //
+            $table->foreignId("user_id")->references("id")->on("users")->nullable(false);
         });
     }
 
@@ -25,8 +26,8 @@ class AddCedulaToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::table('estudiantes', function (Blueprint $table) {
+            $table->dropColumn('user_id');
         });
     }
 }

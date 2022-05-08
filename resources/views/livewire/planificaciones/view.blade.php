@@ -24,11 +24,7 @@ use App\Http\Livewire\Inscripciones;
 								Cursos disponibles </h4>
 							@endguest
 						</div>
-						@can('acceso')
-						<div wire:poll.60s>
-							<code><h5>{{ now()->format('H:i:s') }} UTC</h5></code>
-						</div>
-						@endcan
+						
 						@if (session()->has('message2'))
 							<script type="text/javascript">
 								toastr.options = {
@@ -50,7 +46,7 @@ use App\Http\Livewire\Inscripciones;
 						</div>
 						@can('show')
 							<div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
-								<i class="fa fa-plus"></i> Agregar planificación
+								<i class="fa fa-plus"></i> Agregar
 							</div>
 						@endcan
 						
@@ -61,34 +57,35 @@ use App\Http\Livewire\Inscripciones;
 					@include('livewire.planificaciones.create')
 					@include('livewire.planificaciones.update')
 					@include('livewire.planificaciones.NuevaInscripcion')
-					@foreach($planificaciones as $row)
-					<div class="float-left" style="margin: 1.14em">
-						<div class="card" style="width: 22rem;">
-							<img class="card-img-top img-thumbnail" src="{{asset('storage/'.$row->imagen)}}" alt="">
-							<div class="card-body">
-								<h4 class="card-title">{{ $row->curso->Nombre }}<br>
-								 <small class="h6">Modalidad {{ $row->modalidad }}</small><br></h4>
-								<p class="card-text">
+					<div class="row row-cols-1 row-cols-md-4 g-4 m-1">
+						@foreach($planificaciones as $row)
+						<div class="col">
+							<div class="card h-100">
+								<img class="card-img-top img-thumbnail" src="{{asset('storage/'.$row->imagen)}}" alt="">
+								<div class="card-body">
+									<h4 class="card-title">{{ $row->curso->Nombre }}<br>
+										<small class="h5">Modalidad {{ $row->modalidad }}
+										<h6><span class="badge rounded-pill bg-success text-white" >Precio: C${{$row->curso->Precio}} </span></h6>
+										
+									</small>
+										<hr>
+									</h4>
+									<p class="card-text">
 										<?php $contar = Planificaciones::contar($row->id)  ?> <!-- contador de inscripciones-->
 										<?php $response = Planificaciones::buscar($row->curso_id, $row->Trimestre)  ?> <!-- Buscador de cursos ejecutados-->
+										<!--<strong>Año lectivo:</strong> {{ $row->Anyo }}<br>-->
+										<strong>Trimestre: </strong>{{$row->Trimestre}}<br>
+										<strong>Inicia:</strong> {{date('d-m-Y', strtotime($row->FechaInicio))}}<br>
+										<strong>Finaliza: </strong> {{date('d-m-Y', strtotime($row->FechaFin))}}<br>
+										<strong>Horario: </strong>{{date('h:i a', strtotime($row->HorarioInicio))}} - {{date('h:i a', strtotime($row->HorarioFin))}}<br>
 										
-										
-											<strong>Trimestre:</strong> {{ $row->Trimestre }}<br>
-											<strong>Año lectivo:</strong> {{ $row->Anyo }}<br>
-											<strong>Fecha de inicio:</strong> {{date('d-m-Y', strtotime($row->FechaInicio))}}<br>
-											<strong> Fecha de finalización: </strong> {{date('d-m-Y', strtotime($row->FechaFin))}}<br>
-											<strong>Horario: </strong>{{date('h:i a', strtotime($row->HorarioInicio))}} - {{date('h:i a', strtotime($row->HorarioFin))}}<br>
-											<strong>Precio: </strong>{{$row->curso->Precio}}<br>
-											@can('show')
-											<p class="text-success"><strong >Estudiantes inscritos: </strong> {{$contar}}</p>			
-										
-
+										@can('show')
+										<p class="text-success"><strong >Estudiantes inscritos: </strong> {{$contar}}</p>			
 										<div class="btn-group">
 											<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											Acciones
+												Acciones
 											</button>
 											<div class="dropdown-menu dropdown-menu-right">
-
 												<?php
 													$disabled = "";
 													if($response > 0){
@@ -97,36 +94,40 @@ use App\Http\Livewire\Inscripciones;
 														$disabled="enable";
 													}
 												?>
-
 												  @if($disabled == "disabled")
-													<a class="dropdown-item disabled" 
-													onclick="confirm('Desea aperturar el curso {{$row->curso->Nombre}}? \nEl curso tiene {{Planificaciones::contar($row->id)}} estudiantes')
-													||event.stopImmediatePropagation()" wire:click="aperturar({{$row->id}})"><i class="fas fa-book-open"></i> Aperturar </a>   
+												  <a class="dropdown-item disabled" 
+												  onclick="confirm('Desea aperturar el curso {{$row->curso->Nombre}}? \nEl curso tiene {{Planificaciones::contar($row->id)}} estudiantes')
+												  ||event.stopImmediatePropagation()" wire:click="aperturar({{$row->id}})"><i class="fas fa-book-open"></i> Aperturar </a>   
 												  @else
-												  	<a class="dropdown-item enable" onclick="confirm('Desea aperturar el curso {{$row->curso->Nombre}}? \nEl curso tiene {{Planificaciones::contar($row->id)}} estudiantes')||event.stopImmediatePropagation()" wire:click="aperturar({{$row->id}})"><i class="fas fa-book-open"></i> Aperturar </a>   
+												  <a class="dropdown-item enable" onclick="confirm('Desea aperturar el curso {{$row->curso->Nombre}}? \nEl curso tiene {{Planificaciones::contar($row->id)}} estudiantes')||event.stopImmediatePropagation()" wire:click="aperturar({{$row->id}})"><i class="fas fa-book-open"></i> Aperturar </a>   
 												  @endif
-												
-							
-												<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
-												<a class="dropdown-item" onclick="confirm('Confirmar eliminación de la planificación {{$row->id}}? \nLas planififcaciones eliminadas no pueden ser recuperadas!')||event.stopImmediatePropagation()" wire:click="destroy({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
-												<a class="dropdown-item" href="{{url('/exportar'.'/'.$row->id)}}" class="btn btn-info btn-sm"><i class="fas fa-file-alt"></i> Generar reporte</a>						 
+												  <a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
+												  <a class="dropdown-item" onclick="confirm('Confirmar eliminación de la planificación {{$row->id}}? \nLas planififcaciones eliminadas no pueden ser recuperadas!')||event.stopImmediatePropagation()" wire:click="destroy({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
+												  <a class="dropdown-item" href="{{url('/exportar'.'/'.$row->id)}}" class="btn btn-info btn-sm"><i class="fas fa-file-alt"></i> Generar reporte</a>						 
 											</div>
 										</div>
 										@endcan
 										&nbsp;
-										
+										<?php $numero = Planificaciones::VerificarInscripcion($row->id)  ?> <!-- contador de inscripciones-->
+
 										<a data-toggle="modal" data-target="#NewModal" class="btn btn-info btn-sm" class="dropdown-item" wire:click="newInscripcion({{$row->id}})"><i class="fa fa-edit"></i> Inscribirse</a>
 											
-										
-								</p>
-							
+									</p>
+								
+								</div>
+					
 							</div>
-						</div>
-					</div>
-					@endforeach	
+						  </div>
+						@endforeach
+						
+					  </div>
 					{{ $planificaciones->links() }}
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+
+
+	

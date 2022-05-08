@@ -47,7 +47,16 @@
 							<tr>
 								<td>{{ $loop->iteration }}</td> 
 								<td>{{ $row->Nombre }}</td>
-								<td>{{ $row->Estado }}</td>
+								<td>
+									@if($row->Estado == "Activo")
+									
+										<h6><span class="badge badge-success">{{ $row->Estado }}</span></h6>
+									@else
+										<h6><span class="badge badge-danger">{{ $row->Estado }}</span></h6>
+
+									@endif
+									
+								</td>
 								<td width="90">
 								<div class="btn-group">
 									<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

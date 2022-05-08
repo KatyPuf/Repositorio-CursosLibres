@@ -68,7 +68,8 @@ class Estudiantes extends Component
                 'Apellidos' => $this-> Apellidos,
                 'Correo' => $this-> Correo,
                 'Celular' => $this-> Celular,
-                'EmpresaTelefonica' => $this-> EmpresaTelefonica
+                'EmpresaTelefonica' => $this-> EmpresaTelefonica,
+                'user_id' => auth()->user()->id
             ]);
             
             $this->resetInput();

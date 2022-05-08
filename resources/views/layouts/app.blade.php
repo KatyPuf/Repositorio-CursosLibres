@@ -213,6 +213,11 @@
             $('#exampleModal').modal('hide');
         });
     </script>
+    <script type="text/javascript">
+      window.livewire.on('closeModal', () => {
+          $('#NewModal').modal('hide');
+      });
+  </script>
     <script>
         var botmanWidget = {
             aboutText: 'ssdsd',

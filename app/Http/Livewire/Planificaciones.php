@@ -254,9 +254,10 @@ class Planificaciones extends Component
        // $this->curso = $record->Trimestre;
         $this->nombres = auth()->user()->name; 
         $this->apellidos = auth()->user()->lastname; 
-        $this->cedula = auth()->user()->IdentificationCard; 
+        $this->cedula = $record->cedula; 
         $this->correo = auth()->user()->email; 
         $this->Trimestre = $record->Trimestre;
+        $this->modalidad = $record->modalidad;
         $this->Anyo = $record->Anyo;
         $this->curso = $record->curso->Nombre;
         $this->updateMode = true;
@@ -279,78 +280,95 @@ class Planificaciones extends Component
 		$this->apellidos = null;
 		$this->correo = null;
 		$this->celular = null;
-		$this->telefonia = null;
+		$this->EmpresaTelefonica = null;
+        $this->Trimestre = null;
+        $this->modalidad = null;
+        $this->Anyo = null;
+
     }
 
-    public function RegisterInscription(){
-    
+    public function RegisterInscription()
+    {
+        
+        
        $this->validate([
             'cedula' => 'required',
             'nombres' => 'required',
             'apellidos' => 'required',
             'correo' => 'required',
             'celular' => 'required',
-            'telefonia' => 'required',
+            'EmpresaTelefonica' => 'required',
             
             
         ]);
-    
-        if($this->comprobarEstudiante($this->cedula) > 0){
-            
-            $est= Estudiante::where('Cedula', $this->cedula)->get();
+
+        if($this->comprobarEstudiante() > 0)
+        {
+            $est= Estudiante::where('user_id', auth()->user()->id)->get();
             $this->cod = $est[0]->id;
-            //error_log("Codigooooo 1  --".$est[0]->id );
-        }else{
+            
+        }
+        else{
             $est = Estudiante::create([ 
                 'Cedula' => $this-> cedula,
                 'Nombres' => $this-> nombres,
                 'Apellidos' => $this-> apellidos,
                 'Correo' => $this-> correo,
                 'Celular' => $this-> celular,
-                'EmpresaTelefonica' => $this-> telefonia
+                'EmpresaTelefonica' => $this-> EmpresaTelefonica,
+                'user_id' => auth()->user()->id
             ]);
+    
             $this->cod = $est->id;
-            error_log("Cedulaaaaa ".$this->cedula);
-            error_log("Codigooooo 1".$this->cod);
             
         }
-
-        if($this->validar($this->Trimestre, $this->cod)==0){
-        Inscripcione::create([ 
-                'Trimestre' => $this-> Trimestre,
-                'Anyo' => $this-> Anyo,
-                'estudiante_id' => $this->cod,
-                'planificacione_id' => $this-> idp
-            ]);
-
-            $this->resetInputEstudiante();
-            $this->updateMode = false;
-            session()->flash('message', 'Inscripción realizada correctamente.');
-        }else{
-            $this->resetInputEstudiante();
-             $this->updateMode = false;
-             session()->flash('message2', 'No se realizón la inscripción. Usted tiene matricula en este trimestre.');
-        }
-
+        
     
+      if( $this->validar($this->modalidad, $this->Trimestre) == 0)
+      {
+          Inscripcione::create([ 
+            'Trimestre' => $this-> Trimestre,
+            'Anyo' => $this-> Anyo,
+            'estudiante_id' => $this->cod,
+            'planificacione_id' => $this-> idp
+        ]);
+
+        $this->resetInputEstudiante();
+        $this->emit('closeModal');
+        session()->flash('message', 'Inscripción realizada correctamente.');
+      }
+      else{
+        $this->resetInputEstudiante();
+        $this->emit('closeModal');
+        session()->flash('message2', 'No se realizó la inscripción. Usted tiene una matricula en esta modalidad.');
+
+      }
+
+        
         
     }
 
-    public function comprobarEstudiante($cedula){
+    
+    public function comprobarEstudiante(){
 
-        $ced = Estudiante::get('Cedula')
-                ->where('Cedula', $cedula)
-                ->count('Cedula');
+        $ced = Estudiante::get('user_id')
+                ->where('user_id', auth()->user()->id)
+                ->count('user_id');
         return $ced;
     }
 
-    public function validar($tri, $id){
+    public function validar($modalidad, $trimestre){
 
-        $resultado = Inscripcione::get()
-                    ->where('Trimestre',$tri)
-                    ->where('estudiante_id',$id)
-                    ->count('estudiante_id');
+        $resultado = planificacione::join('inscripciones', 'inscripciones.planificacione_id', '=', 'planificaciones.id' ) 
+                    ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
+                    ->where('user_id',auth()->user()->id)
+                    ->where('modalidad',$modalidad)
+                    ->where('planificaciones.trimestre',$trimestre)
+                    ->count();
+     
                     error_log('------'.$resultado);
+                    error_log('------c'.auth()->user()->id." ".$modalidad);
+
         return $resultado;
     }
 
@@ -366,32 +384,14 @@ class Planificaciones extends Component
                     }
         return $estudiante;
     }
-   /* public function createForm(){
-        return view('image-upload');
+    public function VerificarInscripcion($id)
+    {
+        $resultado = planificacione::join('inscripciones', 'inscripciones.planificacione_id', '=', 'planificaciones.id' ) 
+                    ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
+                    ->where('user_id',auth()->user()->id)
+                    ->where('planificacione_id',$id)
+                    ->count();
     }
-    
-    public function fileUpload(Request $req){
-        if($req->hasfile('imageFile')){
-            foreach($req->file('imageFile') as $file)
-        
-            $name = $file->getClientOriginalName();
-            $file->move(public_path().'/uploads/', $name);  
-            $imgData[] = $name;  
-        
-    
-        $fileModal = new Image();
-        $fileModal->name = json_encode($imgData);
-        $fileModal->image_path = json_encode($imgData);
-        
-       
-        $fileModal->save();
-    
-       return back()->with('success', 'File has successfully uploaded!');
-        }
-    }*/
-
-
-  
 }
 
 

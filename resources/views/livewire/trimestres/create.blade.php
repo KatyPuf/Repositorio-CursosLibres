@@ -16,10 +16,20 @@
             </div>
             <div class="form-group">
                 <label for="Estado"></label>
-                <input wire:model="Estado" type="text" class="form-control" id="Estado" placeholder="Estado">@error('Estado') <span class="error text-danger">{{ $message }}</span> @enderror
+                <select wire:model.defer="Estado" id="Estado" class="form-control @error('Estado') is-invalid @enderror">
+                    <option value="">Seleccionar estado</option>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                    
+                </select>
+                @error('Estado')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                 @enderror
             </div>
 
-                </form>
+        </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>

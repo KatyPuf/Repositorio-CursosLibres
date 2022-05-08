@@ -9,7 +9,7 @@
                 </button>
             </div>
            <div class="modal-body">
-				<form>
+		<form>
             <div class="form-group">
                 <label for="Cedula"></label>
                 <input wire:model="Cedula" type="text" class="form-control" id="Cédula" placeholder="Cedula">@error('Cedula') <span class="error text-danger">{{ $message }}</span> @enderror
@@ -45,7 +45,7 @@
                     </div>
                  @enderror
             </div>
-            </form>
+        </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>

@@ -26,7 +26,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'lastname',
-        'IdentificationCard',
         'email',
         'password',
     ];
@@ -80,6 +79,11 @@ class User extends Authenticatable
         public function roles()
         {
             return $this->belongsToMany('App\Models\Role');
+        }
+
+        public function estudiante()
+        {
+            return $this->belongsTo('App\Models\Estudiante');
         }
     
 }

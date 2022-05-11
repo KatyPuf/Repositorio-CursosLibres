@@ -224,7 +224,7 @@
             
         };
     </script>
-
+    <script src="sweetalert2.all.min.js"></script>
     <!-- <script src='https://cdn.jsdelivr.net/npm/botman-web-widget@0/build/js/widget.js'></script> -->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.js"></script>

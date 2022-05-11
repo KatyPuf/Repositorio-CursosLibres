@@ -261,11 +261,7 @@ class Planificaciones extends Component
         $this->Anyo = $record->Anyo;
         $this->curso = $record->curso->Nombre;
         $this->updateMode = true;
-        /*$resultado = Curso::find($id);
-        
-        error_log('message');
-        error_log('message2-'.$resultado->Nombre);
-       return view('NuevaInscripcion',['nom' => $resultado->Nombre],['tri' => $resultado->Trimestre]);*/
+       
     }
 
     public function ValidarInscripcion($id)
@@ -386,11 +382,13 @@ class Planificaciones extends Component
     }
     public function VerificarInscripcion($id)
     {
-        $resultado = planificacione::join('inscripciones', 'inscripciones.planificacione_id', '=', 'planificaciones.id' ) 
-                    ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
+        $resultado = estudiante::join('users', 'users.id', '=', 'estudiantes.user_id' ) 
+                    ->join('inscripciones', 'inscripciones.estudiante_id', '=', 'estudiantes.id')
+                    ->join('planificaciones', 'planificaciones.id', '=', 'inscripciones.planificacione_id')
                     ->where('user_id',auth()->user()->id)
                     ->where('planificacione_id',$id)
                     ->count();
+        return $resultado;
     }
 }
 

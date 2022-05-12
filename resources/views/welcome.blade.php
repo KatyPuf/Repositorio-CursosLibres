@@ -14,7 +14,7 @@
               </ol>
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img class="d-block w-100 h-25" src="{{asset('Galeria/Portada4.jpg')}}" alt="First slide">
+                  <img class="d-block w-100 h-25" src="{{asset('Galeria/Portada5.jpg')}}" alt="First slide">
                 </div>
                 <div class="carousel-item">
                 <img class="d-block w-100 " src="Galeria/Portada1.jpg" alt="Second slide">

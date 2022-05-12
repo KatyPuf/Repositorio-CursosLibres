@@ -390,6 +390,17 @@ class Planificaciones extends Component
                     ->count();
         return $resultado;
     }
+
+    public function verEstudiantes($id)
+    {
+        $listaEstudiantes = estudiante::join('inscripciones', 'inscripciones.estudiante_id', '=', 'estudiantes.id')
+        ->join('planificaciones', 'planificaciones.id', '=', 'inscripciones.planificacione_id')
+        ->where('planificaciones.id', $id)
+        ->get();
+        
+        return $listaEstudiantes;
+        
+    }
 }
 
 

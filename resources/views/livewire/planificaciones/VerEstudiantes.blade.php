@@ -1,48 +1,47 @@
 <!-- Modal -->
-<div wire:ignore.self class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<?php use App\Http\Livewire\Planificaciones; ?>
+
+<div wire:ignore.self class="modal fade" id="verEstudiantes" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<?php $listaEstudiantes = Planificaciones::verEstudiantes(1) ?>  
+  <div class="modal-dialog modal-xl" role="document">
        <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Actualizar planificación</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Estudiantes Inscritos</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span wire:click.prevent="cancel()" aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table">
+                <table  class="table">
                     <thead>
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Nombres</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">Cedula</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Celular</th>
+                      
                       </tr>
                     </thead>
                     <tbody>
+                      @foreach($listaEstudiantes as $estudiante)
                       <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>mdo</td>
+                        <th scope="row">{{$loop->iteration}}</th>
+                        <td>{{$estudiante->Nombres}}</td>
+                        <td>{{$estudiante->Apellidos}}</td>
+                        <td>{{$estudiante->Cedula}}</td>
+                        <td>{{$estudiante->Correo}}</td>
+                        <td>{{$estudiante->Celular}}</td>
+                        <td>{{$estudiante->EmpresaTelefonica}}</td>
+                        
                       </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>fat</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>twitter</td>
-                      </tr>
+                      @endforeach
                     </tbody>
                   </table>
             </div>
             <div class="modal-footer">
                 <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>
-                <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
             </div>
        </div>
     </div>

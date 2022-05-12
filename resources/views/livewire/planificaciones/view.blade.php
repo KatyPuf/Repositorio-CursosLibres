@@ -74,6 +74,8 @@ use App\Http\Livewire\Inscripciones;
 									<p class="card-text">
 										<?php $contar = Planificaciones::contar($row->id)  ?> <!-- contador de inscripciones-->
 										<?php $response = Planificaciones::buscar($row->curso_id, $row->Trimestre)  ?> <!-- Buscador de cursos ejecutados-->
+										
+										
 										<!--<strong>Año lectivo:</strong> {{ $row->Anyo }}<br>-->
 										<strong>Trimestre: </strong>{{$row->Trimestre}}<br>
 										<strong>Inicia:</strong> {{date('d-m-Y', strtotime($row->FechaInicio))}}<br>
@@ -90,7 +92,10 @@ use App\Http\Livewire\Inscripciones;
 											</div>				
 											<div class="col-md-2">
 												
-												<a href="" data-toggle="modal" data-target="#updateModal" class="text-muted" ><i class="fas fa-eye"></i></a>							 
+												<a href="" data-toggle="modal" 
+													data-target="#verEstudiantes" class="text-muted" >
+													<i class="fas fa-eye"></i>
+												</a>							 
 											</div>		
 										</div>
 																 

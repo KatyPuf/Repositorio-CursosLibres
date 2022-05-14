@@ -2,7 +2,7 @@
 <?php use App\Http\Livewire\Planificaciones; ?>
 
 <div wire:ignore.self class="modal fade" id="verEstudiantes" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<?php $listaEstudiantes = Planificaciones::verEstudiantes(1) ?>  
+
   <div class="modal-dialog modal-xl" role="document">
        <div class="modal-content">
             <div class="modal-header">
@@ -12,6 +12,8 @@
                 </button>
             </div>
             <div class="modal-body">
+              <input type="text" name="lista" id="lista"/>
+              <?php $listaEstudiantes = Planificaciones::verEstudiantes(1) ?>  
                 <table  class="table">
                     <thead>
                       <tr>

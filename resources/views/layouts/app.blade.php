@@ -207,7 +207,7 @@
     </div>
 </div>
 
-    @livewireScripts
+  @livewireScripts
     <script type="text/javascript">
         window.livewire.on('closeModal', () => {
             $('#exampleModal').modal('hide');
@@ -217,7 +217,15 @@
       window.livewire.on('closeModal', () => {
           $('#NewModal').modal('hide');
       });
-  </script>
+    </script>
+    <script>
+      $(document).ready(function (e) {
+        $('#verEstudiantes').on('show.bs.modal', function(e) {    
+           var id = $(e.relatedTarget).data().id;
+            $(e.currentTarget).find('#lista').val(id);
+        });
+      });
+      </script>
     <script>
         var botmanWidget = {
             aboutText: 'ssdsd',

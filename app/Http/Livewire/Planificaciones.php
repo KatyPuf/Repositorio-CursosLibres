@@ -44,7 +44,8 @@ class Planificaciones extends Component
             $imTemp, 
             $modalidad, 
             $btnInscripcion,
-            $EmpresaTelefonica;
+            $EmpresaTelefonica,
+            $linkAulaVirtuales;
     public $updateMode = false;
     public $Cursos = null;
     
@@ -89,7 +90,7 @@ class Planificaciones extends Component
         $this->HorarioFin = null;
 		$this->curso_id = null;
         $this->imagen = null;
-
+        $this->linkAulaVirtuales = null;
     }
 
     public function store(Request $request)
@@ -104,7 +105,8 @@ class Planificaciones extends Component
 		'HorarioInicio' => 'required',
         'HorarioFin' => 'required',
 		'curso_id' => 'required',
-        'imagen' => 'required|image|max:2048',
+        'linkAulaVirtuales' => 'required',
+        'imagen' => 'required|image|max:2048'
         ]);
 
        if($this->verificarPlanificacion($this->Trimestre, $this->curso_id, $this->modalidad) >0){
@@ -124,6 +126,7 @@ class Planificaciones extends Component
                 'HorarioInicio' => $this-> HorarioInicio,
                 'HorarioFin' => $this-> HorarioFin,
                 'curso_id' => $this-> curso_id,
+                'linkAulaVirtuales' => $this->linkAulaVirtuales,
                 'imagen' => $image
             ]);
             
@@ -149,6 +152,7 @@ class Planificaciones extends Component
         $this->HorarioFin = $record-> HorarioFin;
 		$this->curso_id = $record-> curso_id;
         $this->imag = $record->imagen;
+        $this->linkAulaVirtuales = $record->linkAulaVirtuales;
         $this->updateMode = true;
     }
 
@@ -163,7 +167,7 @@ class Planificaciones extends Component
 		'HorarioInicio' => 'required',
         'HorarioFin' => 'required',
 		'curso_id' => 'required',
-        
+        'linkAulaVirtuales' => 'required'
         ]);
 
         if ($this->selected_id) {
@@ -183,6 +187,7 @@ class Planificaciones extends Component
 			'HorarioInicio' => $this-> HorarioInicio,
             'HorarioFin' => $this-> HorarioFin,
 			'curso_id' => $this-> curso_id,
+            'linkAulaVirtuales' => $this->linkAulaVirtuales,
             'imagen' =>$this->image
             ]);
 

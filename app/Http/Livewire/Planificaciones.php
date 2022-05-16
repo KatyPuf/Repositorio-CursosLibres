@@ -14,15 +14,38 @@ use App\Models\Trimestre;
 use App\Models\CursosEjecutado;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
-
+use App\Models\EmpresasTelefonica;
+use Alert;
 class Planificaciones extends Component
 {
     use WithPagination;
     use WithFileUploads;
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $Trimestre, $Anyo, $FechaInicio, $FechaFin, $HorarioInicio, 
-    $HorarioFin, $curso_id, $curso, $celular, $nombres,$apellidos,$cedula, $correo, $telefonia, $idp,
-    $cod, $imagen, $imag, $image, $imTemp, $modalidad;
+    public $selected_id, 
+            $keyWord, 
+            $Trimestre, 
+            $Anyo,
+            $FechaInicio, 
+            $FechaFin, 
+            $HorarioInicio, 
+            $HorarioFin, 
+            $curso_id, $curso,
+            $celular, 
+            $nombres,
+            $apellidos,
+            $cedula, 
+            $correo, 
+            $telefonia,
+            $idp,
+            $cod, 
+            $imagen, 
+            $imag,
+            $image,
+            $imTemp, 
+            $modalidad, 
+            $btnInscripcion,
+            $EmpresaTelefonica,
+            $linkAulaVirtuales;
     public $updateMode = false;
     public $Cursos = null;
     
@@ -35,6 +58,7 @@ class Planificaciones extends Component
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
         $trimestres = Trimestre::all();
+        $telefonias = EmpresasTelefonica::all();
         return view('livewire.planificaciones.view', [
             'planificaciones' => Planificacione::latest('id')
 						->orWhere('Trimestre', 'LIKE', $keyWord)
@@ -46,7 +70,7 @@ class Planificaciones extends Component
                         ->orWhere('HorarioFin', 'LIKE', $keyWord)
 						->orWhere('curso_id', 'LIKE', $keyWord)
 						->paginate(10),
-        ],compact('cursos', 'modalidades', 'anyos','trimestres'));
+        ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }
 	
     public function cancel()
@@ -54,7 +78,10 @@ class Planificaciones extends Component
         $this->resetInput();
         $this->updateMode = false;
     }
-	
+    public function errorBorrar()
+    {
+        Alert::message('error');
+    }
     private function resetInput()
     {		
 		$this->Trimestre = null;
@@ -66,7 +93,7 @@ class Planificaciones extends Component
         $this->HorarioFin = null;
 		$this->curso_id = null;
         $this->imagen = null;
-
+        $this->linkAulaVirtuales = null;
     }
 
     public function store(Request $request)
@@ -81,7 +108,8 @@ class Planificaciones extends Component
 		'HorarioInicio' => 'required',
         'HorarioFin' => 'required',
 		'curso_id' => 'required',
-        'imagen' => 'required|image|max:2048',
+        'linkAulaVirtuales' => 'required',
+        'imagen' => 'required|image|max:2048'
         ]);
 
        if($this->verificarPlanificacion($this->Trimestre, $this->curso_id, $this->modalidad) >0){
@@ -101,6 +129,7 @@ class Planificaciones extends Component
                 'HorarioInicio' => $this-> HorarioInicio,
                 'HorarioFin' => $this-> HorarioFin,
                 'curso_id' => $this-> curso_id,
+                'linkAulaVirtuales' => $this->linkAulaVirtuales,
                 'imagen' => $image
             ]);
             
@@ -126,6 +155,7 @@ class Planificaciones extends Component
         $this->HorarioFin = $record-> HorarioFin;
 		$this->curso_id = $record-> curso_id;
         $this->imag = $record->imagen;
+        $this->linkAulaVirtuales = $record->linkAulaVirtuales;
         $this->updateMode = true;
     }
 
@@ -140,7 +170,7 @@ class Planificaciones extends Component
 		'HorarioInicio' => 'required',
         'HorarioFin' => 'required',
 		'curso_id' => 'required',
-        
+        'linkAulaVirtuales' => 'required'
         ]);
 
         if ($this->selected_id) {
@@ -160,11 +190,12 @@ class Planificaciones extends Component
 			'HorarioInicio' => $this-> HorarioInicio,
             'HorarioFin' => $this-> HorarioFin,
 			'curso_id' => $this-> curso_id,
+            'linkAulaVirtuales' => $this->linkAulaVirtuales,
             'imagen' =>$this->image
             ]);
 
             $this->resetInput();
-            $this->updateMode = false;
+            $this->emit('closeModal');
 			session()->flash('message', 'Planificación actualizada correctamente.');
         }
     }
@@ -189,6 +220,7 @@ class Planificaciones extends Component
     }
     public function contar($id){
         $resultado = Inscripcione::get()->where('planificacione_id',$id)->count('estudiante_id');
+        error_log("--------------------------".$id);
         return $resultado;
     }
 
@@ -231,16 +263,14 @@ class Planificaciones extends Component
        // $this->curso = $record->Trimestre;
         $this->nombres = auth()->user()->name; 
         $this->apellidos = auth()->user()->lastname; 
+        $this->cedula = $record->cedula; 
         $this->correo = auth()->user()->email; 
         $this->Trimestre = $record->Trimestre;
+        $this->modalidad = $record->modalidad;
         $this->Anyo = $record->Anyo;
         $this->curso = $record->curso->Nombre;
         $this->updateMode = true;
-        /*$resultado = Curso::find($id);
-        
-        error_log('message');
-        error_log('message2-'.$resultado->Nombre);
-       return view('NuevaInscripcion',['nom' => $resultado->Nombre],['tri' => $resultado->Trimestre]);*/
+       
     }
 
     public function ValidarInscripcion($id)
@@ -255,107 +285,131 @@ class Planificaciones extends Component
 		$this->apellidos = null;
 		$this->correo = null;
 		$this->celular = null;
-		$this->telefonia = null;
+		$this->EmpresaTelefonica = null;
+        $this->Trimestre = null;
+        $this->modalidad = null;
+        $this->Anyo = null;
+
     }
 
-    public function RegisterInscription(){
-    
+    public function RegisterInscription()
+    {
+        
+        
        $this->validate([
             'cedula' => 'required',
             'nombres' => 'required',
             'apellidos' => 'required',
             'correo' => 'required',
             'celular' => 'required',
-            'telefonia' => 'required',
+            'EmpresaTelefonica' => 'required',
             
             
         ]);
-    
-        if($this->comprobarEstudiante($this->cedula) > 0){
-            
-            $est= Estudiante::where('Cedula', $this->cedula)->get();
+
+        if($this->comprobarEstudiante() > 0)
+        {
+            $est= Estudiante::where('user_id', auth()->user()->id)->get();
             $this->cod = $est[0]->id;
-            //error_log("Codigooooo 1  --".$est[0]->id );
-        }else{
+            
+        }
+        else{
             $est = Estudiante::create([ 
                 'Cedula' => $this-> cedula,
                 'Nombres' => $this-> nombres,
                 'Apellidos' => $this-> apellidos,
                 'Correo' => $this-> correo,
                 'Celular' => $this-> celular,
-                'EmpresaTelefonica' => $this-> telefonia
+                'EmpresaTelefonica' => $this-> EmpresaTelefonica,
+                'user_id' => auth()->user()->id
             ]);
+    
             $this->cod = $est->id;
-            error_log("Cedulaaaaa ".$this->cedula);
-            error_log("Codigooooo 1".$this->cod);
             
         }
-
-        if($this->validar($this->Trimestre, $this->cod)==0){
-        Inscripcione::create([ 
-                'Trimestre' => $this-> Trimestre,
-                'Anyo' => $this-> Anyo,
-                'estudiante_id' => $this->cod,
-                'planificacione_id' => $this-> idp
-            ]);
-
-            $this->resetInputEstudiante();
-            $this->updateMode = false;
-            session()->flash('message', 'Inscripción realizada correctamente.');
-        }else{
-            $this->resetInputEstudiante();
-             $this->updateMode = false;
-             session()->flash('message2', 'No se realizón la inscripción. Usted tiene matricula en este trimestre.');
-        }
-
+        
     
+      if( $this->validar($this->modalidad, $this->Trimestre) == 0)
+      {
+          Inscripcione::create([ 
+            'Trimestre' => $this-> Trimestre,
+            'Anyo' => $this-> Anyo,
+            'estudiante_id' => $this->cod,
+            'planificacione_id' => $this-> idp
+        ]);
+
+        $this->resetInputEstudiante();
+        $this->emit('closeModal');
+        session()->flash('message', 'Inscripción realizada correctamente.');
+      }
+      else{
+        $this->resetInputEstudiante();
+        $this->emit('closeModal');
+        session()->flash('message2', 'No se realizó la inscripción. Usted tiene una matricula en esta modalidad.');
+
+      }
+
+        
         
     }
 
-    public function comprobarEstudiante($cedula){
+    
+    public function comprobarEstudiante(){
 
-        $ced = Estudiante::get('Cedula')
-                ->where('Cedula', $cedula)
-                ->count('Cedula');
+        $ced = Estudiante::get('user_id')
+                ->where('user_id', auth()->user()->id)
+                ->count('user_id');
         return $ced;
     }
 
-    public function validar($tri, $id){
+    public function validar($modalidad, $trimestre){
 
-        $resultado = Inscripcione::get()
-                    ->where('Trimestre',$tri)
-                    ->where('estudiante_id',$id)
-                    ->count('estudiante_id');
+        $resultado = planificacione::join('inscripciones', 'inscripciones.planificacione_id', '=', 'planificaciones.id' ) 
+                    ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
+                    ->where('user_id',auth()->user()->id)
+                    ->where('modalidad',$modalidad)
+                    ->where('planificaciones.trimestre',$trimestre)
+                    ->count();
+     
                     error_log('------'.$resultado);
+                    error_log('------c'.auth()->user()->id." ".$modalidad);
+
         return $resultado;
     }
 
-   /* public function createForm(){
-        return view('image-upload');
+    public function VerificarEstudianteInscrito( $id)
+    {
+        $estudiante = Inscripcione::get()
+                    ->where('estudiante_id', $id)
+                    ->count('estudiante_id');
+
+                    if($estudiante > 0)
+                    {
+                      $this->btnInscripcion = "Inscrito";
+                    }
+        return $estudiante;
     }
-    
-    public function fileUpload(Request $req){
-        if($req->hasfile('imageFile')){
-            foreach($req->file('imageFile') as $file)
-        
-            $name = $file->getClientOriginalName();
-            $file->move(public_path().'/uploads/', $name);  
-            $imgData[] = $name;  
-        
-    
-        $fileModal = new Image();
-        $fileModal->name = json_encode($imgData);
-        $fileModal->image_path = json_encode($imgData);
-        
-       
-        $fileModal->save();
-    
-       return back()->with('success', 'File has successfully uploaded!');
-        }
-    }*/
+    public function VerificarInscripcion($id)
+    {
+        $resultado = estudiante::join('users', 'users.id', '=', 'estudiantes.user_id' ) 
+                    ->join('inscripciones', 'inscripciones.estudiante_id', '=', 'estudiantes.id')
+                    ->join('planificaciones', 'planificaciones.id', '=', 'inscripciones.planificacione_id')
+                    ->where('user_id',auth()->user()->id)
+                    ->where('planificacione_id',$id)
+                    ->count();
+        return $resultado;
+    }
 
-
-  
+    public function verEstudiantes($id)
+    {
+        $listaEstudiantes = estudiante::join('inscripciones', 'inscripciones.estudiante_id', '=', 'estudiantes.id')
+        ->join('planificaciones', 'planificaciones.id', '=', 'inscripciones.planificacione_id')
+        ->where('planificaciones.id', $id)
+        ->get();
+        
+        return $listaEstudiantes;
+        
+    }
 }
 
 

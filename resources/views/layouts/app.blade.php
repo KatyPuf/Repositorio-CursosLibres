@@ -57,7 +57,7 @@
               <li class="nav-item dropdown active p-2">
                 
                 <a class="nav-link dropdown-toggle h6 btn btn-info btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="far fa-list-alt"></i> Catalógos
+                  <i class="far fa-list-alt"></i> Catálogos
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -100,6 +100,10 @@
                     <a class="dropdown-item" href="{{url('/aula_curso_profesor')}}">
                       <i class="fas fa-house-user"></i>
                     <span>Asignados</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{url('/empresas_telefonicas')}}">
+                      <i class="fas fa-blender-phone"></i>
+                    <span>Empresas Telefónicas</span></a>
                   
                 </div>
                 
@@ -120,6 +124,7 @@
                   <i class="fas fa-user-edit"></i>
                   <span>Inscripciones</span></a>
               </li>
+              
               <li class="nav-item dropdown active p-2">
                 <a class="nav-link dropdown-toggle nav-link h6 btn btn-info btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-fw fa-cog"></i>
@@ -140,7 +145,12 @@
                   <li class="active p-2 ">
                     <a class="nav-link h6 btn btn-info btn-sm" href="{{url('/planificaciones')}}">
                     <i class="fas fa-fw fa-table"></i>
-                      <span>Ver cursos</span></a>
+                      <span>Cursos disponibles</span></a>
+                  </li>
+                  <li class="active p-2">
+                    <a class="nav-link nav-link h6 btn btn-info btn-sm" href="{{url('/mis_cursos')}}">
+                      <i class="fas fa-graduation-cap"></i>
+                      <span>Mis Cursos</span></a>
                   </li>
                 @endauth
             @endcan
@@ -203,19 +213,37 @@
     </div>
 </div>
 
-    @livewireScripts
+  @livewireScripts
     <script type="text/javascript">
         window.livewire.on('closeModal', () => {
             $('#exampleModal').modal('hide');
         });
     </script>
+    <script type="text/javascript">
+      window.livewire.on('closeModal', () => {
+          $('#NewModal').modal('hide');
+      });
+    </script>
+    <script type="text/javascript">
+      window.livewire.on('closeModal', () => {
+          $('#updateModal').modal('hide');
+      });
+    </script>
+    <script>
+      $(document).ready(function (e) {
+        $('#verEstudiantes').on('show.bs.modal', function(e) {    
+           var id = $(e.relatedTarget).data().id;
+            $(e.currentTarget).find('#lista').val(id);
+        });
+      });
+      </script>
     <script>
         var botmanWidget = {
             aboutText: 'ssdsd',
             
         };
     </script>
-
+    <script src="sweetalert2.all.min.js"></script>
     <!-- <script src='https://cdn.jsdelivr.net/npm/botman-web-widget@0/build/js/widget.js'></script> -->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.js"></script>

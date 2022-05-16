@@ -41,19 +41,18 @@
                     </div>
                        
                     <div class="form-group col-md-5">
-                        <label for="telefonia">Telefonía</label>
-                        <select wire:model.defer="telefonia" class="form-control @error('telefonia') is-invalid @enderror">
+                        <label for="EmpresaTelefonica">Telefonía</label>
+                        <select wire:model.defer="EmpresaTelefonica" class="form-control @error('EmpresaTelefonica') is-invalid @enderror">
                             <option value="">Seleccionar telefonía</option>
-                            <option value="Claro">Claro</option>
-                            <option value="Movistar">Movistar</option>
-                            <option value="Tigo">Tigo</option>
-                            <option value="Otro">Otro</option>
+                            @foreach ($telefonias as $telefonia)
+                            <option value="{{$telefonia->Nombre}}">{{$telefonia->Nombre}}</option>
+                        @endforeach
                         </select>
-                        @error('telefonia')
+                        @error('EmpresaTelefonica')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
-                        @enderror
+                         @enderror
                     </div>
                 </div>
             </form>
@@ -61,8 +60,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>
-                <button type="button" wire:click.prevent="RegisterInscription()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                <button type="button"  wire:click.prevent="RegisterInscription" class="btn btn-primary close-modal" >Guardar</button>
             </div>
         </div>
     </div>
 </div>
+

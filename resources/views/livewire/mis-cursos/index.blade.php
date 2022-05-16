@@ -3,7 +3,7 @@
 <div class="container-fluid mt-4">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            @livewire('planificaciones')
+            @livewire('mis-cursos')
         </div>     
     </div>   
 </div>

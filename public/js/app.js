@@ -641,3 +641,8 @@ jQuery('#Celular').keypress(function (tecla) {
 jQuery('#AnyoLectivo').keypress(function (tecla) {
   if (tecla.charCode < 48 || tecla.charCode > 57) return false;
 });
+
+JQuery(document).ready(function()
+{
+    
+});

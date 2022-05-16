@@ -11,7 +11,7 @@ class Estudiante extends Model
 	
     public $timestamps = false;
     protected $table = 'estudiantes';
-    protected $fillable = ['Cedula','Nombres','Apellidos','Correo','Celular','EmpresaTelefonica'];
+    protected $fillable = ['Cedula','Nombres','Apellidos','Correo','Celular','EmpresaTelefonica','user_id'];
 	
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -21,4 +21,8 @@ class Estudiante extends Model
         return $this->hasMany('App\Models\Inscripcione', 'estudiante_id', 'id');
     }
     
+    public function user()
+    {
+        return $this->hasOne('App\Models\User', 'user_id', 'id');
+    }
 }

@@ -20,6 +20,7 @@ class Planificacione extends Model
         'HorarioFin',
         'curso_id', 
         'imagen',
+        'linkAulaVirtuales'
         ];
 	
     /**

@@ -9,7 +9,7 @@
                 </button>
             </div>
            <div class="modal-body">
-				<form>
+		<form>
             <div class="form-group">
                 <label for="Cedula"></label>
                 <input wire:model="Cedula" type="text" class="form-control" id="Cédula" placeholder="Cedula">@error('Cedula') <span class="error text-danger">{{ $message }}</span> @enderror
@@ -35,10 +35,9 @@
                 <label for="EmpresaTelefonica"></label>
                 <select wire:model.defer="EmpresaTelefonica" class="form-control @error('EmpresaTelefonica') is-invalid @enderror">
                     <option value="">Seleccionar telefonía</option>
-                    <option value="Claro">Claro</option>
-                    <option value="Movistar">Movistar</option>
-                    <option value="Tigo">Tigo</option>
-                    <option value="Otro">Otro</option>
+                    @foreach ($telefonias as $telefonia)
+                    <option value="{{$telefonia->Nombre}}">{{$telefonia->Nombre}}</option>
+                @endforeach
                 </select>
                 @error('EmpresaTelefonica')
                     <div class="invalid-feedback">
@@ -46,7 +45,7 @@
                     </div>
                  @enderror
             </div>
-            </form>
+        </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>

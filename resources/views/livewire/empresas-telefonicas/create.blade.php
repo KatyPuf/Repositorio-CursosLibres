@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create New Trimestre</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Crear nueva empresa telefonica</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true close-btn">×</span>
                 </button>
@@ -12,24 +12,10 @@
 				<form>
             <div class="form-group">
                 <label for="Nombre"></label>
-                <input wire:model="Nombre" type="text" class="form-control" id="Nombretri" placeholder="Nombre">@error('Nombre') <span class="error text-danger">{{ $message }}</span> @enderror
-            </div>
-            <div class="form-group">
-                <label for="Estado"></label>
-                <select wire:model.defer="Estado" id="Estado" class="form-control @error('Estado') is-invalid @enderror">
-                    <option value="">Seleccionar estado</option>
-                    <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
-                    
-                </select>
-                @error('Estado')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                 @enderror
+                <input wire:model="Nombre" type="text" class="form-control" id="Nombre" placeholder="Nombre">@error('Nombre') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
 
-        </form>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>

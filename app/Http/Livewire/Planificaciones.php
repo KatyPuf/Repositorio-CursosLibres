@@ -15,7 +15,7 @@ use App\Models\CursosEjecutado;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
 use App\Models\EmpresasTelefonica;
-
+use Alert;
 class Planificaciones extends Component
 {
     use WithPagination;
@@ -78,7 +78,10 @@ class Planificaciones extends Component
         $this->resetInput();
         $this->updateMode = false;
     }
-	
+    public function errorBorrar()
+    {
+        Alert::message('error');
+    }
     private function resetInput()
     {		
 		$this->Trimestre = null;
@@ -192,7 +195,7 @@ class Planificaciones extends Component
             ]);
 
             $this->resetInput();
-            $this->updateMode = false;
+            $this->emit('closeModal');
 			session()->flash('message', 'Planificación actualizada correctamente.');
         }
     }
@@ -217,6 +220,7 @@ class Planificaciones extends Component
     }
     public function contar($id){
         $resultado = Inscripcione::get()->where('planificacione_id',$id)->count('estudiante_id');
+        error_log("--------------------------".$id);
         return $resultado;
     }
 

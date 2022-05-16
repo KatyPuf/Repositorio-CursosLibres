@@ -41,15 +41,16 @@
 						@include('livewire.inscripciones.create')
 						@include('livewire.inscripciones.update')
 				<div class="table-responsive">
-					<table class="table table-bordered table-sm">
+					<table class="table table-bordered table-sm text-center">
 						<thead class="thead">
 							<tr> 
-								<td>#</td> 
+								<th>#</th> 
 								<th>Trimestre</th>
 								<th>Año</th>
 								<th>Estudiante</th>
 								<th>Planificación</th>
-								<td>ACCIONES</td>
+								<th>Pagado</th>
+								<th>ACCIONES</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -60,7 +61,13 @@
 								<td>{{ $row->Trimestre }}</td>
 								<td>{{ $row->Anyo }}</td>
 								<td>{{ $row->estudiante->Nombres }} {{ $row->estudiante->Apellidos }}</td>
-								<td>{{ $row->planificacione->curso->Nombre }}</td>
+								<td>{{ $row->planificacione->curso->Nombre }} - {{$row->planificacione->modalidad}}</td>
+								<td>
+									<div class="form-check ">
+										<input class="form-check-input" id="check#{{$row->id}}" type="checkbox" value="{{$row->id}}" wire:model="pagadoCheck" wire:click="$emit('postAdded')">
+						
+									  </div>
+								</td>
 								<td width="90">
 								<div class="btn-group">
 									<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

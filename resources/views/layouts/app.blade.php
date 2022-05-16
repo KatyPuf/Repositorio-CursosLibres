@@ -57,7 +57,7 @@
               <li class="nav-item dropdown active p-2">
                 
                 <a class="nav-link dropdown-toggle h6 btn btn-info btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="far fa-list-alt"></i> Catalógos
+                  <i class="far fa-list-alt"></i> Catálogos
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -124,6 +124,7 @@
                   <i class="fas fa-user-edit"></i>
                   <span>Inscripciones</span></a>
               </li>
+              
               <li class="nav-item dropdown active p-2">
                 <a class="nav-link dropdown-toggle nav-link h6 btn btn-info btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-fw fa-cog"></i>
@@ -144,7 +145,12 @@
                   <li class="active p-2 ">
                     <a class="nav-link h6 btn btn-info btn-sm" href="{{url('/planificaciones')}}">
                     <i class="fas fa-fw fa-table"></i>
-                      <span>Ver cursos</span></a>
+                      <span>Cursos disponibles</span></a>
+                  </li>
+                  <li class="active p-2">
+                    <a class="nav-link nav-link h6 btn btn-info btn-sm" href="{{url('/mis_cursos')}}">
+                      <i class="fas fa-graduation-cap"></i>
+                      <span>Mis Cursos</span></a>
                   </li>
                 @endauth
             @endcan
@@ -216,6 +222,11 @@
     <script type="text/javascript">
       window.livewire.on('closeModal', () => {
           $('#NewModal').modal('hide');
+      });
+    </script>
+    <script type="text/javascript">
+      window.livewire.on('closeModal', () => {
+          $('#updateModal').modal('hide');
       });
     </script>
     <script>

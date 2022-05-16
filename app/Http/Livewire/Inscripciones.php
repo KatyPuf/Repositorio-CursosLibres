@@ -14,9 +14,9 @@ class Inscripciones extends Component
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $Trimestre, $Anyo, $estudiante_id, $planificacione_id;
+    public $selected_id, $keyWord, $Trimestre, $Anyo, $estudiante_id, $planificacione_id, $pagadoCheck;
     public $updateMode = false;
-
+    protected $listeners = ['postAdded' => 'incrementPostCount'];
     public function render()
     {
         $estudiantes = Estudiante::all();
@@ -31,7 +31,10 @@ class Inscripciones extends Component
 						->paginate(10),
         ], compact('estudiantes','planificaciones'));
     }
-	
+	public function incrementPostCount()
+    {
+        session()->flash('message', 'Hubo cambio'.$this->pagadoCheck);
+    }
     public function cancel()
     {
         $this->resetInput();

@@ -19,9 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/*Route::middleware(['auth:sanctum', 'verified'])->get('/home', function () {
+Route::middleware(['auth:sanctum', 'verified'])->get('/home', function () {
     return view('home');
-});*/
+});
 
 
 Auth::routes();
@@ -32,11 +32,13 @@ Route::get('/sendemail', [App\Http\Controllers\HomeController::class, 'sendEmail
 //Route::get('validar/{tri}/{id}', [App\Http\Livewire\Inscripciones::class, 'validar']);
 
 //Route Hooks - Do not delete//
+Route::group(['middleware' => 'admin'], function () {
+   
+
 	Route::view('empresas_telefonicas', 'livewire.empresas-telefonicas.index')->middleware('auth');
 	Route::view('aula_curso_profesor', 'livewire.aula-curso-profesors.index')->middleware('auth');
 	Route::view('cursos_ejecutados', 'livewire.cursos-ejecutados.index')->middleware('auth');
-	Route::view('inscripciones', 'livewire.inscripciones.index');
-	Route::view('planificaciones', 'livewire.planificaciones.index');
+	Route::view('inscripciones', 'livewire.inscripciones.index')->middleware('auth');
 	Route::view('anyos_lectivos', 'livewire.anyos-lectivos.index')->middleware('auth');
 	Route::view('trimestres', 'livewire.trimestres.index')->middleware('auth');
 	Route::view('modalidades', 'livewire.modalidades.index')->middleware('auth');
@@ -45,6 +47,10 @@ Route::get('/sendemail', [App\Http\Controllers\HomeController::class, 'sendEmail
 	Route::view('profesores', 'livewire.profesores.index')->middleware('auth');
 	Route::view('estudiantes', 'livewire.estudiantes.index')->middleware('auth');
 	Route::view('usuarios', 'livewire.usuarios.index')->middleware('auth');
+	
+	});
+	Route::view('mis_cursos', 'livewire.mis-cursos.index')->middleware('auth');
+	Route::view('planificaciones', 'livewire.planificaciones.index')->middleware('auth');
 	//Route::view('NuevaInscripcion', 'livewire.inscripciones.NuevaInscripcion');
 
 	Route::get('/exportar/{id}', [App\Http\Controllers\HomeController::class, 'export']);

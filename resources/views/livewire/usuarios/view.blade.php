@@ -23,7 +23,7 @@
 				</div>
 				
 				<div class="card-body">
-					@include('livewire.usuarios.asignarRol')
+					
 				<div class="table-responsive">
 					<table class="table table-bordered table-sm">
 						<thead class="thead">
@@ -43,10 +43,9 @@
 								<td>{{ $row->name }}</td>
 								<td>{{ $row->lastname }}</td>
                                 <td>{{ $row->email }}</td>
-								<td>
-									@foreach($row->roles as $roles)
-										{{$roles->role}}
-									@endforeach
+							<td>
+								
+								{{$row->getRoleNames()}}
 								</td>
 								
 								<td width="90">

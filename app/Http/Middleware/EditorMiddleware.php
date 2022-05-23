@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
 
-class AdminMiddleware
+class EditorMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,12 +16,12 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        
-        if( auth()->user()->hasRole('Administrador'))
+        foreach ( auth()->user()->roles() as $rol)
         {
-            
+            if(auth()->check() && $rol == 'editor')
+            {
                 return $next($request);
-            
+            }
         }
       
         return redirect('/');

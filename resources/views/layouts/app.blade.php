@@ -53,7 +53,7 @@
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             
-            @can('acceso')
+            @if(@Auth::user()->hasRole('Administrador'))
               <li class="nav-item dropdown active p-2">
                 
                 <a class="nav-link dropdown-toggle h6 btn btn-info btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -153,8 +153,8 @@
                       <span>Mis Cursos</span></a>
                   </li>
                 @endauth
-            @endcan
-              @guest
+            @endif
+             @guest
                 @if (Route::has('login'))
                   <li class="nav-item active p-2">
                       <a class="nav-link h6 btn btn-info btn-sm" href="{{ route('login') }}">{{ __('Iniciar sesión') }}</a>

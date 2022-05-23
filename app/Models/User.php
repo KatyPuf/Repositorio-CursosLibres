@@ -9,9 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+    use HasRoles;
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
@@ -76,10 +78,10 @@ class User extends Authenticatable
          *
          * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
          */
-        public function roles()
+        /*public function roles()
         {
             return $this->belongsToMany('App\Models\Role');
-        }
+        }*/
 
         public function estudiante()
         {

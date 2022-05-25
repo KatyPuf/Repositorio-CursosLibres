@@ -44,11 +44,11 @@ use App\Http\Livewire\Inscripciones;
                             <input wire:model='keyWord' type="text" class="form-control" name="search" id="search"
                                 placeholder="Buscar">
                         </div>
-                        @can('show')
+                        
                         <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
                             <i class="fa fa-plus"></i> Agregar
                         </div>
-                        @endcan
+                        
 
                     </div>
                 </div>

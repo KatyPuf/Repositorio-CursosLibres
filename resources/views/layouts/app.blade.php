@@ -53,7 +53,8 @@
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             
-            @if(@Auth::user()->hasRole('Administrador'))
+            @if(Auth::check())
+            @if(Auth::user()->hasRole('Administrador'))
               <li class="nav-item dropdown active p-2">
                 
                 <a class="nav-link dropdown-toggle h6 btn btn-info btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -135,8 +136,11 @@
                       <a class="dropdown-item" href="{{url('/usuarios')}}"> 
                         <i class="fas fa-user"></i>
                       <span> Usuarios</span></a>
-                      <!--<a class="dropdown-item" href="cards.html">Roles</a>
-                      <a class="dropdown-item" href="cards.html">Permisos</a> -->
+                      <a class="dropdown-item" href="{{url('/roles')}}">
+                        <i class="fas fa-user"></i>
+                        <span> Roles</span>
+                      </a>
+                      <!--<a class="dropdown-item" href="cards.html">Permisos</a> -->
                   
                 </div>
               </li>
@@ -153,6 +157,7 @@
                       <span>Mis Cursos</span></a>
                   </li>
                 @endauth
+            @endif
             @endif
              @guest
                 @if (Route::has('login'))

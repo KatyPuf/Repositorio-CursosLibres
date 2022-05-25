@@ -18,10 +18,13 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         
-        if( auth()->user()->hasRole('Administrador'))
+        if( auth()->check() )
         {
-            
+            if(auth()->user()->hasRole('Administrador'))
+            {
                 return $next($request);
+
+            }
             
         }
       

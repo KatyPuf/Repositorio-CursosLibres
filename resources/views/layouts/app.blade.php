@@ -135,10 +135,14 @@
 
                       <a class="dropdown-item" href="{{url('/usuarios')}}"> 
                         <i class="fas fa-user"></i>
-                      <span> Usuarios</span></a>
+                      <span>   Usuarios</span></a>
                       <a class="dropdown-item" href="{{url('/roles')}}">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-users"></i>
                         <span> Roles</span>
+                      </a>
+                      <a class="dropdown-item" href="{{url('/permisos')}}">
+                        <i class="fas fa-check-circle"></i>
+                        <span> Permisos</span>
                       </a>
                       <!--<a class="dropdown-item" href="cards.html">Permisos</a> -->
                   

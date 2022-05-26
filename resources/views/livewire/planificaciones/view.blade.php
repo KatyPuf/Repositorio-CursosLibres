@@ -44,11 +44,11 @@ use App\Http\Livewire\Inscripciones;
                             <input wire:model='keyWord' type="text" class="form-control" name="search" id="search"
                                 placeholder="Buscar">
                         </div>
-                        
+
                         <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
                             <i class="fa fa-plus"></i> Agregar
                         </div>
-                        
+
 
                     </div>
                 </div>
@@ -95,13 +95,14 @@ use App\Http\Livewire\Inscripciones;
                                         </a>
 
                                         @endif
-                                        @can('show')
+                                        
 
 
                                     </p>
 
                                 </div>
                                 <div class="card-footer text-muted">
+                                    @can('show')
                                     <div class="row">
                                         <div class="col-md-10">
                                             <a class="text-primary" href="">

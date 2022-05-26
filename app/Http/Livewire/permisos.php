@@ -4,22 +4,20 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class roles extends Component
+class permisos extends Component
 {
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $NombreRol, $permisos;
-    public $updateMode = false;
+    public $selected_id, $keyWord, $NombrePermiso;
 
     public function render()
     {
 		$keyWord = '%'.$this->keyWord .'%';
-        return view('livewire.roles.view', [
-            'roles' => Role::latest('id')
+        return view('livewire.permisos.view', [
+            'permisos' => Permission::latest('id')
 						->orWhere('name', 'LIKE', $keyWord)
 						->paginate(10),
         ]);
@@ -33,63 +31,54 @@ class roles extends Component
 	
     private function resetInput()
     {	$this->selected_id=null;
-		$this->NombreRol = null;
+		$this->NombrePermiso = null;
 		
     }
 
     public function store()
     {
         $this->validate([
-            'NombreRol' => 'required',
+            'NombrePermiso' => 'required',
             ]);
     
-            Role::create([ 
-                'name' => $this-> NombreRol
+            Permission::create([ 
+                'name' => $this-> NombrePermiso
             ]);
             
             $this->resetInput();
-            session()->flash('message', 'Rol creado correctamente.');
+            session()->flash('message', 'Permiso creado correctamente.');
     }
 
     public function edit($id)
     {
-        $record = Role::findOrFail($id);
+        $record = Permission::findOrFail($id);
 
         $this->selected_id = $id; 
-		$this->NombreRol = $record->name;
+		$this->NombrePermiso = $record->name;
 	
     }
 
     public function update()
     {
         $this->validate([
-            'NombreRol' => 'required']);
+            'NombrePermiso' => 'required']);
     
             if ($this->selected_id) {
-                $record = Role::find($this->selected_id);
+                $record = Permission::find($this->selected_id);
                 $record->update([ 
-                'name' => $this-> NombreRol
+                'name' => $this-> NombrePermiso
                 ]);
     
                 $this->resetInput();
-                session()->flash('message', 'Rol actualizado correctamente.');
+                session()->flash('message', 'Permiso actualizado correctamente.');
             }
     }
 
     public function destroy($id)
     {
         if ($id) {
-            $record = Role::where('id', $id);
+            $record = Permission::where('id', $id);
             $record->delete();
         }
-    }
-
-    public function PermisoPorRol($id)
-    {
-        $record = Role::where('id', $id);
-        $permisos = $record->getAllPermissions();
-        return view('livewire.roles.permisos_por_rol', [
-            'name' =>  $record->name
-        ]);
     }
 }

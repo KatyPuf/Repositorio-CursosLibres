@@ -13,6 +13,7 @@ class AnyosLectivos extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $AnyoLectivo;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
 
     public function render()
     {
@@ -84,5 +85,10 @@ class AnyosLectivos extends Component
             $record = AnyosLectivo::where('id', $id);
             $record->delete();
         }
+    }
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
     }
 }

@@ -9,9 +9,15 @@
 							<h4><i class="fas fa-book text-info"></i>
 							Listado de cursos </h4>
 						</div>
-						<div wire:poll.60s>
-							<code><h5>{{ now()->format('H:i:s') }} UTC</h5></code>
-						</div>
+						
+						@if (session()->has('message2'))
+                        <script type="text/javascript">
+                            toastr.options = {
+                                "positionClass": "toast-bottom-center"
+                            }
+                            toastr.error("{{ session('message2') }}");
+                        </script>
+                        @endif
 						@if (session()->has('message'))
 						<script type="text/javascript">
 							toastr.options = {
@@ -19,7 +25,9 @@
 							}
 							toastr.success("{{ session('message') }}");
 						</script>
+						
 						@endif
+						
 						<div>
 							<input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar cursos">
 						</div>
@@ -58,8 +66,10 @@
 									Acciones
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
+									@if($contador <=0)
 									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
-									<a class="dropdown-item" onclick="confirm('Confirmar eliminación del curso {{$row->Nombre}}? \nLos cursos eliminados no se pueden recuperar!')||event.stopImmediatePropagation()" wire:click="destroy({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
+									@endif
+									<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
 									</div>
 								</div>
 								</td>
@@ -73,3 +83,42 @@
 		</div>
 	</div>
 </div>
+@push('js')
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    Livewire.on('deleteRegistro', $CursoId => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar curso!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.emitTo('cursos', 'destroy', $CursoId )
+                Swal.fire(
+                    'Eliminado!',
+                    'Su archivo ha sido eliminado.',
+                    'success'
+                )
+            }
+        })
+    })
+    
+</script>
+<script>
+    Livewire.on('noEliminarRegistro', $PlanificacionId => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No puede eliminar este curso porque tiene planificación!',
+           
+        })
+    })
+</script>
+
+@endpush

@@ -16,7 +16,7 @@
                     <select wire:model="rol" id="rol" class="form-control @error('roles') is-invalid @enderror">
                         <option value="">Seleccione un rol</option>
                         @foreach ($roles as $rol)
-                            <option value="{{$rol->id}}">{{$rol->role}}</option>
+                            <option value="{{$rol->id}}">{{$rol->name}}</option>
                         @endforeach
                     </select>
                     @error('roles')

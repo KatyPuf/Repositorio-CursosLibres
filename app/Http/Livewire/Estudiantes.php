@@ -14,6 +14,7 @@ class Estudiantes extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $Cedula, $Nombres, $Apellidos, $Correo, $Celular, $EmpresaTelefonica;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
     
     public function render()
     {
@@ -131,5 +132,10 @@ class Estudiantes extends Component
             $record = Estudiante::where('id', $id);
             $record->delete();
         }
+    }
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
     }
 }

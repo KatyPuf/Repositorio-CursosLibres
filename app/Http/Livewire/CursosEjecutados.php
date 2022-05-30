@@ -14,6 +14,7 @@ class CursosEjecutados extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $Trimestre, $Anyo, $modalidad, $FechaInicio, $FechaFin, $HorarioInicio, $HorarioFin, $curso_id;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
 
     public function render()
     {
@@ -134,5 +135,10 @@ class CursosEjecutados extends Component
             $record = CursosEjecutado::where('id', $id);
             $record->delete();
         }
+    }
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
     }
 }

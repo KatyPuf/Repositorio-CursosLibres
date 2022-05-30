@@ -53,7 +53,8 @@
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             
-            @can('acceso')
+            @if(Auth::check())
+            @if(Auth::user()->hasRole('Administrador'))
               <li class="nav-item dropdown active p-2">
                 
                 <a class="nav-link dropdown-toggle h6 btn btn-info btn-sm" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -134,9 +135,20 @@
 
                       <a class="dropdown-item" href="{{url('/usuarios')}}"> 
                         <i class="fas fa-user"></i>
-                      <span> Usuarios</span></a>
-                      <!--<a class="dropdown-item" href="cards.html">Roles</a>
-                      <a class="dropdown-item" href="cards.html">Permisos</a> -->
+                      <span>   Usuarios</span></a>
+                      <a class="dropdown-item" href="{{url('/roles')}}">
+                        <i class="fas fa-users"></i>
+                        <span> Roles</span>
+                      </a>
+                      <a class="dropdown-item" href="{{url('/permisos')}}">
+                        <i class="fas fa-check-circle"></i>
+                        <span> Permisos</span>
+                      </a>
+                      <a class="dropdown-item" href="{{url('/permisos')}}">
+                        <i class="fas fa-database"></i>
+                        <span>Respaldar Base de datos</span>
+                      </a>
+                      <!--<a class="dropdown-item" href="cards.html">Permisos</a> -->
                   
                 </div>
               </li>
@@ -153,8 +165,9 @@
                       <span>Mis Cursos</span></a>
                   </li>
                 @endauth
-            @endcan
-              @guest
+            @endif
+            @endif
+             @guest
                 @if (Route::has('login'))
                   <li class="nav-item active p-2">
                       <a class="nav-link h6 btn btn-info btn-sm" href="{{ route('login') }}">{{ __('Iniciar sesión') }}</a>
@@ -243,12 +256,14 @@
             
         };
     </script>
-    <script src="sweetalert2.all.min.js"></script>
+   
+    
     <!-- <script src='https://cdn.jsdelivr.net/npm/botman-web-widget@0/build/js/widget.js'></script> -->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/main.js"></script>
 
+   @stack('js')
 
 </body>
 <footer>

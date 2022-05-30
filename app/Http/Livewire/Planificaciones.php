@@ -45,10 +45,12 @@ class Planificaciones extends Component
             $modalidad, 
             $btnInscripcion,
             $EmpresaTelefonica,
-            $linkAulaVirtuales;
+            $linkAulaVirtuales,
+            $idPlanificacion;
     public $updateMode = false;
     public $Cursos = null;
-    
+    protected $listeners = ['destroy', 'aperturar'];
+
     public function render()
     {
         
@@ -73,6 +75,11 @@ class Planificaciones extends Component
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }
 	
+    public function alerta()
+    {
+        session()->flash('message2', 'Esta planificacion no puede ser eliminada. Tiene estudiantes inscritos');
+
+    }
     public function cancel()
     {
         $this->resetInput();
@@ -112,13 +119,13 @@ class Planificaciones extends Component
         'imagen' => 'required|image|max:2048'
         ]);
 
-       if($this->verificarPlanificacion($this->Trimestre, $this->curso_id, $this->modalidad) >0){
+       if($this->verificarPlanificacion($this->Trimestre, $this->curso_id, $this->modalidad, $this->Anyo) >0){
             $this->resetInput();
             $this->emit('closeModal');
             session()->flash('message2', 'No se creó. La planificación ya existe en este trimestre.');
        }else{
            
-            $image = $this->imagen->store('planificacion', 'public');
+           $image = $this->imagen->store('planificacion', 'public');
             
             Planificacione::create([ 
                 'Trimestre' => $this-> Trimestre,
@@ -208,19 +215,20 @@ class Planificaciones extends Component
         }
     }
 
-    public function verificarPlanificacion($tri, $curso_id,$modalidad){
+    public function verificarPlanificacion($tri, $curso_id,$modalidad, $anyo){
 
         $resultado = Planificacione::get()
                     ->where('Trimestre',$tri)
                     ->where('curso_id',$curso_id)
                     ->where('modalidad', $modalidad)
+                    ->where('Anyo',$anyo)
                     ->count('curso_id');
                     error_log('------'.$resultado);
         return $resultado;
     }
+    
     public function contar($id){
         $resultado = Inscripcione::get()->where('planificacione_id',$id)->count('estudiante_id');
-        error_log("--------------------------".$id);
         return $resultado;
     }
 
@@ -236,13 +244,15 @@ class Planificaciones extends Component
             'HorarioFin' => $record-> HorarioFin,
 			'curso_id' => $record-> curso_id,
         ]);
-        session()->flash('message', 'Curso aperturado.');
+        //session()->flash('message', 'Curso aperturado.');
 
     }
-   public function buscar($curso_id, $trimestre){
+   public function buscar($curso_id, $trimestre, $modalidad, $anyo){
        
     $resultado = CursosEjecutado::where("curso_id", $curso_id)
                 ->where("Trimestre", $trimestre)
+                ->where("modalidad", $modalidad)
+                ->where("Anyo", $anyo)
                 ->count("curso_id");
 
         error_log('resultado---'.$resultado);
@@ -329,7 +339,7 @@ class Planificaciones extends Component
         }
         
     
-      if( $this->validar($this->modalidad, $this->Trimestre) == 0)
+      if( $this->validar($this->modalidad, $this->Trimestre, $this->Anyo) == 0)
       {
           Inscripcione::create([ 
             'Trimestre' => $this-> Trimestre,
@@ -362,18 +372,16 @@ class Planificaciones extends Component
         return $ced;
     }
 
-    public function validar($modalidad, $trimestre){
+    public function validar($modalidad, $trimestre, $anyo){
 
         $resultado = planificacione::join('inscripciones', 'inscripciones.planificacione_id', '=', 'planificaciones.id' ) 
                     ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
                     ->where('user_id',auth()->user()->id)
                     ->where('modalidad',$modalidad)
                     ->where('planificaciones.trimestre',$trimestre)
+                    ->where('planificaciones.Anyo', $anyo)
                     ->count();
      
-                    error_log('------'.$resultado);
-                    error_log('------c'.auth()->user()->id." ".$modalidad);
-
         return $resultado;
     }
 
@@ -406,7 +414,7 @@ class Planificaciones extends Component
         ->join('planificaciones', 'planificaciones.id', '=', 'inscripciones.planificacione_id')
         ->where('planificaciones.id', $id)
         ->get();
-        
+      //  $this-> $idPlanificacion = $id;
         return $listaEstudiantes;
         
     }

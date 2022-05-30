@@ -13,6 +13,7 @@ class Modalidades extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $TipoModalidad;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
 
     public function render()
     {
@@ -85,4 +86,10 @@ class Modalidades extends Component
             $record->delete();
         }
     }
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
+    }
+
 }

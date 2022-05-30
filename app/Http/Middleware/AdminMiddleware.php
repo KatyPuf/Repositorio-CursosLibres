@@ -18,12 +18,14 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         
-        foreach ( auth()->user()->roles() as $rol)
+        if( auth()->check() )
         {
-            if(auth()->check() && $rol == 'admin')
+            if(auth()->user()->hasRole('Administrador'))
             {
                 return $next($request);
+
             }
+            
         }
       
         return redirect('/');

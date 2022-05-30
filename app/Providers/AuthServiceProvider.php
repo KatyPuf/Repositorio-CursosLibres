@@ -36,12 +36,18 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
         Gate::define('show', function($user){
-            foreach($user->roles as $roles){
-                if($roles->role == "admin"){
+            /*foreach($user->roles as $roles){
+                if($roles->role == "Administrador"){
                     return true;
                 }
                 return false;
+            }*/
+            if(auth()->user()->hasRole('Administrador'))
+            {
+                return true;
+
             }
+            return false;
         });
         Gate::define('acceso', function($user){
             foreach($user->roles as $roles){

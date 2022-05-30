@@ -77,10 +77,10 @@ use App\Http\Livewire\Inscripciones;
                                     <p class="card-text">
                                         <?php $contar = Planificaciones::contar($row->id)  ?>
                                         <!-- contador de inscripciones-->
-                                        <?php $response = Planificaciones::buscar($row->curso_id, $row->Trimestre)  ?>
+                                        <?php $response = Planificaciones::buscar($row->curso_id, $row->Trimestre,$row->modalidad, $row->Anyo)  ?>
                                         <!-- Buscador de cursos ejecutados-->
 
-                                        <!--<strong>Año lectivo:</strong> {{ $row->Anyo }}<br>-->
+                                        <strong>Año lectivo:</strong> {{ $row->Anyo }}<br>
                                         <strong>Trimestre: </strong>{{$row->Trimestre}}<br>
                                         <strong>Fecha:</strong>
                                         Del {{date('Y-m-d', strtotime($row->FechaInicio))}}
@@ -95,7 +95,7 @@ use App\Http\Livewire\Inscripciones;
                                         </a>
 
                                         @endif
-                                        
+
 
 
                                     </p>
@@ -111,11 +111,14 @@ use App\Http\Livewire\Inscripciones;
                                         </div>
                                         <div class="col-md-2">
 
-                                            <a href="" data-toggle="modal" data-toggle="tooltip" data-placement="bottom"
+                                            <!-- <a href="" data-toggle="modal" data-toggle="tooltip" data-placement="bottom"
                                                 title="Ver" data-target="#verEstudiantes" data-id="{{$row->id}}"
                                                 class="text-muted">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
+                                                
+                                            </a> -->
+                                            <a class="text-muted" data-toggle="modal" data-target="#verEstudiantes"
+                                                class="dropdown-item" wire:click="verEstudiantes({{$row->id}})"><i
+                                                    class="fas fa-eye"></i></a>
                                         </div>
                                     </div>
                                     <br>
@@ -134,24 +137,28 @@ use App\Http\Livewire\Inscripciones;
 												}
 											?>
                                             @if($disabled == "disabled")
-                                            <a class="dropdown-item disabled" onclick="confirm('Desea aperturar el curso {{$row->curso->Nombre}}? \nEl curso tiene {{Planificaciones::contar($row->id)}} estudiantes')
-											  ||event.stopImmediatePropagation()" wire:click="aperturar({{$row->id}})"><i class="fas fa-book-open"></i>
+                                            <a class="dropdown-item disabled"  wire:click="$emit('eventoAperturar', {{$row->id}})">
+                                                <i class="fas fa-book-open"></i>
                                                 Aperturar </a>
                                             @else
-                                            <a class="dropdown-item enable"
-                                                onclick="confirm('Desea aperturar el curso {{$row->curso->Nombre}}? \nEl curso tiene {{Planificaciones::contar($row->id)}} estudiantes')||event.stopImmediatePropagation()"
-                                                wire:click="aperturar({{$row->id}})"><i class="fas fa-book-open"></i>
+                                            <a class="dropdown-item enable" wire:click="$emit('eventoAperturar', {{$row->id}})">
+                                                <i class="fas fa-book-open"></i>
                                                 Aperturar </a>
                                             @endif
                                             <a data-toggle="modal" data-target="#updateModal" class="dropdown-item"
                                                 wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>
-                                            <a class="dropdown-item"
-                                                onclick="confirm('Confirmar eliminación de la planificación {{$row->id}}? \nLas planififcaciones eliminadas no pueden ser recuperadas!')||event.stopImmediatePropagation()"
-                                                wire:click="destroy({{$row->id}})"><i class="fa fa-trash"></i> Borrar
-                                            </a>
-                                            <a class="dropdown-item" href="{{url('/exportar'.'/'.$row->id)}}"
-                                                class="btn btn-info btn-sm"><i class="fas fa-file-alt"></i> Generar
-                                                reporte</a>
+                                            @if($contar <= 0)
+                                             <a class="dropdown-item" wire:click="$emit('deleteRegistro',{{$row->id}})">
+                                                <i class="fa fa-trash"></i> Borrar  </a>
+                                            @else
+                                                <a class="dropdown-item" wire:click="$emit('noEliminarRegistro',{{$row->id}})"> <i class="fa fa-trash"></i> Borrar
+                                                    
+                                            @endif
+                                               
+                                                <a class="dropdown-item" href="{{url('/exportar'.'/'.$row->id)}}"
+                                                    class="btn btn-info btn-sm"><i class="fas fa-file-alt"></i> Generar
+                                                    reporte
+                                                </a>
                                         </div>
                                     </div>
                                     @endcan
@@ -185,23 +192,65 @@ use App\Http\Livewire\Inscripciones;
         </div>
     </div>
 </div>
+@push('js')
 
-@livewireScripts
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function alerta() {
+
+    Livewire.on('deleteRegistro', $PlanificacionId => {
         Swal.fire({
-            title: 'Do you want to save the changes?',
-            showDenyButton: true,
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Save',
-            denyButtonText: `Don't save`,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar planificación!'
         }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                Swal.fire('Saved!', '', 'success')
-            } else if (result.isDenied) {
-                Swal.fire('Changes are not saved', '', 'info')
+                Livewire.emitTo('planificaciones', 'destroy', $PlanificacionId )
+                Swal.fire(
+                    'Eliminado!',
+                    'Su archivo ha sido eliminado.',
+                    'success'
+                )
             }
         })
-    }
+    })
+    
 </script>
+<script>
+    Livewire.on('noEliminarRegistro', $PlanificacionId => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No puede eliminar esta planificación porque tiene estudiantes inscritos!',
+           
+        })
+    })
+</script>
+<script>
+
+    Livewire.on('eventoAperturar', $PlanificacionId => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¿Desea aperturar este curso?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, aperturar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.emitTo('planificaciones', 'aperturar', $PlanificacionId )
+                Swal.fire(
+                    'Aperturado!',
+                    'Este curso ha sido aperturado.',
+                    'success'
+                )
+            }
+        })
+    })
+    
+</script>
+@endpush

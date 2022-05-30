@@ -64,8 +64,8 @@
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
 									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
-									<a class="dropdown-item" onclick="confirm('Confirmar la eliminación del profesor {{$row->id}}? \nLos trimestres eliminados no se pueden recuperar!!')||event.stopImmediatePropagation()" wire:click="destroy({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
-									</div>
+									<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
+								</div>
 								</div>
 								</td>
 							@endforeach
@@ -78,3 +78,32 @@
 		</div>
 	</div>
 </div>
+@push('js')
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    Livewire.on('deleteRegistro', $RecordId => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.emitTo('trimestres', 'destroy', $RecordId )
+                Swal.fire(
+                    'Eliminado!',
+                    'Su archivo ha sido eliminado.',
+                    'success'
+                )
+            }
+        })
+    })
+    
+</script>
+
+@endpush

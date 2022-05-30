@@ -16,7 +16,7 @@ class Inscripciones extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $Trimestre, $Anyo, $estudiante_id, $planificacione_id, $pagadoCheck;
     public $updateMode = false;
-    protected $listeners = ['postAdded' => 'incrementPostCount'];
+    protected $listeners = ['postAdded' => 'incrementPostCount', 'destroy'];
     public function render()
     {
         $estudiantes = Estudiante::all();
@@ -150,5 +150,9 @@ class Inscripciones extends Component
         return view('misInscripciones','inscripciones');
     }
     
-    
+     public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
+    }
 }

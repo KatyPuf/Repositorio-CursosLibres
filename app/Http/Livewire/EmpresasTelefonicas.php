@@ -13,6 +13,7 @@ class EmpresasTelefonicas extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $Nombre;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
 
     public function render()
     {
@@ -47,7 +48,7 @@ class EmpresasTelefonicas extends Component
         
         $this->resetInput();
 		$this->emit('closeModal');
-		session()->flash('message', 'Empresa telefonica successfully created.');
+		session()->flash('message', 'Empresa telefonica creada con éxito.');
     }
 
     public function edit($id)
@@ -74,7 +75,7 @@ class EmpresasTelefonicas extends Component
 
             $this->resetInput();
             $this->updateMode = false;
-			session()->flash('message', 'Empresa telefonica successfully updated.');
+			session()->flash('message', 'Empresa telefonica actualizada con exito.');
         }
     }
 
@@ -84,5 +85,10 @@ class EmpresasTelefonicas extends Component
             $record = EmpresasTelefonica::where('id', $id);
             $record->delete();
         }
+    }
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
     }
 }

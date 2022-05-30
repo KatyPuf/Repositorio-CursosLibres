@@ -12,6 +12,7 @@ class permisos extends Component
 
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $NombrePermiso;
+    protected $listeners = ['destroy'];
 
     public function render()
     {
@@ -81,4 +82,10 @@ class permisos extends Component
             $record->delete();
         }
     }
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
+    }
+
 }

@@ -15,6 +15,7 @@ class usuarios extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $rol, $name, $lastname;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
 
     public function render()
     {
@@ -59,7 +60,7 @@ class usuarios extends Component
     public function destroy($id)
     {
         if ($id) {
-            $record = users::where('id', $id);
+            $record = User::where('id', $id);
             $record->delete();
         }
     }
@@ -68,5 +69,11 @@ class usuarios extends Component
     {
         
        
+    }
+    
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
     }
 }

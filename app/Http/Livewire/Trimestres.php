@@ -13,6 +13,7 @@ class Trimestres extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $Nombre, $Estado;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
 
     public function render()
     {
@@ -91,5 +92,12 @@ class Trimestres extends Component
             $record = Trimestre::where('id', $id);
             $record->delete();
         }
+    }
+
+    
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
     }
 }

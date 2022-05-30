@@ -15,6 +15,8 @@ class Aulas extends Component
     public $selected_id, $keyWord, $Nombre, $Ubicacion;
     public $updateMode = false;
     public $vista;
+    protected $listeners = ['destroy'];
+
     public function render()
     {
 
@@ -96,5 +98,10 @@ class Aulas extends Component
             $record = Aula::where('id', $id);
             $record->delete();
         }
+    }
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
     }
 }

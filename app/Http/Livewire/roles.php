@@ -12,8 +12,9 @@ class roles extends Component
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $NombreRol, $permisos;
+    public $selected_id, $keyWord, $NombreRol, $permisos, $registros;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
 
     public function render()
     {
@@ -86,10 +87,16 @@ class roles extends Component
 
     public function PermisoPorRol($id)
     {
-        $record = Role::where('id', $id);
-        $permisos = $record->getAllPermissions();
-        return view('livewire.roles.permisos_por_rol', [
-            'name' =>  $record->name
-        ]);
+        $record = Role::findOrFail($id);
+        $this->registros = $record->name;
+        $this->permisos = $record->getAllPermissions();
+         error_log($this->permisos);
+        
+    }
+
+     public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
     }
 }

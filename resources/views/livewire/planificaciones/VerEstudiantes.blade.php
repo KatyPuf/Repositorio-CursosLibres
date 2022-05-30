@@ -12,7 +12,7 @@
                 </button>
             </div>
             <div class="modal-body">
-              <input type="text" name="lista" id="lista"/>
+              <input type="text" value={{$idPlanificacion}}name="lista" id="lista"/>
               <?php $listaEstudiantes = Planificaciones::verEstudiantes(1) ?>  
                 <table  class="table">
                     <thead>

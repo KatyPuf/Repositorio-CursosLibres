@@ -144,6 +144,10 @@
                         <i class="fas fa-check-circle"></i>
                         <span> Permisos</span>
                       </a>
+                      <a class="dropdown-item" href="{{url('/permisos')}}">
+                        <i class="fas fa-database"></i>
+                        <span>Respaldar Base de datos</span>
+                      </a>
                       <!--<a class="dropdown-item" href="cards.html">Permisos</a> -->
                   
                 </div>
@@ -252,12 +256,14 @@
             
         };
     </script>
-    <script src="sweetalert2.all.min.js"></script>
+   
+    
     <!-- <script src='https://cdn.jsdelivr.net/npm/botman-web-widget@0/build/js/widget.js'></script> -->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/main.js"></script>
 
+   @stack('js')
 
 </body>
 <footer>

@@ -5,14 +5,16 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Curso;
+use App\Models\Planificacione;
 
 class Cursos extends Component
 {
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $Nombre, $Semanas, $Horas, $Precio;
+    public $selected_id, $keyWord, $Nombre, $Semanas, $Horas, $Precio, $contador;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
 
     public function render()
     {
@@ -101,9 +103,34 @@ class Cursos extends Component
 
     public function destroy($id)
     {
+       
         if ($id) {
+            
             $record = Curso::where('id', $id);
             $record->delete();
         }
+    }
+
+    public function emitirEvento($id)
+    {
+        if($this->verificarSiExistePlanificacion($id) == 0)
+        {
+            
+            $this->emit('deleteRegistro', $id);
+
+            
+        }
+        else{
+            $this->emit('noEliminarRegistro', $id);
+        }
+    }
+
+    public function verificarSiExistePlanificacion($id)
+    {
+       $contador = Curso::join('planificaciones','planificaciones.curso_id','=', 'cursos.id')
+        ->where('cursos.id', $id)
+        ->count();
+
+        return $contador;
     }
 }

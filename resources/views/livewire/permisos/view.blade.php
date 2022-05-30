@@ -60,10 +60,10 @@
 
 
                                                 <a class="btn btn-sm btn-danger" role="button"
-                                                    onclick="confirm('Confirmar la eliminación del permiso {{$permiso->name}}? \nLos permisos eliminados no se pueden recuperar!!')||event.stopImmediatePropagation()"
-                                                    wire:click="destroy({{$permiso->id}})"><i class="fa fa-trash"></i>
+                                                wire:click="emitirEvento({{$permiso->id}})"><i class="fa fa-trash"></i>
                                                     Borrar
                                                 </a>
+
                                             </td>
                                         </tr>
                                         @endforeach
@@ -78,3 +78,33 @@
         </div>
     </div>
 </div>
+
+@push('js')
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    Livewire.on('deleteRegistro', $RecordId => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.emitTo('permisos', 'destroy', $RecordId )
+                Swal.fire(
+                    'Eliminado!',
+                    'Su archivo ha sido eliminado.',
+                    'success'
+                )
+            }
+        })
+    })
+    
+</script>
+
+@endpush

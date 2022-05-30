@@ -18,14 +18,12 @@ use App\Http\Livewire\Inscripciones;
 				
 						</div>
 						
-						
-						
 					</div>
 				</div>
 				
 				<div class="card-body ">
 					
-					<div class="row row-cols-1 row-cols-md-4 g-4 m-1">
+					<div class="row row-cols-1 row-cols-md-3 g-4 m-1">
 						@foreach($misCursos as $row)
 						<div class="col">
 							<div class="card h-100">
@@ -69,6 +67,13 @@ use App\Http\Livewire\Inscripciones;
 						  </div>
 						@endforeach
 						
+						<!--@isset($misCursos)
+							<div class="alert alert-primary" role="alert">
+								<h4>¡Usted no se ha inscrito a ningun curso!</h4>
+						  </div>
+						  @else
+						  
+						@endisset-->
 					  </div>
 					
 				</div>

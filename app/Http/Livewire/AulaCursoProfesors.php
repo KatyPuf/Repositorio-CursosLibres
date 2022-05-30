@@ -16,6 +16,7 @@ class AulaCursoProfesors extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $profesor_id, $curso_ejecutado_id, $aula_id;
     public $updateMode = false;
+    protected $listeners = ['destroy'];
     
     public function render()
     {
@@ -104,5 +105,11 @@ class AulaCursoProfesors extends Component
             $record = AulaCursoProfesor::where('id', $id);
             $record->delete();
         }
+    }
+
+    public function emitirEvento($id)
+    {
+        $this->emit('deleteRegistro', $id);
+
     }
 }

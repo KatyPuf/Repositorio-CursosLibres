@@ -23,5 +23,8 @@
         "sass-loader": "^8.0.2",
         "sweetalert2": "^10.16.9",
         "vue-template-compiler": "^2.6.12"
+    },
+    "dependencies": {
+        "select2": "^4.1.0-rc.0"
     }
 }

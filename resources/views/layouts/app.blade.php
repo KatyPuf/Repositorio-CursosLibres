@@ -13,26 +13,24 @@
      
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> <!--- Los assets son los recursos que utilizamos en nuestra aplicación --->
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <!-- JQuery Primero -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- JQuery Primero  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+  
     <!-- Toastr.js Después -->
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script>
-      $(document).ready(function(){
-        $('.carousel').carousel({
-          interval: 3000
-        });
-      });
-    </script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+   
+   
 	 @livewireStyles
 </head>
 <body>
@@ -227,6 +225,11 @@
 </div>
 
   @livewireScripts
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></>
+    <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
         window.livewire.on('closeModal', () => {
             $('#exampleModal').modal('hide');
@@ -256,13 +259,13 @@
             
         };
     </script>
-   
-    
-    <!-- <script src='https://cdn.jsdelivr.net/npm/botman-web-widget@0/build/js/widget.js'></script> -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.js"></script>
-    <script src="js/main.js"></script>
-
+    <script>
+      $(document).ready(function(){
+        $('.carousel').carousel({
+          interval: 3000
+        });
+      });
+    </script>
    @stack('js')
 
 </body>

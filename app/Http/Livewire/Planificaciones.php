@@ -46,7 +46,9 @@ class Planificaciones extends Component
             $btnInscripcion,
             $EmpresaTelefonica,
             $linkAulaVirtuales,
-            $idPlanificacion;
+            $idPlanificacion,
+            $NombrePlanificacion,
+            $listaEstudiantes;
     public $updateMode = false;
     public $Cursos = null;
     protected $listeners = ['destroy', 'aperturar'];
@@ -410,12 +412,13 @@ class Planificaciones extends Component
 
     public function verEstudiantes($id)
     {
-        $listaEstudiantes = estudiante::join('inscripciones', 'inscripciones.estudiante_id', '=', 'estudiantes.id')
+        $record = Planificacione::where('id', $id);
+        $this->listaEstudiantes = estudiante::join('inscripciones', 'inscripciones.estudiante_id', '=', 'estudiantes.id')
         ->join('planificaciones', 'planificaciones.id', '=', 'inscripciones.planificacione_id')
         ->where('planificaciones.id', $id)
         ->get();
+        
       //  $this-> $idPlanificacion = $id;
-        return $listaEstudiantes;
         
     }
 }

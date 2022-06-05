@@ -29,7 +29,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary close-btn" data-dismiss="modal">Cancelar</button>
-                <button type="button" wire:click.prevent="asignar()" class="btn btn-primary close-modal">Asignar</button>
+                <button type="button" wire:click.prevent="asignarRol()" class="btn btn-primary close-modal">Asignar</button>
             </div>
         </div>
     </div>

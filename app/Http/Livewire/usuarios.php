@@ -65,9 +65,9 @@ class usuarios extends Component
         }
     }
 
-    public function asignar()
+    public function asignarRol($id)
     {
-        
+        $record = User::where('id', $id);
        
     }
     

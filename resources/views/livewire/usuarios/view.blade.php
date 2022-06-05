@@ -56,7 +56,7 @@
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
 									
-										<a data-toggle="modal" data-target="#asignarRol" class="dropdown-item" wire:click=""><i class="fa fa-edit"></i> Asignar rol </a>							 
+										<a data-toggle="modal" data-target="#asignarRol" class="dropdown-item" ><i class="fa fa-edit"></i> Asignar rol </a>							 
 										<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
 										<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
 									</div>

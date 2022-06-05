@@ -17,7 +17,14 @@
                             toastr.success("{{ session('message') }}");
                         </script>
                         @endif
-
+                        @if (session()->has('message2'))
+                        <script type="text/javascript">
+                            toastr.options = {
+                                "positionClass": "toast-bottom-center"
+                            }
+                            toastr.warning("{{ session('message2') }}");
+                        </script>
+                        @endif
 
 
                     </div>
@@ -39,7 +46,7 @@
                                     <input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar">
                                     
                                 </div>
-        
+                               
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-sm text-center">
@@ -59,7 +66,7 @@
                                             <td>{{$rol->name}}</td>
                                             <td>
                                                 @foreach($rol->getAllPermissions() as $permiso)
-                                                {{$permiso->name}}
+                                                {{$permiso->name}} - 
                                                 @endforeach
                                             </td>
                                             <td>
@@ -71,13 +78,14 @@
                                                 <a class="btn btn-sm btn-info " role="button"
                                                     wire:click="edit({{$rol->id}})"><i class="fa fa-edit"></i> Editar
                                                 </a>
-                                                <a class="dropdown-item" wire:click="emitirEvento({{$rol->id}})"><i class="fa fa-trash"></i> Borrar </a>   
+                                                <a class="btn btn-sm btn-danger" wire:click="emitirEvento({{$rol->id}})"><i class="fa fa-trash"></i> Borrar </a>   
 
                                             </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                               
                                 {{ $roles->links() }}
                             </div>
                         </div>
@@ -117,5 +125,9 @@
     })
     
 </script>
-
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
 @endpush

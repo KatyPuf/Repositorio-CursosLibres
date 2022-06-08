@@ -1,5 +1,13 @@
 <div class="card mb-1">
-    <h5 class="card-header">Permisos del rol &nbsp;{{$registros}}  </h5>
+    <h5 class="card-header d-flex justify-content-between align-items-center">
+      <p> Permisos del rol &nbsp;{{$registros}}  </p>
+      <span class="badge  badge-pill">
+        <a class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Limpiar" wire:click="limpiar()">
+        <i class="fas fa-broom"></i>
+       </a>   
+      </span>
+     
+    </h5>
     <div class="card-body">
       <h5 class="card-title"></h5>
       <p class="card-text">
@@ -23,10 +31,16 @@
           </div>
           <div class="col-md-7">
             <form>
-
+              <div class="form-group">
+                <input type="text" hidden="true" id="IdRol" wire:model="IdRol" @error('IdRol') is-invalid @enderror >
+                @error('IdRol')
+                  <div class="invalid-feedback">
+                   
+                  </div>
+                @enderror
+              </div>
               <div class="form-group">
               <label for="IdPermiso">Agregar un nuevo permiso</label>
-              <input type="text" hidden="true" wire:model="IdRol" >
                
                 <select wire:model="IdPermiso" id="IdPermiso" class="form-control @error('IdPermiso') is-invalid @enderror">
                   <option value="">Seleccione un permiso</option>
@@ -41,7 +55,7 @@
               @enderror
               </div>
               
-              <button type="submit" wire:click.prevent="AgregarPermiso()" class="btn btn-primary mb-2">Agregar</button>
+              <button type="submit" wire:click.prevent="AgregarPermiso()" class="btn btn-primary mb-2"><i class="fas fa-plus"></i> Agregar</button>
             </form>
           </div>
         </div>

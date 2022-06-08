@@ -18,26 +18,22 @@
                             toastr.success("{{ session('message') }}");
                         </script>
                         @endif
+                        <div class="row mb-2 float-right">
+                            <div class="col-md-12">
+                               
+                                <input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar">
+                                
+                            </div>
+    
+                        </div>
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3">
-                           
-                            @include('livewire.permisos.create')
-    
-                        </div>
-                       
-                        <div class="col-md-9">
-                            <div class="row mb-2 float-right">
-                                <div class="col-md-12">
-                                   
-                                    <input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar">
-                                    
-                                </div>
-        
-                            </div>
+                        
+                        <div class="col-md-12">
+                          
                             <div class="table-responsive">
                                 <table class="table table-bordered table-sm text-center">
                                     <thead class="thead">

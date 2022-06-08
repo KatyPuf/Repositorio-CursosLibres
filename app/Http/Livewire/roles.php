@@ -119,8 +119,9 @@ class roles extends Component
 
         if($record->hasPermissionTo($permisos->name))
         {
-            session()->flash('message2', 'Este rol ya tiene este permiso.');
-           
+            $this->resetInputPermiso();
+            $this->emit('NoAsignado', $record->id);
+            
         }else{
             $record->givePermissionTo($permisos->name);
              $this->permisos = $record->getAllPermissions();

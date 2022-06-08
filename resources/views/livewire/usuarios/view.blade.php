@@ -9,12 +9,23 @@
 							<h4><i class="fas fa-user"></i>
 							Usuarios </h4>
 						</div>
-						<div wire:poll.60s>
-							<code><h5>{{ now()->format('H:i:s') }} UTC</h5></code>
-						</div>
 						@if (session()->has('message'))
-						<div wire:poll.4s class="btn btn-sm btn-success" style="margin-top:0px; margin-bottom:0px;"> {{ session('message') }} </div>
-						@endif
+                        <script type="text/javascript">
+                            toastr.options = {
+                                "positionClass": "toast-bottom-center"
+                            }
+                            toastr.success("{{ session('message') }}");
+                        </script>
+                        @endif
+						@if (session()->has('message2'))
+                        <script type="text/javascript">
+                            toastr.options = {
+                                "positionClass": "toast-bottom-center"
+                            }
+                            toastr.warning("{{ session('message2') }}");
+                        </script>
+                        @endif
+
 						<div>
 							<input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar usuarios">
 						</div>
@@ -23,8 +34,6 @@
 				</div>
 				
 				<div class="card-body">
-                    @include('livewire.usuarios.asignarRol')
-		
 				<div class="table-responsive">
 					<table class="table table-bordered table-sm">
 						<thead class="thead">
@@ -34,6 +43,7 @@
 								<th>Apellido</th>
 								<th>Correo</th>
 								<th>Roles</th>
+								<th></th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -44,11 +54,12 @@
 								<td>{{ $row->name }}</td>
 								<td>{{ $row->lastname }}</td>
                                 <td>{{ $row->email }}</td>
-							<td>
-								
-								{{$row->getRoleNames()}}
+								<td>
+									@foreach($row->getRoleNames() as  $nameRol)
+									<span class="badge badge-success">	{{ $nameRol}} </span>
+									@endforeach
 								</td>
-								
+								<td><a class="" wire:click="RolesUsuario({{$row->id}})">Asignar roles </a></td>
 								<td width="90">
 								<div class="btn-group">
 									<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,7 +67,6 @@
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
 									
-										<a data-toggle="modal" data-target="#asignarRol" class="dropdown-item" ><i class="fa fa-edit"></i> Asignar rol </a>							 
 										<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
 										<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
 									</div>
@@ -71,6 +81,9 @@
 			</div>
 		</div>
 	</div>
+	<br>
+    @include('livewire.usuarios.asignarRol')
+
 </div>
 @push('js')
 
@@ -99,5 +112,14 @@
     })
     
 </script>
-
+<script>
+	Livewire.on('info', $RecordId => {
+		Swal.fire(
+  		'No asignado',
+ 		'Este rol ya ha sido asignado a este usuario',
+	    'question'
+	)
+	})
+	
+</script>
 @endpush

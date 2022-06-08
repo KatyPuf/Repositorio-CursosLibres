@@ -66,11 +66,12 @@
                                             <td>{{$rol->name}}</td>
                                             <td>
                                                 @foreach($rol->getAllPermissions() as $permiso)
-                                                {{$permiso->name}} - 
+                                                <span class="badge badge-success">{{$permiso->name}}</span>
+                                                  
                                                 @endforeach
                                             </td>
                                             <td>
-                                                <a class="" wire:click="PermisoPorRol({{$rol->id}})">Ver permisos
+                                                <a class="" wire:click="PermisoPorRol({{$rol->id}})">Asignar permisos
                                                 </a>
                                             </td>
                                             <td width="200">
@@ -129,5 +130,15 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
+</script>
+<script>
+	Livewire.on('NoAsignado', $RecordId => {
+		Swal.fire(
+  		'No asignado',
+ 		'Este permiso ya ha sido asignado a este rol.',
+	    'question'
+	)
+	})
+	
 </script>
 @endpush

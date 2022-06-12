@@ -14,7 +14,7 @@ class roles extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $NombreRol, $permisos, $registros, $permisosAll, $IdPermiso, $IdRol;
     public $updateMode = false;
-    protected $listeners = ['destroy'];
+    protected $listeners = ['destroy','QuitarPermiso'];
    
     public function render()
     {
@@ -47,13 +47,27 @@ class roles extends Component
         $this->validate([
             'NombreRol' => 'required',
             ]);
-    
-            Role::create([ 
-                'name' => $this-> NombreRol
-            ]);
-            
-            $this->resetInput();
-            session()->flash('message', 'Rol creado correctamente.');
+   
+            $this->NombreRol=ucwords($this-> NombreRol);
+            if(!$this->isRoleExist($this->NombreRol))
+            {
+                Role::create([ 
+                    'name' => $this-> NombreRol
+                ]);
+                
+                $this->resetInput();
+                session()->flash('message', 'Rol creado correctamente.');
+            }
+            else
+            {
+                session()->flash('message2', 'Este rol ya existe.');
+
+            }
+           
+    }
+
+    function isRoleExist($role_name){
+        return Count(Role::findByName($role_name)->get()) > 0;
     }
 
     public function edit($id)
@@ -109,6 +123,12 @@ class roles extends Component
     }
     public function AgregarPermiso()
     {
+        if($this->IdRol == null)
+        {
+            error_log("Comprobando comprobando");
+            $this->emit('alertNoAsignadoPermiso', 1);
+
+        }
        $this->validate([
             'IdRol' => 'required',
             'IdPermiso' => 'required'
@@ -139,13 +159,17 @@ class roles extends Component
 
     }
 
+    public function emitirEventoQuitarPermiso($id)
+    {
+        $this->emit('QuitarPermisoEvent', $id);
+
+    }
+
     public function QuitarPermiso($id)
     {
         $rol= Role::findOrFail($this->IdRol);
         $permiso=Permission::findOrFail($id);
         $rol->revokePermissionTo($permiso->name);
-        session()->flash('message', 'Permiso retirado correctamente.');
-
         $this->permisos = $rol->getAllPermissions();
         $this->resetInputPermiso();
     }

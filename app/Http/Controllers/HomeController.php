@@ -11,6 +11,7 @@ use App\Models\Inscripcione;
 use App\Exports\CursosExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
+use PDF;
 class HomeController extends Controller
 {
     /**
@@ -56,5 +57,17 @@ class HomeController extends Controller
        
         return Excel::download(new CursosExport($id), 'Reporte de Vacio'.'.xlsx');
        }
+    }
+
+    public function generatePDF()
+    {
+        $data = [
+            'title' => 'Welcome to ItSolutionStuff.com',
+            'date' => date('m/d/Y')
+        ];
+          
+        $pdf = PDF::loadView('myPDF', $data);
+    
+        return $pdf->stream("Bienvenida.pdf");
     }
 }

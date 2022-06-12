@@ -1,6 +1,6 @@
 <div class="card mb-1">
     <h5 class="card-header d-flex justify-content-between align-items-center">
-      <p> Permisos del rol &nbsp;{{$registros}}  </p>
+    <p class="text-center" > Permisos del rol <strong class="text-primary">{{$registros}} </strong></p> 
       <span class="badge  badge-pill">
         <a class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Limpiar" wire:click="limpiar()">
         <i class="fas fa-broom"></i>
@@ -20,7 +20,7 @@
                   
                   <li class="list-group-item d-flex justify-content-between align-items-center">{{$permiso->name}}
                     <span class="badge  badge-pill">
-                      <a class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Quitar permiso" wire:click="QuitarPermiso({{$permiso->id}})"><i class="fas fa-times"></i></a>   
+                      <a class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Quitar permiso" wire:click="emitirEventoQuitarPermiso({{$permiso->id}})"><i class="fas fa-times"></i></a>   
                     </span>
                   </li>
                 @endforeach
@@ -65,8 +65,3 @@
       
     </div>
   </div>
-
- @push('js')
-
-
-@endpush

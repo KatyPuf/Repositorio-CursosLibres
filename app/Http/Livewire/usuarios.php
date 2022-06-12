@@ -15,7 +15,7 @@ class usuarios extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $rol, $name, $lastname, $idUser, $usuarioName, $rolesName;
     public $updateMode = false;
-    protected $listeners = ['destroy'];
+    protected $listeners = ['destroy','QuitarRol'];
 
     public function render()
     {
@@ -82,6 +82,11 @@ class usuarios extends Component
     }
     public function asignarRol()
     {
+        if($this->idUser == null)
+        {
+            $this->emit('alertNoAsignado', 1);
+
+        }
          
         $this->validate([
             'idUser' => 'required',
@@ -106,19 +111,35 @@ class usuarios extends Component
        
     }
 
+    public function QuitarRol($rol)
+    {
+        error_log("help".$rol);
+       
+        $user = User::findOrFail($this->idUser);
+        $user->removeRole($rol);
+        $this->rolesName =$user->getRoleNames();
+       
+    }
     public function RolesUsuario($id)
     {
         $record = User::findOrFail($id);
         $this->usuarioName = $record->name." ".$record->lastname;
         $this->idUser = $record->id;
         $this->rolesName = $record->getRoleNames();
-       error_log( $this->rolesName);
+      
         
     }
     
     public function emitirEvento($id)
     {
         $this->emit('deleteRegistro', $id);
+
+    }
+    public function emitirEventoQuitarRol($rol)
+    {
+
+        error_log("hooook".$rol);
+        $this->emit('QuitarRolEvent', $rol);
 
     }
 }

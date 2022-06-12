@@ -50,6 +50,7 @@ Route::group(['middleware' => 'Administrador'], function () {
 	Route::view('roles', 'livewire.roles.index')->middleware('auth');
 	Route::view('permisos', 'livewire.permisos.index')->middleware('auth');
 	Route::get('/exportar/{id}', [App\Http\Controllers\HomeController::class, 'export']);
+	Route::get('/bienvenida', [App\Http\Controllers\HomeController::class, 'generatePDF']);
 	Route::match(['get', 'post'], '/botman', [App\Http\Controllers\BotManController::class, 'handle']);
 	Route::get('/image-upload', [App\Http\Livewire\Planificaciones::class, 'createForm']);
 	Route::get('/VerificarEstudianteInscrito/{id}', [App\Http\Livewire\Planificaciones::class, 'VerificarEstudianteInscrito']);

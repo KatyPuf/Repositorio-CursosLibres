@@ -1,6 +1,6 @@
 <div class="card mb-1">
     <h5 class="card-header d-flex justify-content-between align-items-center">
-      <p> Roles del usuario &nbsp;{{$usuarioName}}</p>
+      <p class="text-center" >Roles del usuario <strong class="text-primary">{{$usuarioName}} </strong></p> 
       <span class="badge  badge-pill">
         <a class="btn btn-primary"  data-toggle="tooltip" data-placement="bottom" title="Limpiar" wire:click="limpiar()">
         <i class="fas fa-broom"></i>
@@ -18,9 +18,9 @@
               <ul class="list-group">
                 @foreach($rolesName ?? []  as $rol)
                   
-                  <li class="list-group-item d-flex justify-content-between align-items-center">{{$rol }}
+                  <li class="list-group-item d-flex justify-content-between align-items-center">{{$rol}}
                     <span class="badge  badge-pill">
-                      <a class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Quitar Rol" wire:click="QuitarRol()"><i class="fas fa-times"></i></a>   
+                      <a class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Quitar Rol" wire:click="emitirEventoQuitarRol('{{$rol}}')"><i class="fas fa-times"></i></a>   
                     </span>
                   </li>
                 @endforeach

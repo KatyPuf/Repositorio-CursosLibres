@@ -15,7 +15,9 @@ use App\Models\CursosEjecutado;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
 use App\Models\EmpresasTelefonica;
+use App\Http\Controllers\HomeController;
 use Alert;
+use PDF;
 class Planificaciones extends Component
 {
     use WithPagination;
@@ -53,6 +55,7 @@ class Planificaciones extends Component
     public $Cursos = null;
     protected $listeners = ['destroy', 'aperturar'];
 
+  
     public function render()
     {
         
@@ -343,16 +346,19 @@ class Planificaciones extends Component
     
       if( $this->validar($this->modalidad, $this->Trimestre, $this->Anyo) == 0)
       {
-          Inscripcione::create([ 
+         /* Inscripcione::create([ 
             'Trimestre' => $this-> Trimestre,
             'Anyo' => $this-> Anyo,
             'estudiante_id' => $this->cod,
             'planificacione_id' => $this-> idp
-        ]);
+        ]);*/
 
         $this->resetInputEstudiante();
         $this->emit('closeModal');
         session()->flash('message', 'Inscripción realizada correctamente.');
+       return $this->generarPdfBienvenida($this->cod, $this-> idp,  );
+  
+
       }
       else{
         $this->resetInputEstudiante();
@@ -360,12 +366,28 @@ class Planificaciones extends Component
         session()->flash('message2', 'No se realizó la inscripción. Usted tiene una matricula en esta modalidad.');
 
       }
-
-        
+      
         
     }
 
+    public function generarPdfBienvenida($estudianteCod, $PlanificacionesCod)
+    {
+        $record = Planificacione::findOrFail($PlanificacionesCod);
+
+        $data = [
+            'title' => 'Welcome to ItSolutionStuff.com',
+            'estudiante' => $estudianteCod,
+            'planificacion' => $PlanificacionesCod,
+            'date' => date('m/d/Y')
+        ];
+          
+        $pdf = PDF::loadView('livewire.planificaciones.myPDF', $data)->output();
     
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Bienvenida.pdf"
+       );
+    }
     public function comprobarEstudiante(){
 
         $ced = Estudiante::get('user_id')

@@ -32,7 +32,7 @@ Route::get('/sendemail', [App\Http\Controllers\HomeController::class, 'sendEmail
 //Route::get('validar/{tri}/{id}', [App\Http\Livewire\Inscripciones::class, 'validar']);
 
 //Route Hooks - Do not delete//
-Route::group(['middleware' => 'Administrador'], function () {
+Route::group(['middleware' => 'Super-admin'], function () {
    
 
 	Route::view('empresas_telefonicas', 'livewire.empresas-telefonicas.index')->middleware('auth');

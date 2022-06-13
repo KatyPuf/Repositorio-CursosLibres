@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
-class AdminMiddleware
+class SuperAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -20,7 +20,7 @@ class AdminMiddleware
         
         if( auth()->check() )
         {
-            if(auth()->user()->hasRole('Administrador'))
+            if(auth()->user()->hasRole('Super-admin'))
             {
                 return $next($request);
 

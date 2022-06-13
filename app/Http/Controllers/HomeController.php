@@ -59,7 +59,7 @@ class HomeController extends Controller
        }
     }
 
-    public function generatePDF()
+    public static function generatePDF()
     {
         $data = [
             'title' => 'Welcome to ItSolutionStuff.com',
@@ -68,6 +68,6 @@ class HomeController extends Controller
           
         $pdf = PDF::loadView('myPDF', $data);
     
-        return $pdf->stream("Bienvenida.pdf");
+        return $pdf->download("Bienvenida.pdf");
     }
 }

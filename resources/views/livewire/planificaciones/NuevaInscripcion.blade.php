@@ -60,7 +60,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>
-                <button type="button"  wire:click.prevent="RegisterInscription" class="btn btn-primary close-modal" >Guardar</button>
+                <button type="button"   wire:click.prevent="RegisterInscription" class="btn btn-primary close-modal" >Guardar</button>
             </div>
         </div>
     </div>

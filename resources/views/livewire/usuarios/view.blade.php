@@ -9,12 +9,23 @@
 							<h4><i class="fas fa-user"></i>
 							Usuarios </h4>
 						</div>
-						<div wire:poll.60s>
-							<code><h5>{{ now()->format('H:i:s') }} UTC</h5></code>
-						</div>
 						@if (session()->has('message'))
-						<div wire:poll.4s class="btn btn-sm btn-success" style="margin-top:0px; margin-bottom:0px;"> {{ session('message') }} </div>
-						@endif
+                        <script type="text/javascript">
+                            toastr.options = {
+                                "positionClass": "toast-bottom-center"
+                            }
+                            toastr.success("{{ session('message') }}");
+                        </script>
+                        @endif
+						@if (session()->has('message2'))
+                        <script type="text/javascript">
+                            toastr.options = {
+                                "positionClass": "toast-bottom-center"
+                            }
+                            toastr.warning("{{ session('message2') }}");
+                        </script>
+                        @endif
+
 						<div>
 							<input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar usuarios">
 						</div>
@@ -23,8 +34,6 @@
 				</div>
 				
 				<div class="card-body">
-                    @include('livewire.usuarios.asignarRol')
-		
 				<div class="table-responsive">
 					<table class="table table-bordered table-sm">
 						<thead class="thead">
@@ -44,19 +53,20 @@
 								<td>{{ $row->name }}</td>
 								<td>{{ $row->lastname }}</td>
                                 <td>{{ $row->email }}</td>
-							<td>
-								
-								{{$row->getRoleNames()}}
+								<td>
+									@foreach($row->getRoleNames() as  $nameRol)
+									<span class="badge badge-dark">	{{ $nameRol}} </span>
+									@endforeach
 								</td>
-								
-								<td width="90">
+								<!--<td><a class="link-primary" wire:click="RolesUsuario({{$row->id}})">Seleccionar roles </a></td>-->
+								<td width="200">
+									<a class="btn btn-sm btn-success"  wire:click="RolesUsuario({{$row->id}})"><i class="fas fa-check"></i> Seleccionar </a>   
+
 								<div class="btn-group">
 									<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									Acciones
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
-									
-										<a data-toggle="modal" data-target="#asignarRol" class="dropdown-item" wire:click=""><i class="fa fa-edit"></i> Asignar rol </a>							 
 										<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
 										<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
 									</div>
@@ -71,6 +81,9 @@
 			</div>
 		</div>
 	</div>
+	<br>
+    @include('livewire.usuarios.asignarRol')
+
 </div>
 @push('js')
 
@@ -99,5 +112,48 @@
     })
     
 </script>
+<script>
 
+    Livewire.on('QuitarRolEvent', $RecordId => {
+        Swal.fire({
+            title: '¿Estás seguro de quitar este rol?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, quitar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.emitTo('usuarios', 'QuitarRol', $RecordId )
+                Swal.fire(
+                    'Correcto!',
+                    'El rol fue removido.',
+                    'success'
+                )
+            }
+        })
+    })
+    
+</script>
+<script>
+	Livewire.on('info', $RecordId => {
+		Swal.fire(
+  		'No asignado',
+ 		'Este rol ya ha sido asignado a este usuario',
+	    'question'
+	)
+	})
+	
+</script>
+<script>
+	Livewire.on('alertNoAsignado', $RecordId => {
+		Swal.fire(
+  		'No asignado',
+ 		'Debe seleccionar un usuario antes de asignar un rol.',
+	    'question'
+	)
+	})
+	
+</script>
 @endpush

@@ -17,29 +17,37 @@
                             toastr.success("{{ session('message') }}");
                         </script>
                         @endif
-
+                        @if (session()->has('message2'))
+                        <script type="text/javascript">
+                            toastr.options = {
+                                "positionClass": "toast-bottom-center"
+                            }
+                            toastr.error("{{ session('message2') }}");
+                        </script>
+                        @endif
 
 
                     </div>
                 </div>
 
                 <div class="card-body">
-                    
+
 
                     <div class="row">
                         <div class="col-md-3">
                             @include('livewire.roles.create')
-        
+
                         </div>
-                       
+
                         <div class="col-md-9">
                             <div class="row mb-2 float-right">
                                 <div class="col-md-12">
-                                   
-                                    <input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar">
-                                    
+
+                                    <input wire:model='keyWord' type="text" class="form-control" name="search"
+                                        id="search" placeholder="Buscar">
+
                                 </div>
-        
+
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-sm text-center">
@@ -48,7 +56,6 @@
                                             <th scope="col">#</th>
                                             <th scope="col">Nombre</th>
                                             <th scope="col">Permisos</th>
-                                            <th scope="col"></th>
                                             <th scope="col">Acciones</th>
                                         </tr>
                                     </thead>
@@ -59,25 +66,41 @@
                                             <td>{{$rol->name}}</td>
                                             <td>
                                                 @foreach($rol->getAllPermissions() as $permiso)
-                                                {{$permiso->name}}
+                                                <span class="badge badge-dark">{{$permiso->name}}</span>
+
                                                 @endforeach
                                             </td>
-                                            <td>
-                                                <a class="" wire:click="PermisoPorRol({{$rol->id}})">Ver permisos
+                                            <!-- <td>
+                                                <a  href="#"  class="link-primary" wire:click="PermisoPorRol({{$rol->id}})">Seleccionar rol
                                                 </a>
-                                            </td>
-                                            <td width="200">
+                                            </td>-->
+                                            <td width="300">
 
-                                                <a class="btn btn-sm btn-info " role="button"
-                                                    wire:click="edit({{$rol->id}})"><i class="fa fa-edit"></i> Editar
-                                                </a>
-                                                <a class="dropdown-item" wire:click="emitirEvento({{$rol->id}})"><i class="fa fa-trash"></i> Borrar </a>   
+                                                <a class="btn btn-sm btn-success"
+                                                    wire:click="PermisoPorRol({{$rol->id}})"><i
+                                                        class="fas fa-check"></i> Seleccionar </a>
+
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-info btn-sm dropdown-toggle"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        Acciones
+                                                    </button>
+
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="btn btn-sm btn-info dropdown-item " role="button" wire:click="edit({{$rol->id}})"><i class="fa fa-edit"></i>
+                                                            Editar
+                                                        </a>
+                                                        <a class="btn btn-sm btn-danger dropdown-item" wire:click="emitirEvento({{$rol->id}})"><i class="fa fa-trash"></i> Borrar </a>
+                                                    </div>
+                                                </div>
 
                                             </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+
                                 {{ $roles->links() }}
                             </div>
                         </div>
@@ -94,7 +117,6 @@
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-
     Livewire.on('deleteRegistro', $RecordId => {
         Swal.fire({
             title: '¿Estás seguro?',
@@ -106,7 +128,7 @@
             confirmButtonText: 'Si, eliminar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Livewire.emitTo('roles', 'destroy', $RecordId )
+                Livewire.emitTo('roles', 'destroy', $RecordId)
                 Swal.fire(
                     'Eliminado!',
                     'Su archivo ha sido eliminado.',
@@ -115,7 +137,51 @@
             }
         })
     })
-    
 </script>
+<script>
+    Livewire.on('QuitarPermisoEvent', $RecordId => {
+        Swal.fire({
+            title: '¿Estás seguro de quitar este permiso?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, quitar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.emitTo('roles', 'QuitarPermiso', $RecordId)
+                Swal.fire(
+                    'Correcto!',
+                    'El permiso fue removido.',
+                    'success'
+                )
+            }
+        })
+    })
+</script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+<script>
+    Livewire.on('NoAsignado', $RecordId => {
+        Swal.fire(
+            'No asignado',
+            'Este permiso ya ha sido asignado a este rol.',
+            'question'
+        )
+    })
+</script>
+<script>
+    Livewire.on('alertNoAsignadoPermiso', $RecordId => {
+            Swal.fire(
+                'No asignado',
+                'Debe seleccionar un rol antes de asignar un permiso.',
+                'question'
+            )
+        })
 
+</script>
 @endpush

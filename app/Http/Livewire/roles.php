@@ -12,18 +12,21 @@ class roles extends Component
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $NombreRol, $permisos, $registros;
+    public $selected_id, $keyWord, $NombreRol, $permisos, $registros, $permisosAll, $IdPermiso, $IdRol;
     public $updateMode = false;
-    protected $listeners = ['destroy'];
-
+    protected $listeners = ['destroy','QuitarPermiso'];
+   
     public function render()
     {
-		$keyWord = '%'.$this->keyWord .'%';
+		$permisosall = Permission::all();
+        $keyWord = '%'.$this->keyWord .'%';
+      
         return view('livewire.roles.view', [
             'roles' => Role::latest('id')
 						->orWhere('name', 'LIKE', $keyWord)
 						->paginate(10),
-        ]);
+        ], compact('permisosall'));
+        error_log("Renderizadooo");
     }
 	
     public function cancel()
@@ -35,7 +38,8 @@ class roles extends Component
     private function resetInput()
     {	$this->selected_id=null;
 		$this->NombreRol = null;
-		
+        
+
     }
 
     public function store()
@@ -43,13 +47,27 @@ class roles extends Component
         $this->validate([
             'NombreRol' => 'required',
             ]);
-    
-            Role::create([ 
-                'name' => $this-> NombreRol
-            ]);
-            
-            $this->resetInput();
-            session()->flash('message', 'Rol creado correctamente.');
+   
+            $this->NombreRol=ucwords($this-> NombreRol);
+            if(!$this->isRoleExist($this->NombreRol))
+            {
+                Role::create([ 
+                    'name' => $this-> NombreRol
+                ]);
+                
+                $this->resetInput();
+                session()->flash('message', 'Rol creado correctamente.');
+            }
+            else
+            {
+                session()->flash('message2', 'Este rol ya existe.');
+
+            }
+           
+    }
+
+    function isRoleExist($role_name){
+        return Count(Role::findByName($role_name)->get()) > 0;
     }
 
     public function edit($id)
@@ -82,6 +100,7 @@ class roles extends Component
         if ($id) {
             $record = Role::where('id', $id);
             $record->delete();
+            $this->limpiar();
         }
     }
 
@@ -89,8 +108,48 @@ class roles extends Component
     {
         $record = Role::findOrFail($id);
         $this->registros = $record->name;
+        $this->IdRol = $record->id;
         $this->permisos = $record->getAllPermissions();
-         error_log($this->permisos);
+       
+        
+    }
+
+    private function resetInputPermiso()
+    {	
+
+		$this->IdPermiso = null;
+        
+
+    }
+    public function AgregarPermiso()
+    {
+        if($this->IdRol == null)
+        {
+            error_log("Comprobando comprobando");
+            $this->emit('alertNoAsignadoPermiso', 1);
+
+        }
+       $this->validate([
+            'IdRol' => 'required',
+            'IdPermiso' => 'required'
+        ]);
+
+        $record = Role::findOrFail($this->IdRol);
+        $permisos=Permission::findOrFail($this->IdPermiso);
+
+        if($record->hasPermissionTo($permisos->name))
+        {
+            $this->resetInputPermiso();
+            $this->emit('NoAsignado', $record->id);
+            
+        }else{
+            $record->givePermissionTo($permisos->name);
+             $this->permisos = $record->getAllPermissions();
+
+            $this->resetInputPermiso();
+            session()->flash('message', 'Permiso asignado correctamente.');
+
+        }
         
     }
 
@@ -98,5 +157,28 @@ class roles extends Component
     {
         $this->emit('deleteRegistro', $id);
 
+    }
+
+    public function emitirEventoQuitarPermiso($id)
+    {
+        $this->emit('QuitarPermisoEvent', $id);
+
+    }
+
+    public function QuitarPermiso($id)
+    {
+        $rol= Role::findOrFail($this->IdRol);
+        $permiso=Permission::findOrFail($id);
+        $rol->revokePermissionTo($permiso->name);
+        $this->permisos = $rol->getAllPermissions();
+        $this->resetInputPermiso();
+    }
+
+    public function limpiar()
+    {
+        $this->permisos = null;
+        $this->IdRol = null;
+        $this->IdPermiso = null;
+        $this->registros = null;
     }
 }

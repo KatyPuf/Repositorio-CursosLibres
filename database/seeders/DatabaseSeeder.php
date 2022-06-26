@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         Storage::makeDirectory('planificacion');
         // \App\Models\User::factory(10)->create();
+        $this->call(RolesAndPermissionSeeder::class);
     }
 }

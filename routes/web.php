@@ -32,7 +32,7 @@ Route::get('/sendemail', [App\Http\Controllers\HomeController::class, 'sendEmail
 //Route::get('validar/{tri}/{id}', [App\Http\Livewire\Inscripciones::class, 'validar']);
 
 //Route Hooks - Do not delete//
-Route::group(['middleware' => 'Administrador'], function () {
+Route::group(['middleware' => 'Super-admin'], function () {
    
 
 	Route::view('empresas_telefonicas', 'livewire.empresas-telefonicas.index')->middleware('auth');
@@ -50,6 +50,7 @@ Route::group(['middleware' => 'Administrador'], function () {
 	Route::view('roles', 'livewire.roles.index')->middleware('auth');
 	Route::view('permisos', 'livewire.permisos.index')->middleware('auth');
 	Route::get('/exportar/{id}', [App\Http\Controllers\HomeController::class, 'export']);
+	Route::get('/bienvenida', [App\Http\Controllers\HomeController::class, 'generatePDF']);
 	Route::match(['get', 'post'], '/botman', [App\Http\Controllers\BotManController::class, 'handle']);
 	Route::get('/image-upload', [App\Http\Livewire\Planificaciones::class, 'createForm']);
 	Route::get('/VerificarEstudianteInscrito/{id}', [App\Http\Livewire\Planificaciones::class, 'VerificarEstudianteInscrito']);

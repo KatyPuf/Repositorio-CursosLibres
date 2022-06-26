@@ -12,8 +12,7 @@
                 </button>
             </div>
             <div class="modal-body">
-              <input type="text" value={{$idPlanificacion}}name="lista" id="lista"/>
-              <?php $listaEstudiantes = Planificaciones::verEstudiantes(1) ?>  
+             
                 <table  class="table">
                     <thead>
                       <tr>
@@ -23,12 +22,13 @@
                         <th scope="col">Cedula</th>
                         <th scope="col">Correo</th>
                         <th scope="col">Celular</th>
+                        <th scope="col">Empresa Telefonica</th>
                       
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach($listaEstudiantes as $estudiante)
-                      <tr>
+                      @foreach($listaEstudiantes ?? [] as $estudiante)
+                      <tr> 
                         <th scope="row">{{$loop->iteration}}</th>
                         <td>{{$estudiante->Nombres}}</td>
                         <td>{{$estudiante->Apellidos}}</td>

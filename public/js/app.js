@@ -1,3 +1,4 @@
+
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -642,7 +643,3 @@ jQuery('#AnyoLectivo').keypress(function (tecla) {
   if (tecla.charCode < 48 || tecla.charCode > 57) return false;
 });
 
-JQuery(document).ready(function()
-{
-    
-});

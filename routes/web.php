@@ -27,6 +27,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/home', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/prueba', [App\Http\Controllers\HomeController::class, 'prueba'])->name('prueba');
+
 Route::get('/NuevaInscripcion/{id}', [App\Http\Livewire\Planificaciones::class, 'newInscripcion'])->name('Inscripcion');
 Route::get('/sendemail', [App\Http\Controllers\HomeController::class, 'sendEmail']);
 //Route::get('validar/{tri}/{id}', [App\Http\Livewire\Inscripciones::class, 'validar']);

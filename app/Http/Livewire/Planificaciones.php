@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
 use App\Models\EmpresasTelefonica;
 use App\Http\Controllers\HomeController;
+
 use Alert;
 use PDF;
 class Planificaciones extends Component
@@ -53,7 +54,7 @@ class Planificaciones extends Component
             $listaEstudiantes;
     public $updateMode = false;
     public $Cursos = null;
-    protected $listeners = ['destroy', 'aperturar'];
+    protected $listeners = ['destroy', 'aperturar', 'generarPdfBienvenida'];
 
   
     public function render()
@@ -346,47 +347,52 @@ class Planificaciones extends Component
     
       if( $this->validar($this->modalidad, $this->Trimestre, $this->Anyo) == 0)
       {
-         /* Inscripcione::create([ 
+          Inscripcione::create([ 
             'Trimestre' => $this-> Trimestre,
             'Anyo' => $this-> Anyo,
             'estudiante_id' => $this->cod,
             'planificacione_id' => $this-> idp
-        ]);*/
+        ]);
 
         $this->resetInputEstudiante();
+        $this->emit('alertInscription', $this->cod);
         $this->emit('closeModal');
-        session()->flash('message', 'Inscripción realizada correctamente.');
-       return $this->generarPdfBienvenida($this->cod, $this-> idp,  );
-  
-
+        
       }
       else{
         $this->resetInputEstudiante();
         $this->emit('closeModal');
-        session()->flash('message2', 'No se realizó la inscripción. Usted tiene una matricula en esta modalidad.');
-
+        $this->emit('alertNoInscription', $this->cod);
+       
       }
       
         
     }
 
-    public function generarPdfBienvenida($estudianteCod, $PlanificacionesCod)
+    public function generarPdfBienvenida($id)
     {
-        $record = Planificacione::findOrFail($PlanificacionesCod);
-
+        $record = Estudiante::findOrFail($id);
+        $planificacion = Planificacione::findOrFail($this-> idp);
+        date_default_timezone_set("America/Managua");
+        setlocale(LC_TIME, 'es_VE.UTF-8','esp');
         $data = [
-            'title' => 'Welcome to ItSolutionStuff.com',
-            'estudiante' => $estudianteCod,
-            'planificacion' => $PlanificacionesCod,
+          
+            'estudiante' => $record->Nombres. ' '. $record->Apellidos,
+            'planificacion' => $planificacion->curso->Nombre,
+            'modalidad' =>$planificacion->modalidad,
+            'horarioInicio' => date('h:i a', strtotime($planificacion->HorarioInicio)),
+            'horarioFin' =>date('h:i a', strtotime($planificacion->HorarioFin)),
+            'fechaInicio' =>strftime('%A %e de %B de %Y',  strtotime($planificacion->FechaInicio)),
+            'fechaFin' => strftime('%A %e de %B de %Y',  strtotime($planificacion->FechaFin)) ,
             'date' => date('m/d/Y')
         ];
           
-        $pdf = PDF::loadView('livewire.planificaciones.myPDF', $data)->output();
-    
+        $pdfContent = PDF::loadView('livewire.planificaciones.myPDF', $data)->output();
         return response()->streamDownload(
-            fn () => print($pdf),
-            "Bienvenida.pdf"
-       );
+        fn () => print($pdfContent),
+         "Bienvenida.pdf"
+        );
+       
     }
     public function comprobarEstudiante(){
 

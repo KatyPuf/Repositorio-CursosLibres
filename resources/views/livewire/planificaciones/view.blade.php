@@ -102,7 +102,7 @@ use App\Http\Livewire\Inscripciones;
 
                                 </div>
                                 <div class="card-footer text-muted">
-                                    @can('show')
+                                    @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
                                     <div class="row">
                                         <div class="col-md-10">
                                             <a class="text-primary" href="">
@@ -161,7 +161,7 @@ use App\Http\Livewire\Inscripciones;
                                                 </a>
                                         </div>
                                     </div>
-                                    @endcan
+                                    @endif
 
                                     <div class="btn-group">
                                         <?php $cantidad = Planificaciones::VerificarInscripcion($row->id)  ?>
@@ -253,4 +253,34 @@ use App\Http\Livewire\Inscripciones;
     })
     
 </script>
+<script>
+
+Livewire.on('alertInscription', $RecordId => {
+    Swal.fire({
+   
+         icon: 'success',
+         title: 'Su inscripcion a este curso ha sido exitosa',
+         showConfirmButton: true,
+         
+    }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.emitTo('planificaciones', 'generarPdfBienvenida', $RecordId )
+               
+            }
+        })
+    
+})
+</script>
+
+<script>
+
+    Livewire.on('alertNoInscription', $RecordId => {
+        Swal.fire({
+         icon: 'error',
+        title: 'Oops...',
+        text: 'No se realizó la inscripción. Usted tiene una matricula en esta modalidad.',
+        
+    })
+    })
+    </script>
 @endpush

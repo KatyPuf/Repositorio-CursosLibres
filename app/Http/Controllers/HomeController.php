@@ -33,7 +33,10 @@ class HomeController extends Controller
     {
         return view('home');
     }
-
+    public function  prueba()
+    {
+        return view('bienvenida');
+    }
     public function sendEmail(){
         $details=[
             'title' => 'Bienvenida',
@@ -59,15 +62,20 @@ class HomeController extends Controller
        }
     }
 
-    public static function generatePDF()
+    public static function generatePDF($modalidad)
     {
         $data = [
             'title' => 'Welcome to ItSolutionStuff.com',
+            'estudiante' => '8',
+            'planificacion' => '9',
+            'modalidad' => $modalidad,
             'date' => date('m/d/Y')
         ];
           
-        $pdf = PDF::loadView('myPDF', $data);
-    
-        return $pdf->download("Bienvenida.pdf");
+        $pdfContent = PDF::loadView('livewire.planificaciones.myPDF', $data)->output();
+        return response()->streamDownload(
+        fn () => print($pdfContent),
+         "Bienvenida.pdf"
+        );
     }
 }

@@ -34,6 +34,7 @@
 
 
     @livewireStyles
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -130,6 +131,11 @@
                                 <a class="nav-link nav-link h6 btn btn-info btn-sm" href="{{url('/inscripciones')}}">
                                     <i class="fas fa-user-edit"></i>
                                     <span>Inscripciones</span></a>
+                            </li>
+                            <li class="active p-2">
+                                <a class="nav-link nav-link h6 btn btn-info btn-sm" href="{{url('/reportes')}}">
+                                    <i class="fas fa-user-edit"></i>
+                                    <span>Reportes</span></a>
                             </li>
                             @if(Auth::user()->hasRole('Super-admin'))
                             <li class="nav-item dropdown active p-2">

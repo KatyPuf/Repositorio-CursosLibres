@@ -67,7 +67,19 @@ class roles extends Component
     }
 
     function isRoleExist($role_name){
-        return Count(Role::findByName($role_name)->get()) > 0;
+        $name = Role::get('name')
+        ->where('name', $role_name)
+        ->count('id');
+        //error_log($name);
+       if($name >0)
+        {
+            return true;
+        }
+        else{
+
+            return false;
+        }
+      //  return Count(Role::findByName($role_name)->get()) > 0;
     }
 
     public function edit($id)

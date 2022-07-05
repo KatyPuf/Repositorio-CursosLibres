@@ -19,7 +19,7 @@
                 <select wire:model.defer="Estado" id="Estado" class="form-control @error('Estado') is-invalid @enderror">
                     <option value="">Seleccionar estado</option>
                     <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
+                    <option value="No activo">No activo</option>
                     
                 </select>
                 @error('Estado')

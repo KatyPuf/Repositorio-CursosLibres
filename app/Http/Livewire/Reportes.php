@@ -7,24 +7,59 @@ use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 use Mediconesystems\LivewireDatatables\NumberColumn;
 use App\Models\User;
+use App\Models\Estudiante;
+use App\Models\Inscripcione;
+use App\Models\Planificacione;
+use App\Models\Curso;
+
 class Reportes extends LivewireDatatable
 {
     public $model = User::class;
 
+    public function builder()
+{
+    return Estudiante::query()
+        ->join('inscripciones', 'inscripciones.estudiante_id', 'estudiantes.id')
+        ->join('planificaciones', 'planificaciones.id', 'inscripciones.planificacione_id')
+        ->join('cursos', 'cursos.id', 'planificaciones.curso_id');
+      //  ->groupBy('users.id');
+}
     public function columns()
     {
         return [
-           NumberColumn::name('id')
+           NumberColumn::name('estudiantes.id')
                 ->label('ID')
                 ->defaultSort('asc')
-                ->sortBy('id'),
+                ->sortBy('estudiantes.id'),
+                
+                Column::name('estudiantes.Nombres')
+                ->label('Nombres'),
+               
+                Column::name('estudiantes.Apellidos')
+                ->label('Apellidos'),
+                
+                Column::name('estudiantes.correo')
+                ->label('Correo'),
 
-            Column::name('name')
-                ->label('Name'),
+                Column::name('estudiantes.Celular')
+                ->label('Celular'), 
 
-            Column::name('email')
-                ->label('Email'),
-        
+                Column::name('cursos.Nombre')
+                ->label('Curso')
+                ->filterable(),
+                
+                Column::name('planificaciones.modalidad')
+                ->label('Modalidad')
+                ->filterable(),
+                
+                Column::name('planificaciones.Trimestre')
+                ->label('Trimestre')
+                ->filterable(),
+                
+                Column::name('planificaciones.Anyo')
+                ->label('Año lectivo')
+                ->filterable()
+               
         ];
     }
   /*  public function render()

@@ -83,7 +83,7 @@ use App\Http\Livewire\Inscripciones;
                                         <strong>Año lectivo:</strong> {{ $row->Anyo }}<br>
                                         <strong>Trimestre: </strong>{{$row->Trimestre}}<br>
                                         <strong>Fecha:</strong>
-                                        Del {{date('Y-m-d', strtotime($row->FechaInicio))}}
+                                        Del {{date('j F, Y', strtotime($row->FechaInicio))}}
                                         <strong> al </strong>{{date('j F, Y', strtotime($row->FechaFin))}}<br>
 
                                         <strong>Horario: </strong>{{date('h:i a', strtotime($row->HorarioInicio))}} -

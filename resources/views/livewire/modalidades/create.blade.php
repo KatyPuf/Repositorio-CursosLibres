@@ -12,8 +12,25 @@
 				<form>
             <div class="form-group">
                 <label for="TipoModalidad"></label>
-                <input wire:model="TipoModalidad" type="text" class="form-control" id="TipoModalidad" placeholder="Tipo modalidad">@error('TipoModalidad') <span class="error text-danger">{{ $message }}</span> @enderror
+                <input  oninput="validar(this)" wire:model="TipoModalidad" type="text" class="form-control" id="TipoModalidad" placeholder="Tipo modalidad">@error('TipoModalidad') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
+
+            <script >
+                 const validar = function(campo) {
+                let valor = campo.value;
+        
+                // Verifica si el valor del campo (input) contiene numeros.
+                 if(/\d/.test(valor)) {
+        
+              /* 
+               * Remueve los numeros que contiene el valor y lo establece
+               * en el valor del campo (input).
+               */
+               campo.value = valor.replace(/\d/g,'');
+               }
+        
+                  };
+            </script>
 
                 </form>
             </div>

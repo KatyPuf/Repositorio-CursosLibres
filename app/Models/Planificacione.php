@@ -10,6 +10,8 @@ class Planificacione extends Model
 {
 	use HasFactory;
 	
+    protected $dates = ['FechaInicio' ,'FechaFin'];//agregue esto es la variable fecha a traducir
+    
     public $timestamps = false;
 
     protected $table = 'planificaciones';

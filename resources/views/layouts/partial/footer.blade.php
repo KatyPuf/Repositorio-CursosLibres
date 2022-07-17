@@ -15,6 +15,7 @@
              <div class ="col-md-4" >
                 <h4> Síguenos </h4>
                 <p><i class="fab fa-facebook"></i> <a href="https://www.facebook.com/DeptoCompu/">https://www.facebook.com/DeptoCompu/ </a> </p>
+
              </div>
              <div class="col-md-2">
              </div>

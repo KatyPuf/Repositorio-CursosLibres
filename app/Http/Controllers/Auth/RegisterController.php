@@ -73,7 +73,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        $user->assignRole('Administrator');
+       // $user->assignRole('Administrator');
         return $user;
     }
 }

@@ -34,6 +34,7 @@
 
 
     @livewireStyles
+  
 </head>
 
 <body>
@@ -131,6 +132,11 @@
                                     <i class="fas fa-user-edit"></i>
                                     <span>Inscripciones</span></a>
                             </li>
+                            <li class="active p-2">
+                                <a class="nav-link nav-link h6 btn btn-info btn-sm" href="{{url('/reportes')}}">
+                                    <i class="fas fa-file-excel"></i>
+                                    <span>Reportes</span></a>
+                            </li>
                             @if(Auth::user()->hasRole('Super-admin'))
                             <li class="nav-item dropdown active p-2">
                                 <a class="nav-link dropdown-toggle nav-link h6 btn btn-info btn-sm" href="#"
@@ -223,8 +229,10 @@
             <main>
                 <!-- class="py-2" -->
                 @yield('content')
-                <div class="sticky-container">
+               
+               <!--  <div class="sticky-container">
                     <ul class="sticky">
+                        
                         <li>
                             <img src="Galeria/face.png" width="32" height="32">
                             <p><a href="https://www.facebook.com/DeptoCompu/" target="_blank">Siguenos en
@@ -237,7 +245,7 @@
 
 
                     </ul>
-                </div>
+                </div>-->
             </main>
         </div>
     </div>

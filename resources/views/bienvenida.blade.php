@@ -18,9 +18,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-    {{$date}}
+
         <div class="container" >
-            
                 <div class="row text-center">
                     <div class="col-md-3">
                     </div>
@@ -40,9 +39,9 @@
                 </div>
                 <hr />
                 <p class="text-justify">
-                    Hola {{$estudiante}}, te damos la bienvenida a los cursos libres del departamento de computación de UNAN-LEÓN.
-                    Usted se ha inscrito en el curso de <strong>{{$planificacion}} </strong> en modalidad {{$modalidad}}, 
-                   el cual da inicio el {{$fechaInicio}} y finaliza el {{$fechaFin}} en horario de {{$horarioInicio}} a {{$horarioFin}}.
+                    Hola Katerin te damos la bienvenida a los cursos libres del departamento de computación de UNAN-LEÓN.
+                    Usted se ha inscrito en el curso de excel en modalidad regular, 
+                   el cual da inicio el <?php  ?> y finaliza el 10/11/2022 en horario de 8:00 am - 12:00 pm.
                    
                 </p>
                 <p class="text-justify">

@@ -229,8 +229,10 @@
             <main>
                 <!-- class="py-2" -->
                 @yield('content')
-                <div class="sticky-container">
+               
+               <!--  <div class="sticky-container">
                     <ul class="sticky">
+                        
                         <li>
                             <img src="Galeria/face.png" width="32" height="32">
                             <p><a href="https://www.facebook.com/DeptoCompu/" target="_blank">Siguenos en
@@ -243,7 +245,7 @@
 
 
                     </ul>
-                </div>
+                </div>-->
             </main>
         </div>
     </div>

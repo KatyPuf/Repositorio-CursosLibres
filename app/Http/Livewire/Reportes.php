@@ -6,6 +6,8 @@ use Mediconesystems\LivewireDatatables\Column;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 use Mediconesystems\LivewireDatatables\NumberColumn;
+use Mediconesystems\LivewireDatatables\Action;
+
 use App\Models\User;
 use App\Models\Estudiante;
 use App\Models\Inscripcione;
@@ -17,13 +19,13 @@ class Reportes extends LivewireDatatable
     public $model = User::class;
 
     public function builder()
-{
-    return Estudiante::query()
+    {
+      return Estudiante::query()
         ->join('inscripciones', 'inscripciones.estudiante_id', 'estudiantes.id')
         ->join('planificaciones', 'planificaciones.id', 'inscripciones.planificacione_id')
         ->join('cursos', 'cursos.id', 'planificaciones.curso_id');
       //  ->groupBy('users.id');
-}
+    }
     public function columns()
     {
         return [
@@ -62,8 +64,18 @@ class Reportes extends LivewireDatatable
                
         ];
     }
-  /*  public function render()
+    /*public function buildActions()
     {
-        return view('livewire.reportes.view');
+        return [
+
+            Action::groupBy('Opciones', function () {
+                return [
+                   
+                    Action::value('xlsx')->label('Exportar XLSX')->export('ReporteCursosLibres.xlsx')//->styles($this->exportStyles)->widths($this->exportWidths)
+                ];
+            }),
+        ];
     }*/
 }
+    
+

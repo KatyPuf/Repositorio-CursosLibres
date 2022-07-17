@@ -62,4 +62,5 @@ Route::group(['middleware' => 'Super-admin'], function () {
 	});
 	Route::view('mis_cursos', 'livewire.mis-cursos.index')->middleware('auth');
 	Route::view('planificaciones', 'livewire.planificaciones.index')->middleware('auth');
+	Route::get('/backup_database', [App\Http\Controllers\HomeController::class, 'backup_database']) ->name('backup_database');
 	

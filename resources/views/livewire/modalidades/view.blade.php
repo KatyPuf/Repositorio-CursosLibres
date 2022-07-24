@@ -9,9 +9,7 @@
 							<h4><i class="fas fa-swatchbook text-info"></i>
 							Listado de modalidades </h4>
 						</div>
-						<div wire:poll.60s>
-							<code><h5>{{ now()->format('H:i:s') }} UTC</h5></code>
-						</div>
+						
 						@if (session()->has('message'))
 						<script type="text/javascript">
 							toastr.options = {

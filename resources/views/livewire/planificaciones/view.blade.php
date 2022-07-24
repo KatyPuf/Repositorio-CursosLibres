@@ -44,11 +44,11 @@ use App\Http\Livewire\Inscripciones;
                             <input wire:model='keyWord' type="text" class="form-control" name="search" id="search"
                                 placeholder="Buscar">
                         </div>
-
+                        @can('Crear registros')
                         <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
                             <i class="fa fa-plus"></i> Agregar
                         </div>
-
+                        @endcan
 
                     </div>
                 </div>
@@ -89,12 +89,12 @@ use App\Http\Livewire\Inscripciones;
                                         <strong>Horario: </strong>{{date('h:i a', strtotime($row->HorarioInicio))}} -
                                         {{date('h:i a', strtotime($row->HorarioFin))}}<br>
                                         <?php $cantidad = Planificaciones::VerificarInscripcion($row->id)  ?>
-                                        @if($cantidad > 0)
+                                        
 
                                         Aula Virtual:<a href="{{$row->linkAulaVirtuales}}"> {{$row->linkAulaVirtuales}}
                                         </a>
 
-                                        @endif
+                                       
 
 
 
@@ -102,6 +102,7 @@ use App\Http\Livewire\Inscripciones;
 
                                 </div>
                                 <div class="card-footer text-muted">
+                           
                                     @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
                                     <div class="row">
                                         <div class="col-md-10">
@@ -137,33 +138,44 @@ use App\Http\Livewire\Inscripciones;
 												}
 											?>
                                             @if($disabled == "disabled")
-                                            <a class="dropdown-item disabled"  wire:click="$emit('eventoAperturar', {{$row->id}})">
+                                            <a class="dropdown-item disabled"
+                                                wire:click="$emit('eventoAperturar', {{$row->id}})">
                                                 <i class="fas fa-book-open"></i>
                                                 Aperturar </a>
                                             @else
-                                            <a class="dropdown-item enable" wire:click="$emit('eventoAperturar', {{$row->id}})">
+                                            <a class="dropdown-item enable"
+                                                wire:click="$emit('eventoAperturar', {{$row->id}})">
                                                 <i class="fas fa-book-open"></i>
                                                 Aperturar </a>
                                             @endif
                                             <a data-toggle="modal" data-target="#updateModal" class="dropdown-item"
                                                 wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>
-                                            @if($contar <= 0)
-                                             <a class="dropdown-item" wire:click="$emit('deleteRegistro',{{$row->id}})">
-                                                <i class="fa fa-trash"></i> Borrar  </a>
+                                            @can('Eliminar registros')
+                                            @if($contar <= 0) 
+                                            <a class="dropdown-item"
+                                                wire:click="$emit('deleteRegistro',{{$row->id}})">
+                                                <i class="fa fa-trash"></i> Borrar </a>
                                             @else
-                                                <a class="dropdown-item" wire:click="$emit('noEliminarRegistro',{{$row->id}})"> <i class="fa fa-trash"></i> Borrar
-                                                    
-                                            @endif
-                                               
-                                                <a class="dropdown-item" href="{{url('/exportar'.'/'.$row->id)}}"
-                                                    class="btn btn-info btn-sm"><i class="fas fa-file-alt"></i> Generar
-                                                    reporte
-                                                </a>
+                                                <a class="dropdown-item"
+                                                    wire:click="$emit('noEliminarRegistro',{{$row->id}})"> <i
+                                                        class="fa fa-trash"></i> Borrar
+
+                                          @endif
+                                          @endcan
+                                          @can('Generar reportes')
+
+                                            <a class="dropdown-item" href="{{url('/exportar'.'/'.$row->id)}}"
+                                                class="btn btn-info btn-sm"><i class="fas fa-file-alt"></i>
+                                                    Generar
+                                                        reporte
+                                             </a>
+                                           @endcan
+                                        </a> 
+                                              
                                         </div>
                                     </div>
                                     @endif
-
-                                    <div class="btn-group">
+                                     <div class="btn-group">
                                         <?php $cantidad = Planificaciones::VerificarInscripcion($row->id)  ?>
                                         <!-- contador de inscripciones-->
 
@@ -178,6 +190,9 @@ use App\Http\Livewire\Inscripciones;
 
 
                                     </div>
+                                   
+
+                                   
 
                                 </div>
                             </div>
@@ -196,7 +211,6 @@ use App\Http\Livewire\Inscripciones;
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-
     Livewire.on('deleteRegistro', $PlanificacionId => {
         Swal.fire({
             title: '¿Estás seguro?',
@@ -208,7 +222,7 @@ use App\Http\Livewire\Inscripciones;
             confirmButtonText: 'Si, eliminar planificación!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Livewire.emitTo('planificaciones', 'destroy', $PlanificacionId )
+                Livewire.emitTo('planificaciones', 'destroy', $PlanificacionId)
                 Swal.fire(
                     'Eliminado!',
                     'Su archivo ha sido eliminado.',
@@ -217,7 +231,6 @@ use App\Http\Livewire\Inscripciones;
             }
         })
     })
-    
 </script>
 <script>
     Livewire.on('noEliminarRegistro', $PlanificacionId => {
@@ -225,12 +238,11 @@ use App\Http\Livewire\Inscripciones;
             icon: 'error',
             title: 'Oops...',
             text: 'No puede eliminar esta planificación porque tiene estudiantes inscritos!',
-           
+
         })
     })
 </script>
 <script>
-
     Livewire.on('eventoAperturar', $PlanificacionId => {
         Swal.fire({
             title: '¿Estás seguro?',
@@ -242,7 +254,7 @@ use App\Http\Livewire\Inscripciones;
             confirmButtonText: 'Si, aperturar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Livewire.emitTo('planificaciones', 'aperturar', $PlanificacionId )
+                Livewire.emitTo('planificaciones', 'aperturar', $PlanificacionId)
                 Swal.fire(
                     'Aperturado!',
                     'Este curso ha sido aperturado.',
@@ -251,36 +263,34 @@ use App\Http\Livewire\Inscripciones;
             }
         })
     })
-    
 </script>
 <script>
+    Livewire.on('alertInscription', $RecordId => {
+        Swal.fire({
 
-Livewire.on('alertInscription', $RecordId => {
-    Swal.fire({
-   
-         icon: 'success',
-         title: 'Su inscripcion a este curso ha sido exitosa',
-         showConfirmButton: true,
-         
-    }).then((result) => {
+            icon: 'success',
+            title: 'Su inscripcion a este curso ha sido exitosa',
+            text: "Presione 'OK' para descargar el pdf de bienvenida",
+            showConfirmButton: true,
+
+        }).then((result) => {
             if (result.isConfirmed) {
-                Livewire.emitTo('planificaciones', 'generarPdfBienvenida', $RecordId )
-               
+                Livewire.emitTo('planificaciones', 'generarPdfBienvenida', $RecordId)
+
             }
         })
-    
-})
+
+    })
 </script>
 
 <script>
-
     Livewire.on('alertNoInscription', $RecordId => {
         Swal.fire({
-         icon: 'error',
-        title: 'Oops...',
-        text: 'No se realizó la inscripción. Usted tiene una matricula en esta modalidad.',
-        
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No se realizó la inscripción. Usted tiene una matricula en esta modalidad.',
+
+        })
     })
-    })
-    </script>
+</script>
 @endpush

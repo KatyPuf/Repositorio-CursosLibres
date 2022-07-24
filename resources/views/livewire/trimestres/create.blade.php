@@ -12,7 +12,7 @@
 				<form>
             <div class="form-group">
                 <label for="Nombre"></label>
-                <input wire:model="Nombre" type="text" class="form-control" id="Nombretri" placeholder="Nombre">@error('Nombre') <span class="error text-danger">{{ $message }}</span> @enderror
+                <input wire:model="Nombre" type="number" class="form-control" id="Nombretri" max='4' min="1" placeholder="Ingrese trimeste como numero">@error('Nombre') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
                 <label for="Estado"></label>

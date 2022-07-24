@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Profesore;
-
+use App\Models\EmpresasTelefonica;
 class Profesores extends Component
 {
     use WithPagination;
@@ -18,6 +18,7 @@ class Profesores extends Component
     public function render()
     {
 		$keyWord = '%'.$this->keyWord .'%';
+        $telefonias = EmpresasTelefonica::all();
         return view('livewire.profesores.view', [
             'profesores' => Profesore::latest('id') // Ordenar por id de forma ascendente, de forma determinada ordena por la columan create_at, puesto que desactivamos el timestamps, debemos especificar el campo por el cual se va a ordenar
 						->orWhere('Cedula', 'LIKE', $keyWord)
@@ -27,7 +28,7 @@ class Profesores extends Component
 						->orWhere('Celular', 'LIKE', $keyWord)
 						->orWhere('EmpresaTelefonica', 'LIKE', $keyWord)
 						->paginate(10),
-        ]);
+        ],compact('telefonias'));
     }
 	
     public function cancel()

@@ -40,7 +40,7 @@
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Nombre</th>
-                                            <th scope="col">Acciones</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -48,19 +48,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{$permiso->name}}</td>
-                                            <td width="200">
-
-                                                <a class="btn btn-sm btn-info " role="button"
-                                                    wire:click="edit({{$permiso->id}})"><i class="fa fa-edit"></i> Editar
-                                                </a>
-
-
-                                                <a class="btn btn-sm btn-danger" role="button"
-                                                wire:click="emitirEvento({{$permiso->id}})"><i class="fa fa-trash"></i>
-                                                    Borrar
-                                                </a>
-
-                                            </td>
+                                            
                                         </tr>
                                         @endforeach
                                     </tbody>

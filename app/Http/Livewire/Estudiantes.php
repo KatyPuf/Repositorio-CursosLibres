@@ -62,7 +62,7 @@ class Estudiantes extends Component
 		'EmpresaTelefonica' => 'required',
         ]);
 
-        if(Gate::allows('create')){
+        //if(Gate::allows('create')){
             Estudiante::create([ 
                 'Cedula' => $this-> Cedula,
                 'Nombres' => $this-> Nombres,
@@ -76,11 +76,11 @@ class Estudiantes extends Component
             $this->resetInput();
             $this->emit('closeModal');
             session()->flash('message', 'Estudiante  creado correctamente.');
-        }else{
+        /*}else{
             $this->resetInput();
             $this->emit('closeModal');
             session()->flash('message', 'Acción no permitida');
-        }
+        }*/
 
         
     }

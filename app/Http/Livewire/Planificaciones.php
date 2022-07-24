@@ -323,6 +323,7 @@ class Planificaciones extends Component
             
         ]);
 
+       
         if($this->comprobarEstudiante() > 0)
         {
             $est= Estudiante::where('user_id', auth()->user()->id)->get();

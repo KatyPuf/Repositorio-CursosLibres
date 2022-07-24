@@ -9,6 +9,7 @@
         "barryvdh/laravel-dompdf": "^1.0",
         "botman/botman": "^2.6",
         "botman/driver-web": "^1.5",
+        "doctrine/dbal": "^3.3",
         "flightsadmin/livewire-crud": "^0.0.14",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.4",

@@ -36,56 +36,5 @@ class permisos extends Component
 		
     }
 
-    public function store()
-    {
-        $this->validate([
-            'NombrePermiso' => 'required',
-            ]);
     
-            Permission::create([ 
-                'name' => $this-> NombrePermiso
-            ]);
-            
-            $this->resetInput();
-            session()->flash('message', 'Permiso creado correctamente.');
-    }
-
-    public function edit($id)
-    {
-        $record = Permission::findOrFail($id);
-
-        $this->selected_id = $id; 
-		$this->NombrePermiso = $record->name;
-	
-    }
-
-    public function update()
-    {
-        $this->validate([
-            'NombrePermiso' => 'required']);
-    
-            if ($this->selected_id) {
-                $record = Permission::find($this->selected_id);
-                $record->update([ 
-                'name' => $this-> NombrePermiso
-                ]);
-    
-                $this->resetInput();
-                session()->flash('message', 'Permiso actualizado correctamente.');
-            }
-    }
-
-    public function destroy($id)
-    {
-        if ($id) {
-            $record = Permission::where('id', $id);
-            $record->delete();
-        }
-    }
-    public function emitirEvento($id)
-    {
-        $this->emit('deleteRegistro', $id);
-
-    }
-
 }

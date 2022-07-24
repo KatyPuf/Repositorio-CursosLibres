@@ -14,9 +14,10 @@ class Inscripciones extends Component
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $Trimestre, $Anyo, $estudiante_id, $planificacione_id, $pagadoCheck;
+    public $selected_id, $keyWord, $Trimestre, $Anyo, $estudiante_id, $planificacione_id, $estadoPago;
     public $updateMode = false;
-    protected $listeners = ['postAdded' => 'incrementPostCount', 'destroy'];
+    protected $listeners = ['hallChanged' => 'change', 'destroy'];
+   
     public function render()
     {
         $estudiantes = Estudiante::all();
@@ -31,9 +32,17 @@ class Inscripciones extends Component
 						->paginate(10),
         ], compact('estudiantes','planificaciones'));
     }
-	public function incrementPostCount()
+	public function changeEvent($value, $id)
     {
-        session()->flash('message', 'Hubo cambio'.$this->pagadoCheck);
+        $record = Inscripcione::find($id);
+        $record->update([ 
+           
+			'estadoPago' => $value,
+			
+            ]);
+            $this->updateMode = false;
+      
+       
     }
     public function cancel()
     {
@@ -113,7 +122,7 @@ class Inscripciones extends Component
 
             $this->resetInput();
             $this->updateMode = false;
-			session()->flash('message', 'Inscripcione Successfully updated.');
+			session()->flash('message', 'Inscripción actualizada correctamente.');
         }
     }
 

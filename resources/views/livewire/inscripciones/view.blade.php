@@ -49,7 +49,7 @@
 								<th>Año</th>
 								<th>Estudiante</th>
 								<th>Planificación</th>
-								<th>Pagado</th>
+								<th>Estado de pago</th>
 								<th>ACCIONES</th>
 							</tr>
 						</thead>
@@ -63,10 +63,29 @@
 								<td>{{ $row->estudiante->Nombres }} {{ $row->estudiante->Apellidos }}</td>
 								<td>{{ $row->planificacione->curso->Nombre }} - {{$row->planificacione->modalidad}}</td>
 								<td>
-									<div class="form-check ">
+									<!--<div class="form-check ">
 										<input class="form-check-input" id="check#{{$row->id}}" type="checkbox" value="{{$row->id}}" wire:model="pagadoCheck" wire:click="$emit('postAdded')">
 						
-									  </div>
+									  </div> -->
+									  
+									  <select id="{{$row->id}}" class="form-control" wire:click="changeEvent(event.target.value, {{$row->id}})">
+										@if($row->estadoPago == "Pagado")
+											<option value="Pagado"  selected>Pagado</option>
+											<option value="Pendiente">Pendiente</option>
+
+										@else
+										<option value="Pagado"  >Pagado</option>
+										<option value="Pendiente" selected>Pendiente</option>
+											
+										@endif
+
+                                   	 </select>
+									
+								
+									
+								   
+								
+									 
 								</td>
 								<td width="90">
 								<div class="btn-group">
@@ -74,8 +93,8 @@
 									ACCIONES
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
-									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 						 
-									<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
+									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i>Editar </a>							 						 
+									<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar</a>   
 			
 									</div>
 								</div>
@@ -118,5 +137,10 @@
     })
     
 </script>
-
+<script>
+	Livewire.on('Changed', $RecordId => {
+         
+		Swal.fire('Any fool can use a computer'.$RecordId)
+    })
+</script>
 @endpush

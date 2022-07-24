@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUserIdToEstudiantes extends Migration
+class AddEstadoPagoToInscripciones extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddUserIdToEstudiantes extends Migration
      */
     public function up()
     {
-        Schema::table('estudiantes', function (Blueprint $table) {
-            //
-            $table->foreignId("user_id")->references("id")->on("users")->nullable();
+        Schema::table('inscripciones', function (Blueprint $table) {
+            $table->string("estadoPago")->after("planificacione_id");
         });
     }
 
@@ -26,8 +25,8 @@ class AddUserIdToEstudiantes extends Migration
      */
     public function down()
     {
-        Schema::table('estudiantes', function (Blueprint $table) {
-            $table->dropColumn('user_id');
+        Schema::table('inscripciones', function (Blueprint $table) {
+            $table->dropColumn('estadoPago');
         });
     }
 }

@@ -103,26 +103,25 @@ use App\Http\Livewire\Inscripciones;
                                 </div>
                                 <div class="card-footer text-muted">
                            
-                                    @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
                                     <div class="row">
                                         <div class="col-md-10">
-                                            <a class="text-primary" href="">
+                                            <a style="color:#231955"; href="">
                                                 <strong>Estudiantes inscritos: </strong> {{$contar}} </a>
 
                                         </div>
                                         <div class="col-md-2">
-
-                                            <!-- <a href="" data-toggle="modal" data-toggle="tooltip" data-placement="bottom"
-                                                title="Ver" data-target="#verEstudiantes" data-id="{{$row->id}}"
-                                                class="text-muted">
-                                                
-                                            </a> -->
+                                            @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
                                             <a class="text-muted" data-toggle="modal" data-target="#verEstudiantes"
-                                                class="dropdown-item" wire:click="verEstudiantes({{$row->id}})"><i
-                                                    class="fas fa-eye"></i></a>
+                                                class="dropdown-item" wire:click="verEstudiantes({{$row->id}})">
+                                                <i class="fas fa-eye">
+                                                </i>
+                                            </a>
+                                            @endif
                                         </div>
                                     </div>
                                     <br>
+                                    @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
+                                    
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-info btn-sm dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

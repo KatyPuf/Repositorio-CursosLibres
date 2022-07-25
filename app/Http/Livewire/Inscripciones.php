@@ -7,6 +7,9 @@ use Livewire\WithPagination;
 use App\Models\Inscripcione;
 use App\Models\Estudiante;
 use App\Models\Planificacione;
+use App\Models\Trimestre;
+use App\Models\AnyosLectivo;
+
 use Illuminate\Support\Facades\DB;
 
 class Inscripciones extends Component
@@ -22,6 +25,9 @@ class Inscripciones extends Component
     {
         $estudiantes = Estudiante::all();
         $planificaciones = Planificacione::all();
+        $trimestres = Trimestre::all();
+        $anyos= AnyosLectivo::all();
+
 		$keyWord = '%'.$this->keyWord .'%';
         return view('livewire.inscripciones.view', [
             'inscripciones' => Inscripcione::latest()
@@ -30,19 +36,56 @@ class Inscripciones extends Component
 						->orWhere('estudiante_id', 'LIKE', $keyWord)
 						->orWhere('planificacione_id', 'LIKE', $keyWord)
 						->paginate(10),
-        ], compact('estudiantes','planificaciones'));
+        ], compact('estudiantes','planificaciones','trimestres', 'anyos'));
     }
+
+    public $filters = [
+        'Nombres' => '',
+        'Apellidos' => '',
+        'Planificacion' => '',
+        'Anyo' => '',
+        'EstadoPago' => '',
+        'Trimestre' => '',
+
+    ];
+    public function getInscriptionProperty ()
+    {
+        return Estudiante::query()
+            ->when($this->filters['Nombres'], function($query){
+                return $query->where('Nombres', 'like', "{$this->filters['Nombres']}%");
+            })
+            ->with('Inscripciones')->get();
+    }
+
+
 	public function changeEvent($value, $id)
     {
+        error_log($value);
+        error_log($id);
+
         $record = Inscripcione::find($id);
-        $record->update([ 
+        if($value == 1)
+        {
            
-			'estadoPago' => $value,
-			
-            ]);
-            $this->updateMode = false;
-      
-       
+            $record->update([ 
+               
+                'estadoPago' => 'Pagado',
+                
+                ]);
+            
+                $this->updateMode = false;
+        }
+        else{
+           
+            $record->update([ 
+               
+                'estadoPago' => 'Pendiente',
+                
+                ]);
+            
+                $this->updateMode = false;
+        }
+   
     }
     public function cancel()
     {

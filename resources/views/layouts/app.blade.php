@@ -132,11 +132,6 @@
                                     <i class="fas fa-user-edit"></i>
                                     <span>Inscripciones</span></a>
                             </li>
-                            <li class="active p-2">
-                                <a class="nav-link nav-link h6 btn btn-info btn-sm" href="{{url('/inscripciones2')}}">
-                                    <i class="fas fa-user-edit"></i>
-                                    <span>Inscripciones 2</span></a>
-                            </li>
                             
                             @if(Auth::user()->hasRole('Super-admin'))
                             <li class="nav-item dropdown active p-2">

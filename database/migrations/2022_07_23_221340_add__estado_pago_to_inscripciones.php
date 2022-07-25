@@ -14,7 +14,7 @@ class AddEstadoPagoToInscripciones extends Migration
     public function up()
     {
         Schema::table('inscripciones', function (Blueprint $table) {
-            $table->string("estadoPago")->after("planificacione_id");
+            $table->string("estadoPago")->default('Pendiente')->after("planificacione_id");
         });
     }
 

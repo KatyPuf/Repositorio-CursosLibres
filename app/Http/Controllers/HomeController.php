@@ -133,7 +133,7 @@ class HomeController extends Controller
           $output .= "'" . implode("','", $table_value_array) . "');\n";
          }
         }
-        $file_name = 'laravel_backup' . '.sql';  //. date('y-m-d') .
+        $file_name = 'CursosLibres_Backup' . '.sql';  //. date('y-m-d') .
         $file_handle = fopen($file_name, 'w+');
         fwrite($file_handle, $output);
         fclose($file_handle);

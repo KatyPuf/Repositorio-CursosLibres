@@ -9,11 +9,7 @@
                             <h4> <i class="fas fa-chalkboard-teacher text-info"></i>
                                 Listado de profesores </h4>
                         </div>
-                        <div wire:poll.60s>
-                            <code>
-                                <h5>{{ now()->format('H:i:s') }} UTC</h5>
-                            </code>
-                        </div>
+                        
                         @if (session()->has('message'))
                         <script type="text/javascript">
                             toastr.options = {

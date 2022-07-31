@@ -41,6 +41,7 @@ Route::group(['middleware' => 'Super-admin'], function () {
 	Route::view('aula_curso_profesor', 'livewire.aula-curso-profesors.index')->middleware('auth');
 	Route::view('cursos_ejecutados', 'livewire.cursos-ejecutados.index')->middleware('auth');
 	Route::view('inscripciones', 'livewire.inscripciones.index')->middleware('auth');
+	Route::view('inscripciones2', 'livewire.inscripciones2.index')->middleware('auth');
 	Route::view('anyos_lectivos', 'livewire.anyos-lectivos.index')->middleware('auth');
 	Route::view('trimestres', 'livewire.trimestres.index')->middleware('auth');
 	Route::view('modalidades', 'livewire.modalidades.index')->middleware('auth');
@@ -51,7 +52,6 @@ Route::group(['middleware' => 'Super-admin'], function () {
 	Route::view('usuarios', 'livewire.usuarios.index')->middleware('auth');
 	Route::view('roles', 'livewire.roles.index')->middleware('auth');
 	Route::view('permisos', 'livewire.permisos.index')->middleware('auth');
-	Route::view('reportes', 'livewire.reportes.index')->middleware('auth');
 	Route::get('/exportar/{id}', [App\Http\Controllers\HomeController::class, 'export']);
 	Route::get('/bienvenida', [App\Http\Controllers\HomeController::class, 'generatePDF']);
 	Route::match(['get', 'post'], '/botman', [App\Http\Controllers\BotManController::class, 'handle']);
@@ -62,5 +62,9 @@ Route::group(['middleware' => 'Super-admin'], function () {
 	});
 	Route::view('mis_cursos', 'livewire.mis-cursos.index')->middleware('auth');
 	Route::view('planificaciones', 'livewire.planificaciones.index')->middleware('auth');
+
+	Route::view('reportes', 'livewire.reportes.index')->middleware('auth');
+
 	Route::get('/backup_database', [App\Http\Controllers\HomeController::class, 'backup_database']) ->name('backup_database');
+
 	

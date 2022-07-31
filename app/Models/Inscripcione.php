@@ -12,7 +12,7 @@ class Inscripcione extends Model
     public $timestamps = false; 
 
     protected $table = 'inscripciones';
-    protected $fillable = ['Trimestre','Anyo','estudiante_id','planificacione_id'];
+    protected $fillable = ['Trimestre','Anyo','estudiante_id','planificacione_id', 'estadoPago'];
 	
 
     /**

@@ -20,6 +20,7 @@ class RolesAndPermissionSeeder extends Seeder
          app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
          // create permissions
+         Permission::create(['name' => 'Visualizar registros']);
          Permission::create(['name' => 'Editar registros']);
          Permission::create(['name' => 'Eliminar registros']);
          Permission::create(['name' => 'Crear registros']);

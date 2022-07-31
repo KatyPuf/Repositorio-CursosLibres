@@ -56,12 +56,16 @@ use App\Http\Livewire\Inscripciones;
 									
 									<div class="btn-group">
 										
-											<a data-toggle="modal"
-											class="btn btn-success btn-sm disabled"
-											>
-											<i class="fas fa-check"></i> Inscrito</a>
+										<a data-toggle="modal" class="btn btn-success btn-sm disabled">
+											<i class="fas fa-check"></i> Inscrito
+										</a>
+											
 									</div>
-
+									<div class="btn-group">
+										<a data-toggle="modal" class="btn btn-danger btn-sm" >
+											<i class="fas fa-user-times"></i>  Darse de baja
+										</a>
+									</div>
 								</div>
 							</div>
 						  </div>

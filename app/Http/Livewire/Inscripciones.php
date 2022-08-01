@@ -19,7 +19,7 @@ class Inscripciones extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $Trimestre, $Anyo, $estudiante_id, $planificacione_id, $estadoPago;
     public $updateMode = false;
-    protected $listeners = ['hallChanged' => 'change', 'destroy'];
+    protected $listeners = ['hallChanged' => 'change', 'destroy', 'prueba'];
    
     public function render()
     {
@@ -89,6 +89,8 @@ class Inscripciones extends Component
     }
     public function cancel()
     {
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->resetInput();
         $this->updateMode = false;
     }
@@ -171,11 +173,13 @@ class Inscripciones extends Component
 
     public function destroy($id)
     {
+        error_log("---------");
         if ($id) {
             $record = Inscripcione::where('id', $id);
             $record->delete();
         }
     }
+   
 
     public function validar($tri, $id){
 

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Livewire;
-
+use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Planificacione;
@@ -20,7 +20,7 @@ class misCursos extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $AnyoLectivo, $imagen;
     public $updateMode = false;
-
+    protected $listeners = ['destroy' => 'destroy'];
     public function render()
     {
 		
@@ -31,10 +31,15 @@ class misCursos extends Component
         $trimestres = Trimestre::all();
         $telefonias = EmpresasTelefonica::all();
         return view('livewire.mis-cursos.view', [
-            'misCursos' => planificacione::join('inscripciones', 'inscripciones.planificacione_id', '=', 'planificaciones.id' ) 
+            'misCursos' => planificacione::join('inscripciones', 'planificaciones.id', '=', 'inscripciones.planificacione_id' ) 
                             ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
                             ->join('users', 'users.id', '=', 'estudiantes.user_id')
+                            ->join('cursos', 'cursos.id', '=', 'planificaciones.curso_id')
                             ->where('user_id',auth()->user()->id)
+                            ->select('modalidad', 'Precio', 'imagen', 'Nombre', 
+                            'inscripciones.Id as InscripcionId',
+                            'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
+                            'HorarioInicio', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId')
                             ->get()
                             
 						    
@@ -69,6 +74,17 @@ class misCursos extends Component
 
     public function destroy($id)
     {
+      error_log($id);
+      error_log("Hellllllll");
+
+      $record = Inscripcione::where('id', $id);
+      $record->delete();
         
+    }
+    public function emitirEvento($id)
+    {
+        error_log("*******".$id);
+        $this->emit('deleteRegistro', $id);
+
     }
 }

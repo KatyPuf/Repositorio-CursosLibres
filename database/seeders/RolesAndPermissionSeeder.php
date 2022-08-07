@@ -28,6 +28,7 @@ class RolesAndPermissionSeeder extends Seeder
          Permission::create(['name' => 'Generar reportes']);
 
          $role = Role::create(['name' => 'Super-admin']);
+         Role::create(['name' => 'Estudiante']);
          //$role2 = Role::create(['name' => 'Comun']);
          $user = User::create([
             'name' => 'Francisco',

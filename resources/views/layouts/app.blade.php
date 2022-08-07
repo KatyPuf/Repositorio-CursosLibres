@@ -58,7 +58,7 @@
                         <ul class="navbar-nav ml-auto">
 
                             @if(Auth::check())
-                            @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
+                            @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') || Auth::user()->hasRole('Editor') )
 
                             <li class="nav-item dropdown active p-2">
 

@@ -120,7 +120,7 @@ use App\Http\Livewire\Inscripciones;
                                         </div>
                                     </div>
                                     <br>
-                                    @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
+                                   
                                     
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-info btn-sm dropdown-toggle"
@@ -136,6 +136,7 @@ use App\Http\Livewire\Inscripciones;
 													$disabled="enable";
 												}
 											?>
+                                            @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
                                             @if($disabled == "disabled")
                                             <a class="dropdown-item disabled"
                                                 wire:click="$emit('eventoAperturar', {{$row->id}})">
@@ -147,20 +148,23 @@ use App\Http\Livewire\Inscripciones;
                                                 <i class="fas fa-book-open"></i>
                                                 Aperturar </a>
                                             @endif
+                                            @endif
+                                            @can('Editar registros')
                                             <a data-toggle="modal" data-target="#updateModal" class="dropdown-item"
                                                 wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>
+                                            @endcan
                                             @can('Eliminar registros')
-                                            @if($contar <= 0) 
-                                            <a class="dropdown-item"
-                                                wire:click="$emit('deleteRegistro',{{$row->id}})">
-                                                <i class="fa fa-trash"></i> Borrar </a>
-                                            @else
+                                                @if($contar <= 0) 
                                                 <a class="dropdown-item"
-                                                    wire:click="$emit('noEliminarRegistro',{{$row->id}})"> <i
-                                                        class="fa fa-trash"></i> Borrar
+                                                    wire:click="$emit('deleteRegistro',{{$row->id}})">
+                                                    <i class="fa fa-trash"></i> Borrar </a>
+                                                @else
+                                                    <a class="dropdown-item"
+                                                        wire:click="$emit('noEliminarRegistro',{{$row->id}})"> <i
+                                                            class="fa fa-trash"></i> Borrar
 
-                                          @endif
-                                          @endcan
+                                                @endif
+                                            @endcan
                                           @can('Generar reportes')
 
                                             <a class="dropdown-item" href="{{url('/exportar'.'/'.$row->id)}}"
@@ -173,7 +177,7 @@ use App\Http\Livewire\Inscripciones;
                                               
                                         </div>
                                     </div>
-                                    @endif
+                                    
                                      <div class="btn-group">
                                         <?php $cantidad = Planificaciones::VerificarInscripcion($row->id)  ?>
                                         <!-- contador de inscripciones-->

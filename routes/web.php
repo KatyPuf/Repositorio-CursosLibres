@@ -34,7 +34,7 @@ Route::get('/sendemail', [App\Http\Controllers\HomeController::class, 'sendEmail
 //Route::get('validar/{tri}/{id}', [App\Http\Livewire\Inscripciones::class, 'validar']);
 
 
-Route::group(['middleware' => 'Super-admin'], function () {
+Route::group(['middleware'=> ['role:Administrador|Super-admin']], function () {
    
 
 	Route::view('empresas_telefonicas', 'livewire.empresas-telefonicas.index')->middleware('auth');
@@ -61,7 +61,7 @@ Route::group(['middleware' => 'Super-admin'], function () {
 
 	});
 	Route::view('mis_cursos', 'livewire.mis-cursos.index')->middleware('auth');
-	Route::view('planificaciones', 'livewire.planificaciones.index')->middleware('auth');
+	Route::view('planificaciones', 'livewire.planificaciones.index')->middleware('auth', 'role:Administrador, Super-admin');
 
 	Route::view('reportes', 'livewire.reportes.index')->middleware('auth');
 

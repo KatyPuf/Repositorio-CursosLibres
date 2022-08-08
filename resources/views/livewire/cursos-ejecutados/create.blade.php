@@ -11,11 +11,11 @@
            <div class="modal-body">
 				<form>
             <div class="form-group">
-                <label for="Trimestre"></label>
+                
                 <input wire:model="Trimestre" type="text" class="form-control" id="Trimestre" placeholder="Trimestre">@error('Trimestre') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
-                <label for="Anyo"></label>
+                
                 <input wire:model="Anyo" type="text" class="form-control" id="Anyo" placeholder="Año">@error('Anyo') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group">

@@ -89,6 +89,7 @@ class HomeController extends Controller
         $DbName             = env('DB_DATABASE');
         $backup_name        = "mybackup.sql";
     
+        error_log("---".$Dbport);
         $queryTables = \DB::select(\DB::raw('SHOW TABLES'));
             foreach ( $queryTables as $table )
             {

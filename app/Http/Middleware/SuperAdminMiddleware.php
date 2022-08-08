@@ -15,13 +15,20 @@ class SuperAdminMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $roles)
     {
-        
+        error_log($roles);
         if( auth()->check() )
         {
-            if(auth()->user()->hasRole('Super-admin'))
+            /*if(auth()->user()->hasRole('Super-admin'))
             {
+                return $next($request);
+
+            }*/
+
+            if (!$request->user() || !in_array($request->user()->role, $roles)) {
+                // Redirect...
+                               
                 return $next($request);
 
             }

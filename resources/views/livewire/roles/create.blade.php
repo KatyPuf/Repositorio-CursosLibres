@@ -5,8 +5,16 @@
             <div class="form-group col-md-12">
                 <input type="text" hidden="true" wire:model="selected_id">
                 <label for="roles"></label></label>
-                <input wire:model="NombreRol" type="text" class="form-control" id="NombreRol"
-                    placeholder="Ingrese nombre del rol">@error('NombreRol') <span
+                
+                    <select wire:model.defer="NombreRol"
+                    class="form-control @error('NombreRol') is-invalid @enderror">
+                    <option value="">Seleccionar un rol</option>
+                    <option value="Estudiante">Estudiante</option>
+                    <option value="Editor">Editor</option>
+                    <option value="Consultor">Consultor</option>
+                    <option value="Administrador">Administrador</option>
+                </select>
+                @error('NombreRol') <span
                     class="error text-danger">{{ $message }}</span>
                 @enderror
     

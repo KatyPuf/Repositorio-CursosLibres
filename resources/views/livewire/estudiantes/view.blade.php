@@ -9,9 +9,7 @@
 							<h4><i class="fas fa-user-graduate text-info"></i>
 							Listado de Estudiantes</h4>
 						</div>
-						<div wire:poll.60s>
-							<code><h5>{{ now()->format('H:i:s') }} UTC</h5></code>
-						</div>
+						
 						@if (session()->has('message'))
 							<script type="text/javascript">
 								toastr.options = {
@@ -23,9 +21,11 @@
 						<div>
 							<input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar estudiantes">
 						</div>
+						@can('Crear registros')
 						<div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
 						<i class="fa fa-plus"></i>Agregar estudiante
 						</div>
+						@endcan
 					</div>
 				</div>
 				
@@ -62,9 +62,13 @@
 									Acciones
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
+									@can('Editar registros')
 									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
+									@endcan
+									@can('Eliminar registros')
 									<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
 									</div>
+									@endcan
 								</div>
 								</td>
 							@endforeach

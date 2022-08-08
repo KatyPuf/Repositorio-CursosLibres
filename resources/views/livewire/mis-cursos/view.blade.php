@@ -25,14 +25,15 @@ use App\Http\Livewire\Inscripciones;
 					
 					<div class="row row-cols-1 row-cols-md-3 g-4 m-1">
 						@foreach($misCursos as $row)
+						
 						<div class="col">
 							<div class="card h-100">
 								<img class="card-img-top img-thumbnail" src="{{asset('storage/'.$row->imagen)}}" alt="">
 								<div class="card-body">
-									<h5 class="card-title ">{{ $row->curso->Nombre }} <br>
+									<h5 class="card-title ">{{ $row->Nombre }} <br>
 									<small>
 										<p class="lead h6">Modalidad {{ $row->modalidad }}</p>
-										<h6><span class="badge rounded-pill text-dark" style="background-color: #FFCA03" >Precio: C${{$row->curso->Precio}} </span></h6>
+										<h6><span class="badge rounded-pill text-dark" style="background-color: #FFCA03" >Precio: C${{$row->Precio}} </span></h6>
 										
 									</small>
 										<hr>
@@ -41,6 +42,7 @@ use App\Http\Livewire\Inscripciones;
 								
 										
 										<!--<strong>Año lectivo:</strong> {{ $row->Anyo }}<br>-->
+										
 										<strong>Trimestre: </strong>{{$row->Trimestre}}<br>
 										<strong>Inicia:</strong> {{date('d-m-Y', strtotime($row->FechaInicio))}}<br>
 										<strong>Finaliza: </strong> {{date('d-m-Y', strtotime($row->FechaFin))}}<br>
@@ -61,23 +63,34 @@ use App\Http\Livewire\Inscripciones;
 										</a>
 											
 									</div>
-									<div class="btn-group">
-										<a data-toggle="modal" class="btn btn-danger btn-sm" >
-											<i class="fas fa-user-times"></i>  Darse de baja
-										</a>
-									</div>
+									<?php
+ 
+										$i=0;
+										
+										$actual = date('d-m-Y');
+										if(date('d-m-Y', strtotime($row->FechaInicio))> date('d-m-Y'))
+										{
+											$i=1;
+										}
+									
+ 
+									?>
+									
+									
+									@if($i ==1)
+										<div class="btn-group">
+											<a class="btn btn-danger btn-sm"
+											   wire:click="$emit('deleteRegistro',{{$row->InscripcionId}})">
+												<i class="fas fa-user-times"></i>  Darse de baja
+											</a>
+										</div>
+									@endif
 								</div>
 							</div>
 						  </div>
 						@endforeach
 						
-						<!--@isset($misCursos)
-							<div class="alert alert-primary" role="alert">
-								<h4>¡Usted no se ha inscrito a ningun curso!</h4>
-						  </div>
-						  @else
-						  
-						@endisset-->
+					
 					  </div>
 					
 				</div>
@@ -85,27 +98,39 @@ use App\Http\Livewire\Inscripciones;
 			</div>
 		</div>
 	</div>
+	@push('js')
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Livewire.on('deleteRegistro', $InscripcionId => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+			Livewire.emitTo('mis-cursos', 'destroy', $InscripcionId)
+            if (result.isConfirmed) {
+               
+                Swal.fire(
+                    'Eliminado!',
+                    'Su archivo ha sido eliminado.',
+                    'success'
+                )
+			
+            }
+        })
+    })
+</script>
+<script>
+    Livewire.on('Changed', $RecordId => {
+
+        Swal.fire('Any fool can use a computer'.$RecordId)
+    })
+</script>
+@endpush
 </div>
 
-@livewireScripts
-<script>
-	function alerta()
-	{
-		Swal.fire({
-  title: 'Do you want to save the changes?',
-  showDenyButton: true,
-  showCancelButton: true,
-  confirmButtonText: 'Save',
-  denyButtonText: `Don't save`,
-}).then((result) => {
-  /* Read more about isConfirmed, isDenied below */
-  if (result.isConfirmed) {
-    Swal.fire('Saved!', '', 'success')
-  } else if (result.isDenied) {
-    Swal.fire('Changes are not saved', '', 'info')
-  }
-})
-	}
-</script>
-
-	

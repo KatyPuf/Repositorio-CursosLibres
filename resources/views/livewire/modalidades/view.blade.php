@@ -21,9 +21,11 @@
 						<div>
 							<input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar modalidades">
 						</div>
+						@can('Crear registros')
 						<div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
 						<i class="fa fa-plus"></i>  Agregar modalidad
 						</div>
+						@endcan
 					</div>
 				</div>
 				
@@ -50,9 +52,13 @@
 									Acciones
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
+									@can('Editar registros')
 									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
+									@endcan
+									@can('Eliminar registros')
 									<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
 									</div>
+									@endcan
 								</div>
 								</td>
 							@endforeach

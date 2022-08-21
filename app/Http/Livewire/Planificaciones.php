@@ -26,6 +26,7 @@ class Planificaciones extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, 
             $keyWord, 
+            $keyWordAnyo,
             $Trimestre, 
             $Anyo,
             $FechaInicio, 
@@ -62,24 +63,57 @@ class Planificaciones extends Component
         
         
 		$keyWord = '%'.$this->keyWord .'%';
+        $keyWordAnyo = '%'.$this->keyWordAnyo .'%';
         $cursos = Curso::all();
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
         $trimestres = Trimestre::all();
         $telefonias = EmpresasTelefonica::all();
         return view('livewire.planificaciones.view', [
-            'planificaciones' => Planificacione::latest('id')
-						->orWhere('Trimestre', 'LIKE', $keyWord)
-						->orWhere('Anyo', 'LIKE', $keyWord)
-                        ->orWhere('modalidad', 'LIKE', $keyWord)
-						->orWhere('FechaInicio', 'LIKE', $keyWord)
-						->orWhere('FechaFin', 'LIKE', $keyWord)
-						->orWhere('HorarioInicio', 'LIKE', $keyWord)
-                        ->orWhere('HorarioFin', 'LIKE', $keyWord)
-						->orWhere('curso_id', 'LIKE', $keyWord)
-						->paginate(10),
+            'planificaciones' => planificacione::join('cursos', 'planificaciones.curso_id', '=', 'cursos.id' ) 
+                            
+                            ->orWhere('modalidad', 'LIKE', $keyWord)
+                            ->orWhere('Anyo', 'LIKE', $keyWordAnyo)
+                            ->get(['modalidad', 'Precio', 'imagen', 'Nombre', 'curso_id',
+                            'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
+                            'HorarioInicio', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId'])
+                            
+                            
+						    
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }
+
+   
+   /* public function getInscriptionProperty ()
+    {
+
+        planificacione::join('inscripciones', 'planificaciones.id', '=', 'inscripciones.planificacione_id' ) 
+                            ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
+                            ->join('users', 'users.id', '=', 'estudiantes.user_id')
+                            ->join('cursos', 'cursos.id', '=', 'planificaciones.curso_id')
+                            ->where('user_id',auth()->user()->id)
+                            
+                            ->get(['modalidad', 'Precio', 'imagen', 'Nombre', 
+                            'inscripciones.Id as InscripcionId',
+                            'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
+                            'HorarioInicio', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId']);
+                           
+    }
+
+    ->orWhere('planificaciones.Trimestre', 'LIKE', $keyWord)
+			->orWhere('planificaciones.Anyo', 'LIKE', $keyWord)
+            ->orWhere('modalidad', 'LIKE', $keyWord)
+			->orWhere('FechaInicio', 'LIKE', $keyWord)
+			->orWhere('FechaFin', 'LIKE', $keyWord)
+			->orWhere('HorarioInicio', 'LIKE', $keyWord)
+            ->orWhere('HorarioFin', 'LIKE', $keyWord)
+			->orWhere('cursos.Nombre', 'LIKE', $keyWord)
+            
+            ->select('modalidad', 'Precio', 'imagen', 'Nombre', 
+                            'inscripciones.Id as InscripcionId',
+                            'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
+                            'HorarioInicio', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId')
+            */
 	
     public function alerta()
     {

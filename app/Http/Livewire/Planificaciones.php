@@ -27,6 +27,7 @@ class Planificaciones extends Component
     public $selected_id, 
             $keyWord, 
             $keyWordAnyo,
+            $keyWordCurso,
             $Trimestre, 
             $Anyo,
             $FechaInicio, 
@@ -56,7 +57,9 @@ class Planificaciones extends Component
     public $updateMode = false;
     public $Cursos = null;
     protected $listeners = ['destroy', 'aperturar', 'generarPdfBienvenida'];
-
+    public $filters = [
+        'Anyo' => ''
+    ];
   
     public function render()
     {
@@ -64,6 +67,7 @@ class Planificaciones extends Component
         
 		$keyWord = '%'.$this->keyWord .'%';
         $keyWordAnyo = '%'.$this->keyWordAnyo .'%';
+        $keyWordCurso= '%'.$this->keyWordCurso .'%';
         $cursos = Curso::all();
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
@@ -71,9 +75,9 @@ class Planificaciones extends Component
         $telefonias = EmpresasTelefonica::all();
         return view('livewire.planificaciones.view', [
             'planificaciones' => planificacione::join('cursos', 'planificaciones.curso_id', '=', 'cursos.id' ) 
-                            
-                            ->orWhere('modalidad', 'LIKE', $keyWord)
-                            ->orWhere('Anyo', 'LIKE', $keyWordAnyo)
+                            ->where('modalidad', 'LIKE', $keyWord)
+                            ->where('Anyo', 'LIKE', $keyWordAnyo)
+                            ->where('curso_id', 'LIKE', $keyWordCurso)
                             ->get(['modalidad', 'Precio', 'imagen', 'Nombre', 'curso_id',
                             'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
                             'HorarioInicio', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId'])
@@ -83,7 +87,17 @@ class Planificaciones extends Component
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }
 
-   
+  
+    public function getPlanificacionProperty ()
+    {
+        error_log("FILTRANDO");
+        return Planificacione::query()
+            ->when($this->filters['Anyo'], function($query){
+                return $query->where('Anyo', 'like', $this->keyWordAnyo);
+            })
+            ->with('Cursos')->get();
+    }
+
    /* public function getInscriptionProperty ()
     {
 

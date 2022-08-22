@@ -30,10 +30,10 @@
     <!-- Toastr.js Después -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
 
     @livewireStyles
+    
   
 </head>
 
@@ -261,7 +261,7 @@
         < /> <
         script src = "js/main.js" >
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
     <script type="text/javascript">
         window.livewire.on('closeModal', () => {
             $('#exampleModal').modal('hide');
@@ -298,6 +298,7 @@
             });
         });
     </script>
+    
     @stack('js')
 
 </body>

@@ -81,12 +81,10 @@ use App\Http\Livewire\Inscripciones;
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <select wire:model="keyWord"
-                                        class="custom-select custom-select-sm">
-                                        <option value="">Modalidad</option>
-
+                                    <select class="custom-select custom-select-sm">
+                                        
                                         @foreach ($modalidades as $modalidade)
-                                        <option value="{{$modalidade->TipoModalidad}}">{{$modalidade->TipoModalidad}}
+                                        <option data-tokens="{{$modalidade->TipoModalidad}}">{{$modalidade->TipoModalidad}}
                                         </option>
                                         @endforeach
 
@@ -267,6 +265,7 @@ use App\Http\Livewire\Inscripciones;
 @push('js')
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
 <script>
     Livewire.on('deleteRegistro', $PlanificacionId => {
         Swal.fire({
@@ -350,4 +349,8 @@ use App\Http\Livewire\Inscripciones;
         })
     })
 </script>
+<script>
+    
+   $('.my-select').selectpicker();
+ </script>
 @endpush

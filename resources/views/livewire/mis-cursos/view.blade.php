@@ -26,7 +26,7 @@ use App\Http\Livewire\Inscripciones;
 					<div class="row row-cols-1 row-cols-md-3 g-4 m-1">
 						@foreach($misCursos as $row)
 						
-						<div class="col">
+						<div class="col p-1">
 							<div class="card h-100">
 								<img class="card-img-top img-thumbnail" src="{{asset('storage/'.$row->imagen)}}" alt="">
 								<div class="card-body">
@@ -66,17 +66,17 @@ use App\Http\Livewire\Inscripciones;
 									<?php
  
 										$i=0;
-										
-										$actual = date('d-m-Y');
-										if(date('d-m-Y', strtotime($row->FechaInicio))> date('d-m-Y'))
+										$actual = new DateTime("now");
+										$fechaInicio = new DateTime($row->FechaInicio);
+									
+										if($fechaInicio > $actual)
 										{
 											$i=1;
+											
 										}
-									
- 
+									  
 									?>
-									
-									
+								
 									@if($i ==1)
 										<div class="btn-group">
 											<a class="btn btn-danger btn-sm"

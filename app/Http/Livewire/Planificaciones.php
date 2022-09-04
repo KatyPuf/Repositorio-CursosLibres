@@ -56,18 +56,24 @@ class Planificaciones extends Component
             $listaEstudiantes;
     public $updateMode = false;
     public $Cursos = null;
+    public $ottPlatform = '';
+    public $selectedAnyo = '';
+    public $selectedModalidad = '';
+
     protected $listeners = ['destroy', 'aperturar', 'generarPdfBienvenida'];
     public $filters = [
         'Anyo' => ''
     ];
-  
+
+   
+
     public function render()
     {
         
         
-		$keyWord = '%'.$this->keyWord .'%';
-        $keyWordAnyo = '%'.$this->keyWordAnyo .'%';
-        $keyWordCurso= '%'.$this->keyWordCurso .'%';
+		$keyWord = '%'.$this->selectedModalidad .'%';
+        $keyWordAnyo = '%'.$this->selectedAnyo.'%';
+        $keyWordCurso= '%'.$this->ottPlatform .'%';
         $cursos = Curso::all();
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
@@ -82,8 +88,7 @@ class Planificaciones extends Component
                             'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
                             'HorarioInicio', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId'])
                             
-                            
-						    
+              		    
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }
 

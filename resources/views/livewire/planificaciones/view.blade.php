@@ -63,45 +63,43 @@ use App\Http\Livewire\Inscripciones;
 
                 <div class="card-body">
                     <div class = "row ml-2">
-                        <div class="col-md-8">
-                            <div class="row">
+                       
                                 <div >
                                     <i class="fas fa-filter"></i>
                                     <label>Filtrar: </label>
                                 </div>
-                                <div class="col-md-4">
-                                    
-                                    <select wire:model="keyWordCurso"
-                                        class="custom-select custom-select-sm">
-                                        
-                                        <option value="">Curso</option>
+                                <div wire:ignore class="col-md-4">
+                                    <select class="form-control" id="select2-dropdown" wire:model="keyWordCurso">
+                                        <option value="">Select Option</option>
                                         @foreach ($cursos as $curso)
-                                        <option value="{{$curso->id}}">{{$curso->Nombre}}</option>
+                                            <option value="{{$curso->id}}">{{$curso->Nombre}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-3">
-                                    <select class="custom-select custom-select-sm">
-                                        
+                                <div wire:ignore class="col-md-4">
+                                    <select class="form-control" id="select2-mod" wire:model="keyWord">
+                                        <option value="">Seleccionar modalidad</option>
                                         @foreach ($modalidades as $modalidade)
-                                        <option data-tokens="{{$modalidade->TipoModalidad}}">{{$modalidade->TipoModalidad}}
-                                        </option>
+                                            <option value="{{$modalidade->TipoModalidad}}">{{$modalidade->TipoModalidad}} </option>
                                         @endforeach
 
                                     </select>
                                 </div>
-                                <div class="col-md-3">
-                                    <select wire:model="keyWordAnyo" class="custom-select custom-select-sm">
-                                        <option value="">Año lectivo</option>
+                                <div wire:ignore class="col-md-3">
+                                    <select  class="form-control" id="select2-anyo">
+                                        <option value="">Seleccionar año lectivo</option>
                                         @foreach ($anyos as $anyo)
-                                        <option value="{{$anyo->AnyoLectivo}}">{{$anyo->AnyoLectivo}}</option>
+                                            <option value="{{$anyo->AnyoLectivo}}">{{$anyo->AnyoLectivo}}</option>
                                         @endforeach
 
                                     </select>
 
                                 </div>
-                            </div>
-                        </div>
+                                <div>
+                                    
+                                </div>
+                           
+                        
                     </div><br>
                     @include('livewire.planificaciones.create')
                     @include('livewire.planificaciones.update')
@@ -230,6 +228,7 @@ use App\Http\Livewire\Inscripciones;
                                     </div>
 
                                     <div class="btn-group">
+                                      
                                         <?php $cantidad = Planificaciones::VerificarInscripcion($row->PlanificacionId)  ?>
                                         <!-- contador de inscripciones-->
 
@@ -266,6 +265,7 @@ use App\Http\Livewire\Inscripciones;
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
+
 <script>
     Livewire.on('deleteRegistro', $PlanificacionId => {
         Swal.fire({
@@ -349,8 +349,46 @@ use App\Http\Livewire\Inscripciones;
         })
     })
 </script>
+
+<script  type="text/javascript">
+     
+    $('#keyWordCurso').select2();
+  
+</script>
 <script>
-    
-   $('.my-select').selectpicker();
- </script>
+   
+        $('#select2-dropdown').select2({
+            placeholder: "Buscar un curso",
+            allowClear: true
+        });
+        $('#select2-dropdown').on('change', function (e) {
+      
+            var data = $('#select2-dropdown').val();
+            @this.set('ottPlatform', data);
+        });
+
+</script>
+<script>
+        $('#select2-mod').select2({
+            placeholder: "Buscar modalidad",
+            allowClear: true
+        });
+
+        $('#select2-mod').on('change', function (e) {
+            var data = $('#select2-mod').val();
+            @this.set('selectedModalidad', data);
+        });
+        
+</script>
+<script>
+    $('#select2-anyo').select2({
+        placeholder: "Buscar año lectivo",
+        allowClear: true
+    });
+
+    $('#select2-anyo').on('change', function (e) {
+        var data = $('#select2-anyo').val();
+        @this.set('selectedAnyo', data);
+    });
+</script>
 @endpush

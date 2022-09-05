@@ -86,7 +86,7 @@ class Planificaciones extends Component
                             ->where('curso_id', 'LIKE', $keyWordCurso)
                             ->get(['modalidad', 'Precio', 'imagen', 'Nombre', 'curso_id',
                             'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
-                            'HorarioInicio', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId'])
+                            'HorarioInicio', 'HorarioFin', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId'])
                             
               		    
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
@@ -103,37 +103,8 @@ class Planificaciones extends Component
             ->with('Cursos')->get();
     }
 
-   /* public function getInscriptionProperty ()
-    {
-
-        planificacione::join('inscripciones', 'planificaciones.id', '=', 'inscripciones.planificacione_id' ) 
-                            ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
-                            ->join('users', 'users.id', '=', 'estudiantes.user_id')
-                            ->join('cursos', 'cursos.id', '=', 'planificaciones.curso_id')
-                            ->where('user_id',auth()->user()->id)
-                            
-                            ->get(['modalidad', 'Precio', 'imagen', 'Nombre', 
-                            'inscripciones.Id as InscripcionId',
-                            'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
-                            'HorarioInicio', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId']);
-                           
-    }
-
-    ->orWhere('planificaciones.Trimestre', 'LIKE', $keyWord)
-			->orWhere('planificaciones.Anyo', 'LIKE', $keyWord)
-            ->orWhere('modalidad', 'LIKE', $keyWord)
-			->orWhere('FechaInicio', 'LIKE', $keyWord)
-			->orWhere('FechaFin', 'LIKE', $keyWord)
-			->orWhere('HorarioInicio', 'LIKE', $keyWord)
-            ->orWhere('HorarioFin', 'LIKE', $keyWord)
-			->orWhere('cursos.Nombre', 'LIKE', $keyWord)
-            
-            ->select('modalidad', 'Precio', 'imagen', 'Nombre', 
-                            'inscripciones.Id as InscripcionId',
-                            'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
-                            'HorarioInicio', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId')
-            */
-	
+                      
+ 
     public function alerta()
     {
         session()->flash('message2', 'Esta planificacion no puede ser eliminada. Tiene estudiantes inscritos');

@@ -11,7 +11,7 @@
                         </div>
 
                         <div>
-                            <input wire:model='keyWord' type="text" class="form-control" name="search" id="search"
+                            <input wire:model='keyWordTrimestre' type="text" class="form-control" name="search" id="search"
                                 placeholder="Buscar inscripciones">
 
                         </div>
@@ -39,6 +39,45 @@
                 </script>
                 @endif
                 <div class="card-body">
+                    <div class = "row ml-2">
+                       
+                        <div >
+                            <i class="fas fa-filter"></i>
+                            <label>Filtrar: </label>
+                        </div>
+                        <div wire:ignore class="col-md-4">
+                            <select class="form-control" id="select2-cur" wire:model="keyWordCurso">
+                                <option value="">Select Option</option>
+                                @foreach ($cursos as $curso)
+                                    <option value="{{$curso->id}}">{{$curso->Nombre}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div wire:ignore class="col-md-4">
+                            <select class="form-control" id="select2-est" >
+                                <option value="">Seleccione un estudiante</option>
+                                @foreach ($estudiantes as $estudiante)
+                                    <option value="{{$estudiante->id}}">{{$estudiante->Nombres}} {{$estudiante->Apellidos}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        <div wire:ignore class="col-md-3">
+                            <select  class="form-control" id="select2-tri">
+                                <option value="">Seleccione un trimestre</option>
+                                @foreach ($trimestres as $trimestre)
+                                    <option value="{{$trimestre->Nombre}}">{{$trimestre->Nombre}}</option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+                        <div>
+                            
+                        </div>
+                   
+                
+            </div><br>
                     @include('livewire.inscripciones.create')
                     @include('livewire.inscripciones.update')
                     <div class="table-responsive">
@@ -56,19 +95,19 @@
                             </thead>
                             <tbody>
                                 @foreach($inscripciones as $row)
-
+                               
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->Trimestre }}</td>
                                     <td>{{ $row->Anyo }}</td>
-                                    <td>{{ $row->estudiante->Nombres }} {{ $row->estudiante->Apellidos }}</td>
-                                    <td>{{ $row->planificacione->curso->Nombre }} - {{$row->planificacione->modalidad}}
+                                    <td>{{ $row->Nombres }} {{ $row->Apellidos }}</td>
+                                    <td>{{ $row->Nombre }} - {{$row->modalidad}}
                                     </td>
                                     <td>
 
                                        
 										<input type="checkbox"  @if($row->estadoPago == "Pagado")  checked @endif
-										 wire:change="changeEvent(event.target.checked, {{$row->id}})" 
+										 wire:change="changeEvent(event.target.checked, {{$row->InscripcionId}})" 
 										class="form-check-input" id="exampleCheck1">
                                         <!--<select id="{{$row->id}}" class="form-control  text-success"
                                             >
@@ -98,11 +137,11 @@
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 @can('Editar registros')
                                                 <a data-toggle="modal" data-target="#updateModal" class="dropdown-item"
-                                                    wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i>Editar
+                                                    wire:click="edit({{$row->InscripcionId}})"><i class="fa fa-edit"></i>Editar
                                                 </a>
                                                 @endcan
                                                 @can('Eliminar registros')
-                                                <a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i
+                                                <a class="dropdown-item" wire:click="emitirEvento({{$row->InscripcionId}})"><i
                                                         class="fa fa-trash"></i> Borrar</a>
                                                 @endcan
                                             </div>
@@ -111,7 +150,7 @@
                                     @endforeach
                             </tbody>
                         </table>
-                        {{ $inscripciones->links() }}
+                       
                     </div>
                 </div>
             </div>

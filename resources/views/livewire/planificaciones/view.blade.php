@@ -122,6 +122,7 @@ use App\Http\Livewire\Inscripciones;
                                         </small>
                                         <hr>
                                     </h5>
+                                
                                     <p class="card-text">
                                         <?php $contar = Planificaciones::contar($row->PlanificacionId)  ?>
                                         <!-- contador de inscripciones-->

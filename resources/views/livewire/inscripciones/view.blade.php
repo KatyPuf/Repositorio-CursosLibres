@@ -10,11 +10,6 @@
                                 Listado de inscripciones </h4>
                         </div>
 
-                        <div>
-                            <input wire:model='keyWordTrimestre' type="text" class="form-control" name="search" id="search"
-                                placeholder="Buscar inscripciones">
-
-                        </div>
                         @can('Crear registros')
                         <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
                             <i class="fa fa-plus"></i> Agregar
@@ -39,47 +34,64 @@
                 </script>
                 @endif
                 <div class="card-body">
-                    <div class = "row ml-2">
-                       
-                        <div >
+                    <div class="row ml-2">
+
+                        <div>
                             <i class="fas fa-filter"></i>
                             <label>Filtrar: </label>
                         </div>
-                        <div wire:ignore class="col-md-4">
+                        <div wire:ignore class="col-md-3">
                             <select class="form-control" id="select2-cur" wire:model="keyWordCurso">
                                 <option value="">Select Option</option>
                                 @foreach ($cursos as $curso)
-                                    <option value="{{$curso->id}}">{{$curso->Nombre}}</option>
+                                <option value="{{$curso->id}}">{{$curso->Nombre}}</option>
                                 @endforeach
-                            </select>
-                        </div>
-                        <div wire:ignore class="col-md-4">
-                            <select class="form-control" id="select2-est" >
-                                <option value="">Seleccione un estudiante</option>
-                                @foreach ($estudiantes as $estudiante)
-                                    <option value="{{$estudiante->id}}">{{$estudiante->Nombres}} {{$estudiante->Apellidos}}</option>
-                                @endforeach
-
                             </select>
                         </div>
                         <div wire:ignore class="col-md-3">
-                            <select  class="form-control" id="select2-tri">
-                                <option value="">Seleccione un trimestre</option>
-                                @foreach ($trimestres as $trimestre)
-                                    <option value="{{$trimestre->Nombre}}">{{$trimestre->Nombre}}</option>
+                            <select class="form-control" id="select2-est">
+                                <option value="">Seleccione un estudiante</option>
+                                @foreach ($estudiantes as $estudiante)
+                                <option value="{{$estudiante->id}}">{{$estudiante->Nombres}} {{$estudiante->Apellidos}}
+                                </option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        
+                        <div wire:ignore class="col-md-2">
+                            <select class="form-control" id="select2-anyo-ins">
+                                <option value="">Seleccionar año lectivo</option>
+                                @foreach ($anyos as $anyo)
+                                <option value="{{$anyo->AnyoLectivo}}">{{$anyo->AnyoLectivo}}</option>
                                 @endforeach
 
                             </select>
 
                         </div>
-                        <div>
-                            
+                        <div wire:ignore class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input class="form-control form-control-sm" type="date" id="FechaFilter" class="form-control">
+
+                                </div>
+                                <div>
+                                    <button id="reset-date" type="button" class="btn btn-primary btn-sm pt-1">X</button>
+                          
+                                </div>
+                            </div>
+                           
                         </div>
-                   
-                
-            </div><br>
+                       
+                    </div><br>
+                  
                     @include('livewire.inscripciones.create')
                     @include('livewire.inscripciones.update')
+                    <?php
+                        date_default_timezone_set("America/Managua");
+                        setlocale(LC_TIME, 'es_VE.UTF-8','esp'); 
+                       
+                     ?>
                     <div class="table-responsive">
                         <table class="table table-bordered table-sm text-center">
                             <thead class="thead">
@@ -89,26 +101,28 @@
                                     <th>Año</th>
                                     <th>Estudiante</th>
                                     <th>Planificación</th>
+                                    <th>Fecha creación</th>
                                     <th>Pagado</th>
                                     <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($inscripciones as $row)
-                               
+
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->Trimestre }}</td>
                                     <td>{{ $row->Anyo }}</td>
                                     <td>{{ $row->Nombres }} {{ $row->Apellidos }}</td>
-                                    <td>{{ $row->Nombre }} - {{$row->modalidad}}
-                                    </td>
+                                    <td>{{ $row->Nombre }} - {{$row->modalidad}}</td>
+                                    <td>{{strftime('%A %e de %B de %Y',  strtotime($row->created_at))}}</td>
+
                                     <td>
 
-                                       
-										<input type="checkbox"  @if($row->estadoPago == "Pagado")  checked @endif
-										 wire:change="changeEvent(event.target.checked, {{$row->InscripcionId}})" 
-										class="form-check-input" id="exampleCheck1">
+
+                                        <input type="checkbox" @if($row->estadoPago == "Pagado") checked @endif
+                                        wire:change="changeEvent(event.target.checked, {{$row->InscripcionId}})"
+                                        class="form-check-input" id="exampleCheck1">
                                         <!--<select id="{{$row->id}}" class="form-control  text-success"
                                             >
 
@@ -116,7 +130,7 @@
                                             <option value="Pendiente">Pendiente</option>
                                         </select> -->
 
-                                       
+
 
                                         <!--<select id="{{$row->id}}" class="form-control text-danger"
                                             wire:change="changeEvent(event.target.value, {{$row->id}})">
@@ -125,7 +139,7 @@
                                             <option value="Pendiente" selected>Pendiente</option>
                                         </select>-->
 
-                                        
+
 
                                     </td>
                                     <td width="90">
@@ -137,11 +151,13 @@
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 @can('Editar registros')
                                                 <a data-toggle="modal" data-target="#updateModal" class="dropdown-item"
-                                                    wire:click="edit({{$row->InscripcionId}})"><i class="fa fa-edit"></i>Editar
+                                                    wire:click="edit({{$row->InscripcionId}})"><i
+                                                        class="fa fa-edit"></i>Editar
                                                 </a>
                                                 @endcan
                                                 @can('Eliminar registros')
-                                                <a class="dropdown-item" wire:click="emitirEvento({{$row->InscripcionId}})"><i
+                                                <a class="dropdown-item"
+                                                    wire:click="emitirEvento({{$row->InscripcionId}})"><i
                                                         class="fa fa-trash"></i> Borrar</a>
                                                 @endcan
                                             </div>
@@ -150,7 +166,7 @@
                                     @endforeach
                             </tbody>
                         </table>
-                       
+
                     </div>
                 </div>
             </div>
@@ -188,5 +204,53 @@
 
         Swal.fire('Any fool can use a computer'.$RecordId)
     })
+</script>
+<script>
+    $('#select2-cur').select2({
+        placeholder: "Buscar un curso",
+        allowClear: true
+    });
+    $('#select2-cur').on('change', function (e) {
+
+        var data = $('#select2-cur').val();
+        @this.set('selectedCurso', data);
+    });
+</script>
+<script>
+    $('#select2-est').select2({
+        placeholder: "Buscar estudiante",
+        allowClear: true
+    });
+
+    $('#select2-est').on('change', function (e) {
+        var data = $('#select2-est').val();
+        @this.set('selectedEstudiante', data);
+    });
+</script>
+<script>
+   
+    $('#FechaFilter').on('change', function (e) {
+        var data = $('#FechaFilter').val();
+        @this.set('selectedFecha', data);
+    });
+</script>
+<script>
+    $('#select2-anyo-ins').select2({
+        placeholder: "Buscar año lectivo",
+        allowClear: true
+    });
+
+    $('#select2-anyo-ins').on('change', function (e) {
+        var data = $('#select2-anyo-ins').val();
+        @this.set('selectedAnyo', data);
+    });
+</script>
+<script>
+    $("#reset-date").click(function(){
+    $('#FechaFilter').val("")
+    var data = $('#FechaFilter').val();
+        @this.set('selectedFecha', data);
+    })
+  
 </script>
 @endpush

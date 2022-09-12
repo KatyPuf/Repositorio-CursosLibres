@@ -21,9 +21,11 @@ class Inscripciones extends Component
             $Trimestre, $Anyo, $estudiante_id, $planificacione_id, $estadoPago;
     public $updateMode = false;
     protected $listeners = ['hallChanged' => 'change', 'destroy', 'prueba'];
-    public $selectedTrimestre = '';
+    public $selectedFecha = '';
     public $selectedEstudiante = '';
     public $selectedCurso = '';
+    public $selectedAnyo = '';
+
 
     public function render()
     {
@@ -32,21 +34,26 @@ class Inscripciones extends Component
         $trimestres = Trimestre::all();
         $anyos= AnyosLectivo::all();
         $cursos = Curso::all();
-		$keyWordTrimestre = '%'.$this->selectedTrimestre .'%';
+		$keyWordFecha = $this->selectedFecha .'%';
 		$keyWordCurso = '%'.$this->selectedCurso .'%';
 		$keyWordEstudiante = '%'.$this->selectedEstudiante .'%';
+		$keyWordAnyo = '%'.$this->selectedAnyo .'%';
+
+        error_log("-->".$keyWordFecha);
 
         return view('livewire.inscripciones.view', [
             'inscripciones' => Inscripcione::join('planificaciones','inscripciones.planificacione_id' , '=' ,'planificaciones.id')
                             ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
                             ->join('cursos', 'cursos.id', '=', 'planificaciones.curso_id')
-                            ->where('inscripciones.Trimestre', 'LIKE', $keyWordTrimestre)
+                            ->where('inscripciones.created_at', 'LIKE', $keyWordFecha)
 						    ->where('estudiante_id', 'LIKE', $keyWordEstudiante)
 						    ->where('curso_id', 'LIKE', $keyWordCurso)
+                            ->where('inscripciones.Anyo', 'LIKE', $keyWordAnyo )
                             ->get(['inscripciones.id as InscripcionId', 'inscripciones.Trimestre',
                                 'inscripciones.Anyo', 'cursos.Nombre', 'inscripciones.estadoPago',
                                 'estudiantes.id as EstudianteId', 'estudiantes.Nombres', 'estudiantes.Apellidos',
-                                'planificaciones.id as PlanificacionId', 'planificaciones.modalidad'
+                                'planificaciones.id as PlanificacionId', 'planificaciones.modalidad',
+                                'inscripciones.created_at'
                             ])
 						    
         ], compact('estudiantes','planificaciones','trimestres', 'anyos', 'cursos'));
@@ -123,6 +130,7 @@ class Inscripciones extends Component
 		'Anyo' => 'required',
 		'estudiante_id' => 'required',
 		'planificacione_id' => 'required',
+        
         ]);
 
             if($this->validar($this->Trimestre, $this->estudiante_id)==0){

@@ -372,11 +372,15 @@ class Planificaciones extends Component
     
       if( $this->validar($this->modalidad, $this->Trimestre, $this->Anyo) == 0)
       {
+        date_default_timezone_set("America/Managua");
+        setlocale(LC_TIME, 'es_VE.UTF-8','esp');
+        
           Inscripcione::create([ 
             'Trimestre' => $this-> Trimestre,
             'Anyo' => $this-> Anyo,
             'estudiante_id' => $this->cod,
-            'planificacione_id' => $this-> idp
+            'planificacione_id' => $this-> idp,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
 
         $this->resetInputEstudiante();

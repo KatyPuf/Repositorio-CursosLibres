@@ -6,21 +6,44 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\CursosEjecutado;
 use App\Models\Curso;
+use App\Models\AnyosLectivo;
+use App\Models\Modalidade;
 
 class CursosEjecutados extends Component
 {
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $Trimestre, $Anyo, $modalidad, $FechaInicio, $FechaFin, $HorarioInicio, $HorarioFin, $curso_id;
+    public $selected_id, $keyWord, $keyWordModalidad, $keyWordAnyo, $Trimestre, $Anyo, $modalidad, $FechaInicio, $FechaFin, $HorarioInicio, 
+           $HorarioFin, $curso_id;
     public $updateMode = false;
     protected $listeners = ['destroy'];
 
+    public $selectedNombre = '';
+    public $selectedModalidad = '';
+    public $selectedAnyo = '';
+
     public function render()
     {
-		$keyWord = '%'.$this->keyWord .'%';
+		$keyWord = '%'.$this->selectedNombre .'%';
+		$keyWordModalidad = '%'.$this->selectedModalidad .'%';
+		$keyWordAnyo = '%'.$this->selectedAnyo .'%';
+        $modalidades = Modalidade::all();
+        $anyos = AnyosLectivo::all();
+        $cursos = Curso::all();
+
         return view('livewire.cursos-ejecutados.view', [
-            'cursosEjecutados' => CursosEjecutado::latest('id')
+            'cursosEjecutados' => CursosEjecutado::join('cursos', 'cursos_ejecutados.curso_id', "=", "cursos.id")
+                                  ->where('cursos.id', 'LIKE', $keyWord)
+                                  ->where('modalidad', 'LIKE', $keyWordModalidad)
+                                  ->where('Anyo' ,'Like', $keyWordAnyo)
+                                  ->get(['cursos_ejecutados.id','Nombre', 'Trimestre', 'Anyo', 'modalidad',
+                                        'FechaInicio', 'FechaFin', 'HorarioInicio', 'HorarioFin', 'cursos_ejecutados.created_at'
+                                    ])
+        ],compact('cursos', 'modalidades', 'anyos'));
+    }
+	
+    /*latest('id')
 						->orWhere('Trimestre', 'LIKE', $keyWord)
 						->orWhere('Anyo', 'LIKE', $keyWord)
                         ->orWhere('modalidad', 'LIKE', $keyWord)
@@ -28,11 +51,7 @@ class CursosEjecutados extends Component
 						->orWhere('FechaFin', 'LIKE', $keyWord)
 						->orWhere('HorarioInicio', 'LIKE', $keyWord)
                         ->orWhere('HorarioFin', 'LIKE', $keyWord)
-						->orWhere('curso_id', 'LIKE', $keyWord)
-						->paginate(10),
-        ],['cursos' => Curso::all()]);
-    }
-	
+						->orWhere('curso_id', 'LIKE', $keyWord) */
     public function cancel()
     {
         $this->resetInput();

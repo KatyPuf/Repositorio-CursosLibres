@@ -87,7 +87,6 @@ class Planificaciones extends Component
                             ->get(['modalidad', 'Precio', 'imagen', 'Nombre', 'curso_id',
                             'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
                             'HorarioInicio', 'HorarioFin', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId'])
-                            
               		    
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }

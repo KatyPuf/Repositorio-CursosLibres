@@ -18,9 +18,7 @@
 								toastr.success("{{ session('message') }}");
 							</script>
 						@endif
-						<div>
-							<input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar cursos aperturados">
-						</div>
+						
 						@can('Crear registros')
 						<div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
 						<i class="fa fa-plus"></i>  Agregar curso
@@ -30,8 +28,38 @@
 				</div>
 				
 				<div class="card-body">
-						@include('livewire.cursos-ejecutados.create')
-						@include('livewire.cursos-ejecutados.update')
+					<div class = "row ml-2">
+						<div >
+							<i class="fas fa-filter"></i>
+							<label>Filtrar: </label>
+						</div>
+						<div wire:ignore class="col-md-4">
+							<select class="form-control" id="select2-NombreCurso" >
+								<option value="">Select Option</option>
+					    			@foreach ($cursos as $curso)
+										<option value="{{$curso->id}}">{{$curso->Nombre}}</option>
+									@endforeach
+							</select>
+						</div>
+						<div wire:ignore class="col-md-4">
+							<select class="form-control" id="select2-modC" >
+								<option value="">Select Option</option>
+					    			@foreach ($modalidades as $modalidad)
+										<option value="{{$modalidad->TipoModalidad}}">{{$modalidad->TipoModalidad}}</option>
+									@endforeach
+							</select>
+						</div>
+						<div wire:ignore class="col-md-3">
+							<select class="form-control" id="select2-AnyoC" >
+								<option value="">Select Option</option>
+					    			@foreach ($anyos as $anyo)
+										<option value="{{$anyo->AnyoLectivo}}">{{$anyo->AnyoLectivo}}</option>
+									@endforeach
+							</select>
+						</div>
+					</div><br>
+					@include('livewire.cursos-ejecutados.create')
+					@include('livewire.cursos-ejecutados.update')
 				<div class="table-responsive">
 					<table class="table table-bordered table-sm">
 						<thead class="thead">
@@ -51,7 +79,7 @@
 							@foreach($cursosEjecutados as $row)
 							<tr>
 								<td>{{ $loop->iteration }}</td> 
-								<td>{{ $row->curso->Nombre }}</td>
+								<td>{{ $row->Nombre }}</td>
 								<td>{{ $row->Trimestre }}</td>
 								<td>{{ $row->Anyo }}</td>
 								<td>{{ $row->modalidad }}</td>
@@ -77,8 +105,8 @@
 								</td>
 							@endforeach
 						</tbody>
-					</table>						
-					{{ $cursosEjecutados->links() }}
+					</table>				
+
 					</div>
 				</div>
 			</div>
@@ -89,6 +117,8 @@
 @push('js')
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
+
 <script>
 
     Livewire.on('deleteRegistro', $RecordId => {
@@ -113,5 +143,45 @@
     })
     
 </script>
+<script>
+   
+	$('#select2-NombreCurso').select2({
+		placeholder: "Buscar un curso",
+		allowClear: true
+	});
+	$('#select2-NombreCurso').on('change', function (e) {
+  
+		var data = $('#select2-NombreCurso').val();
+		@this.set('selectedNombre', data);
+	});
 
+</script>
+<script>
+   
+	$('#select2-modC').select2({
+		placeholder: "Buscar modalidad",
+		allowClear: true
+	});
+	$('#select2-modC').on('change', function (e) {
+  
+		var data = $('#select2-modC').val();
+		@this.set('selectedModalidad', data);
+	});
+
+</script>
+<script>
+   
+	$('#select2-AnyoC').select2({
+		placeholder: "Buscar año lectivo",
+		allowClear: true
+	});
+	$('#select2-AnyoC').on('change', function (e) {
+  
+		var data = $('#select2-AnyoC').val();
+		@this.set('selectedAnyo', data);
+	});
+
+</script>
 @endpush
+
+

@@ -9,7 +9,7 @@ use App\Models\Estudiante;
 use App\Models\Planificacione;
 use App\Models\Trimestre;
 use App\Models\AnyosLectivo;
-
+use App\Models\Curso;
 use Illuminate\Support\Facades\DB;
 
 class Inscripciones extends Component
@@ -17,28 +17,48 @@ class Inscripciones extends Component
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $Trimestre, $Anyo, $estudiante_id, $planificacione_id, $estadoPago;
+    public $selected_id, $keyWordTrimestre,  $keyWordEstudiante,  $keyWordCurso,
+            $Trimestre, $Anyo, $estudiante_id, $planificacione_id, $estadoPago;
     public $updateMode = false;
     protected $listeners = ['hallChanged' => 'change', 'destroy', 'prueba'];
-   
+    public $selectedFecha = '';
+    public $selectedEstudiante = '';
+    public $selectedCurso = '';
+    public $selectedAnyo = '';
+
+
     public function render()
     {
         $estudiantes = Estudiante::all();
         $planificaciones = Planificacione::all();
         $trimestres = Trimestre::all();
         $anyos= AnyosLectivo::all();
+        $cursos = Curso::all();
+		$keyWordFecha = $this->selectedFecha .'%';
+		$keyWordCurso = '%'.$this->selectedCurso .'%';
+		$keyWordEstudiante = '%'.$this->selectedEstudiante .'%';
+		$keyWordAnyo = '%'.$this->selectedAnyo .'%';
 
-		$keyWord = '%'.$this->keyWord .'%';
+        error_log("-->".$keyWordFecha);
+
         return view('livewire.inscripciones.view', [
-            'inscripciones' => Inscripcione::latest()
-						->orWhere('Trimestre', 'LIKE', $keyWord)
-						->orWhere('Anyo', 'LIKE', $keyWord)
-						->orWhere('estudiante_id', 'LIKE', $keyWord)
-						->orWhere('planificacione_id', 'LIKE', $keyWord)
-						->paginate(10),
-        ], compact('estudiantes','planificaciones','trimestres', 'anyos'));
+            'inscripciones' => Inscripcione::join('planificaciones','inscripciones.planificacione_id' , '=' ,'planificaciones.id')
+                            ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
+                            ->join('cursos', 'cursos.id', '=', 'planificaciones.curso_id')
+                            ->where('inscripciones.created_at', 'LIKE', $keyWordFecha)
+						    ->where('estudiante_id', 'LIKE', $keyWordEstudiante)
+						    ->where('curso_id', 'LIKE', $keyWordCurso)
+                            ->where('inscripciones.Anyo', 'LIKE', $keyWordAnyo )
+                            ->get(['inscripciones.id as InscripcionId', 'inscripciones.Trimestre',
+                                'inscripciones.Anyo', 'cursos.Nombre', 'inscripciones.estadoPago',
+                                'estudiantes.id as EstudianteId', 'estudiantes.Nombres', 'estudiantes.Apellidos',
+                                'planificaciones.id as PlanificacionId', 'planificaciones.modalidad',
+                                'inscripciones.created_at'
+                            ])
+						    
+        ], compact('estudiantes','planificaciones','trimestres', 'anyos', 'cursos'));
     }
-
+    
     public $filters = [
         'Nombres' => '',
         'Apellidos' => '',
@@ -110,6 +130,7 @@ class Inscripciones extends Component
 		'Anyo' => 'required',
 		'estudiante_id' => 'required',
 		'planificacione_id' => 'required',
+        
         ]);
 
             if($this->validar($this->Trimestre, $this->estudiante_id)==0){

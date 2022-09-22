@@ -26,6 +26,8 @@ class Planificaciones extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, 
             $keyWord, 
+            $keyWordAnyo,
+            $keyWordCurso,
             $Trimestre, 
             $Anyo,
             $FechaInicio, 
@@ -54,33 +56,54 @@ class Planificaciones extends Component
             $listaEstudiantes;
     public $updateMode = false;
     public $Cursos = null;
-    protected $listeners = ['destroy', 'aperturar', 'generarPdfBienvenida'];
+    public $ottPlatform = '';
+    public $selectedAnyo = '';
+    public $selectedModalidad = '';
 
-  
+    protected $listeners = ['destroy', 'aperturar', 'generarPdfBienvenida'];
+    public $filters = [
+        'Anyo' => ''
+    ];
+
+   
+
     public function render()
     {
         
         
-		$keyWord = '%'.$this->keyWord .'%';
+		$keyWord = '%'.$this->selectedModalidad .'%';
+        $keyWordAnyo = '%'.$this->selectedAnyo.'%';
+        $keyWordCurso= '%'.$this->ottPlatform .'%';
         $cursos = Curso::all();
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
         $trimestres = Trimestre::all();
         $telefonias = EmpresasTelefonica::all();
         return view('livewire.planificaciones.view', [
-            'planificaciones' => Planificacione::latest('id')
-						->orWhere('Trimestre', 'LIKE', $keyWord)
-						->orWhere('Anyo', 'LIKE', $keyWord)
-                        ->orWhere('modalidad', 'LIKE', $keyWord)
-						->orWhere('FechaInicio', 'LIKE', $keyWord)
-						->orWhere('FechaFin', 'LIKE', $keyWord)
-						->orWhere('HorarioInicio', 'LIKE', $keyWord)
-                        ->orWhere('HorarioFin', 'LIKE', $keyWord)
-						->orWhere('curso_id', 'LIKE', $keyWord)
-						->paginate(10),
+            'planificaciones' => planificacione::join('cursos', 'planificaciones.curso_id', '=', 'cursos.id' ) 
+                            ->where('modalidad', 'LIKE', $keyWord)
+                            ->where('Anyo', 'LIKE', $keyWordAnyo)
+                            ->where('curso_id', 'LIKE', $keyWordCurso)
+                            ->get(['modalidad', 'Precio', 'imagen', 'Nombre', 'curso_id',
+                            'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
+                            'HorarioInicio', 'HorarioFin', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId'])
+              		    
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }
-	
+
+  
+    public function getPlanificacionProperty ()
+    {
+        error_log("FILTRANDO");
+        return Planificacione::query()
+            ->when($this->filters['Anyo'], function($query){
+                return $query->where('Anyo', 'like', $this->keyWordAnyo);
+            })
+            ->with('Cursos')->get();
+    }
+
+                      
+ 
     public function alerta()
     {
         session()->flash('message2', 'Esta planificacion no puede ser eliminada. Tiene estudiantes inscritos');
@@ -348,11 +371,15 @@ class Planificaciones extends Component
     
       if( $this->validar($this->modalidad, $this->Trimestre, $this->Anyo) == 0)
       {
+        date_default_timezone_set("America/Managua");
+        setlocale(LC_TIME, 'es_VE.UTF-8','esp');
+        
           Inscripcione::create([ 
             'Trimestre' => $this-> Trimestre,
             'Anyo' => $this-> Anyo,
             'estudiante_id' => $this->cod,
-            'planificacione_id' => $this-> idp
+            'planificacione_id' => $this-> idp,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
 
         $this->resetInputEstudiante();

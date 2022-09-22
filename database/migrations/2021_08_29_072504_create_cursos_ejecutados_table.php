@@ -25,6 +25,7 @@ class CreateCursosEjecutadosTable extends Migration
             $table->foreignId("curso_id")->references("id")->on("cursos")
             ->onDelete('cascade')
             ->onUpdate('cascade');
+            $table->timestamps();
         });
     }
 

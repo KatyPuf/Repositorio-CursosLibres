@@ -37,7 +37,7 @@
                 <div class = "row">
                      <div class="form-group col-md-5">
                         <label for="celular">Celular</label>
-                        <input wire:model="celular" type="text" class="form-control" id="celular" placeholder="celular">@error('celular') <span class="error text-danger">{{ $message }}</span> @enderror
+                        <input wire:model="celular" type="tel" maxlength="8" minlength="8" class="form-control" id="celular" placeholder="celular">@error('celular') <span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                        
                     <div class="form-group col-md-5">

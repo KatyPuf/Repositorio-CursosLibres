@@ -9,7 +9,7 @@ class Inscripcione extends Model
 {
 	use HasFactory;
 	
-    public $timestamps = false; 
+    public $timestamps = true; 
 
     protected $table = 'inscripciones';
     protected $fillable = ['Trimestre','Anyo','estudiante_id','planificacione_id', 'estadoPago'];

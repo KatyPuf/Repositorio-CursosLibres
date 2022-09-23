@@ -55,7 +55,7 @@ class Inscripciones extends Component
 
         error_log($items);
         return view('livewire.inscripciones.view', [
-                            'inscripciones' => $items->toBase()->paginate(2)
+                            'inscripciones' => $items
 						    
         ], compact('estudiantes','planificaciones','trimestres', 'anyos', 'cursos'));
     }

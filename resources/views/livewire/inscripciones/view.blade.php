@@ -108,14 +108,14 @@
                             </thead>
                             <tbody>
                                 @foreach($inscripciones as $row)
-
+                                {{$row}}
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->Trimestre }}</td>
                                     <td>{{ $row->Anyo }}</td>
                                     <td>{{ $row->Nombres }} {{ $row->Apellidos }}</td>
                                     <td>{{ $row->Nombre }} - {{$row->modalidad}}</td>
-                                    <td>{{strftime('%A %e de %B de %Y',  strtotime($row->created_at))}}</td>
+                                    <td>{{strftime('%a %e de %b de %Y',  strtotime($row->created_at))}}</td>
 
                                     <td>
 

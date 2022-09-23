@@ -262,6 +262,10 @@ class Planificaciones extends Component
     }
 
     public function aperturar($id){
+
+        date_default_timezone_set("America/Managua");
+        setlocale(LC_TIME, 'es_VE.UTF-8','esp');
+     
         $record = Planificacione::findOrFail($id);
         CursosEjecutado::create([ 
 			'Trimestre' => $record-> Trimestre,
@@ -272,6 +276,7 @@ class Planificaciones extends Component
 			'HorarioInicio' => $record-> HorarioInicio,
             'HorarioFin' => $record-> HorarioFin,
 			'curso_id' => $record-> curso_id,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
         //session()->flash('message', 'Curso aperturado.');
 

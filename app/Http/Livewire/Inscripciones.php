@@ -11,7 +11,7 @@ use App\Models\Trimestre;
 use App\Models\AnyosLectivo;
 use App\Models\Curso;
 use Illuminate\Support\Facades\DB;
-
+use App\Support\Collection;
 class Inscripciones extends Component
 {
     use WithPagination;
@@ -39,22 +39,23 @@ class Inscripciones extends Component
 		$keyWordEstudiante = '%'.$this->selectedEstudiante .'%';
 		$keyWordAnyo = '%'.$this->selectedAnyo .'%';
 
-        error_log("-->".$keyWordFecha);
+        $items = (Inscripcione::join('planificaciones','inscripciones.planificacione_id' , '=' ,'planificaciones.id')
+        ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
+        ->join('cursos', 'cursos.id', '=', 'planificaciones.curso_id')
+        ->where('inscripciones.created_at', 'LIKE', $keyWordFecha)
+        ->where('estudiante_id', 'LIKE', $keyWordEstudiante)
+        ->where('curso_id', 'LIKE', $keyWordCurso)
+        ->where('inscripciones.Anyo', 'LIKE', $keyWordAnyo )
+        ->get(['inscripciones.id as InscripcionId', 'inscripciones.Trimestre',
+            'inscripciones.Anyo', 'cursos.Nombre', 'inscripciones.estadoPago',
+            'estudiantes.id as EstudianteId', 'estudiantes.Nombres', 'estudiantes.Apellidos',
+            'planificaciones.id as PlanificacionId', 'planificaciones.modalidad',
+            'inscripciones.created_at'
+        ]));
 
+        error_log($items);
         return view('livewire.inscripciones.view', [
-            'inscripciones' => Inscripcione::join('planificaciones','inscripciones.planificacione_id' , '=' ,'planificaciones.id')
-                            ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
-                            ->join('cursos', 'cursos.id', '=', 'planificaciones.curso_id')
-                            ->where('inscripciones.created_at', 'LIKE', $keyWordFecha)
-						    ->where('estudiante_id', 'LIKE', $keyWordEstudiante)
-						    ->where('curso_id', 'LIKE', $keyWordCurso)
-                            ->where('inscripciones.Anyo', 'LIKE', $keyWordAnyo )
-                            ->get(['inscripciones.id as InscripcionId', 'inscripciones.Trimestre',
-                                'inscripciones.Anyo', 'cursos.Nombre', 'inscripciones.estadoPago',
-                                'estudiantes.id as EstudianteId', 'estudiantes.Nombres', 'estudiantes.Apellidos',
-                                'planificaciones.id as PlanificacionId', 'planificaciones.modalidad',
-                                'inscripciones.created_at'
-                            ])
+                            'inscripciones' => $items->toBase()->paginate(2)
 						    
         ], compact('estudiantes','planificaciones','trimestres', 'anyos', 'cursos'));
     }
@@ -194,7 +195,7 @@ class Inscripciones extends Component
 
     public function destroy($id)
     {
-        error_log("---------");
+       
         if ($id) {
             $record = Inscripcione::where('id', $id);
             $record->delete();

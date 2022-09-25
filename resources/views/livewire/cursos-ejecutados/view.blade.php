@@ -128,7 +128,7 @@
 							@endforeach
 						</tbody>
 					</table>				
-					{{ $cursosEjecutados->links() }}
+					{{ $cursosEjecutados->appends(['cursosEjecutados' => $cursosEjecutados])->links()}}
 					</div>
 				</div>
 			</div>

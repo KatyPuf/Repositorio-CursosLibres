@@ -39,6 +39,7 @@ class Inscripciones extends Component
 		$keyWordEstudiante = '%'.$this->selectedEstudiante .'%';
 		$keyWordAnyo = '%'.$this->selectedAnyo .'%';
 
+        
         $items = (Inscripcione::join('planificaciones','inscripciones.planificacione_id' , '=' ,'planificaciones.id')
         ->join('estudiantes', 'estudiantes.id', '=', 'inscripciones.estudiante_id')
         ->join('cursos', 'cursos.id', '=', 'planificaciones.curso_id')
@@ -46,14 +47,14 @@ class Inscripciones extends Component
         ->where('estudiante_id', 'LIKE', $keyWordEstudiante)
         ->where('curso_id', 'LIKE', $keyWordCurso)
         ->where('inscripciones.Anyo', 'LIKE', $keyWordAnyo )
-        ->get(['inscripciones.id as InscripcionId', 'inscripciones.Trimestre',
+        ->select('inscripciones.id as InscripcionId', 'inscripciones.Trimestre',
             'inscripciones.Anyo', 'cursos.Nombre', 'inscripciones.estadoPago',
             'estudiantes.id as EstudianteId', 'estudiantes.Nombres', 'estudiantes.Apellidos',
             'planificaciones.id as PlanificacionId', 'planificaciones.modalidad',
             'inscripciones.created_at'
-        ]));
+        )->paginate(10));
 
-        error_log($items);
+        
         return view('livewire.inscripciones.view', [
                             'inscripciones' => $items
 						    

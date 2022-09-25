@@ -108,7 +108,7 @@
                             </thead>
                             <tbody>
                                 @foreach($inscripciones as $row)
-                                {{$row}}
+                               
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->Trimestre }}</td>
@@ -166,7 +166,7 @@
                                     @endforeach
                             </tbody>
                         </table>
-
+                        {{ $inscripciones->links() }}
                     </div>
                 </div>
             </div>

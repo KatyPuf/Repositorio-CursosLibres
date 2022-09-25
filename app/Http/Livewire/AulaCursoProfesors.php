@@ -14,22 +14,41 @@ class AulaCursoProfesors extends Component
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $profesor_id, $curso_ejecutado_id, $aula_id;
+    public $selected_id, $keyWordAula, $keyWordCurso, $keyWordProfesor,  $profesor_id, $curso_ejecutado_id, $aula_id;
     public $updateMode = false;
     protected $listeners = ['destroy'];
-    
+    public $selectedCurso = '';
+    public $selectedProfesor = '';
+    public $selectedAula = '';
+
     public function render()
     {
+        error_log($this->selectedCurso);
+        error_log($this->selectedProfesor);
+        error_log($this->selectedAula);
+
+
         $cursos = CursosEjecutado::all();
         $profesores = Profesore::all();
         $aulas = Aula::all();
-		$keyWord = '%'.$this->keyWord .'%';
+		$keyWordAula = '%'.$this->selectedAula .'%';
+		$keyWordCurso = '%'.$this->selectedCurso .'%';
+		$keyWordProfesor = '%'.$this->selectedProfesor .'%';
+        error_log($keyWordCurso);
+       
         return view('livewire.aula-curso-profesors.view', [
-            'aulaCursoProfesors' => AulaCursoProfesor::latest('curso_ejecutado_id')
-						->orWhere('profesor_id', 'LIKE', $keyWord)
-						->orWhere('curso_ejecutado_id', 'LIKE', $keyWord)
-						->orWhere('aula_id', 'LIKE', $keyWord)
-						->paginate(10),
+            'aulaCursoProfesors' => AulaCursoProfesor::join('cursos_ejecutados', 'cursos_ejecutados.id', '=', 'aula_curso_profesor.curso_ejecutado_id')
+                                    ->join('aulas', 'aulas.id', '=', 'aula_curso_profesor.aula_id')
+                                    ->join('profesores', 'profesores.id', '=', 'aula_curso_profesor.profesor_id')
+                                    ->join('cursos', 'cursos.id', '=','cursos_ejecutados.curso_id')
+						            ->where('aula_curso_profesor.profesor_id', 'LIKE', $keyWordProfesor)
+						            ->where('aula_curso_profesor.aula_id', 'LIKE', $keyWordAula)
+						            ->where('aula_curso_profesor.curso_ejecutado_id', 'LIKE', $keyWordCurso)
+                                    ->select('aula_curso_profesor.id', 'aulas.id as aulaId', 'aulas.Nombre',
+                                            'profesores.id as profesorId', 'profesores.Nombres', 'profesores.Apellidos',
+                                            'cursos.id as cursoId', 'cursos.Nombre as NombreCurso' ,'cursos_ejecutados.modalidad', 
+                                            )
+						            ->paginate(10),
         ], compact('cursos','profesores', 'aulas'));
     }
 	

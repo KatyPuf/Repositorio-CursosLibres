@@ -84,9 +84,10 @@ class Planificaciones extends Component
                             ->where('modalidad', 'LIKE', $keyWord)
                             ->where('Anyo', 'LIKE', $keyWordAnyo)
                             ->where('curso_id', 'LIKE', $keyWordCurso)
-                            ->get(['modalidad', 'Precio', 'imagen', 'Nombre', 'curso_id',
+                            ->select('modalidad', 'Precio', 'imagen', 'Nombre', 'curso_id',
                             'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
-                            'HorarioInicio', 'HorarioFin', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId'])
+                            'HorarioInicio', 'HorarioFin', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId')
+                            ->paginate(6)
               		    
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }

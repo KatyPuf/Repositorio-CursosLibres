@@ -153,4 +153,61 @@ class HomeController extends Controller
     
     
     }
+
+
+    function restoreDatabase(){
+        $dbHost     = 'localhost';
+        $dbUsername = 'root';
+        $dbPassword = '';
+        $dbName     = 'laravel';
+        $dbPort     ='3306';
+        $filePath   = 'C:\Respaldo\CursosLibres_Backup.sql';
+  
+         //restoreDatabaseTables($dbHost, $dbUsername, $dbPassword,$dbPort, $dbName, $filePath);
+  
+  
+      // Connect & select the database
+       $db = new \mysqli($dbHost, $dbUsername, $dbPassword, $dbName,$dbPort); 
+  
+      // Temporary variable, used to store current query
+      $templine = '';
+      
+      // Read in entire file
+      $lines = file($filePath);
+      
+      //$error = '';
+      $output = array('error'=>false);
+      
+      // Loop through each line
+      foreach ($lines as $line){
+          // Skip it if it's a comment
+          if(substr($line, 0, 2) == '--' || $line == ''){
+              continue;
+          }
+          
+          // Add this line to the current segment
+          $templine .= $line;
+          
+          // If it has a semicolon at the end, it's the end of the query
+          if (substr(trim($line), -1, 1) == ';'){
+              // Perform the query
+              $query = $db->query($templine);// 
+              if(!$query){
+                  $output['error'] = true;
+                  $output['message'] = $db->error;
+              }else{
+                //$error_log($query);
+                $output['message'] = 'datos restaurados';
+                
+            }
+              // Reset temp variable to empty
+              $templine = '';
+          }
+          
+      }
+      //return $output;
+      return redirect()->route('home');
+      
+  }
+
 }

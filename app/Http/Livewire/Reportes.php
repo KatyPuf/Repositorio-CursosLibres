@@ -48,7 +48,9 @@ class Reportes extends LivewireDatatable
 
                 Column::name('cursos.Nombre')
                 ->label('Curso')
-                ->filterable(),
+                ->filterable()
+                ->truncate(8)
+                ->searchable(),
                 
                 Column::name('planificaciones.modalidad')
                 ->label('Modalidad')

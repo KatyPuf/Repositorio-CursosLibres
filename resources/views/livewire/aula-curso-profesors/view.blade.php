@@ -19,9 +19,7 @@
 							toastr.success("{{ session('message') }}");
 						</script>
 						@endif
-						<div>
-							<input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar registro">
-						</div>
+						
 						@can('Crear registros')
 						<div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
 							<i class="fa fa-plus"></i>  Agregar registro
@@ -31,6 +29,43 @@
 				</div>
 				
 				<div class="card-body">
+					<div class="row ml-2">
+
+                        <div>
+                            <i class="fas fa-filter"></i>
+                            <label>Filtrar: </label>
+                        </div>
+                        <div wire:ignore class="col-md-4">
+                            <select class="form-control" id="select2-NombreP" wire:model="keyWordProfesor">
+                                <option value="">Select Option</option>
+                                @foreach ($profesores as $profesor)
+                                <option value="{{$profesor->id}}">{{$profesor->Nombres}} {{$profesor->Apellidos}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div wire:ignore class="col-md-4">
+                            <select class="form-control" id="select2-curso" >
+                                <option value="">Seleccionar opcion</option>
+                                @foreach ($cursos as $curso)
+								
+                                <option value="{{$curso->id}}">{{$curso->curso->Nombre}} - {{$curso->modalidad}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        <div wire:ignore class="col-md-3">
+                            <select class="form-control" id="select2-aula">
+                                <option value="">Seleccionar opción</option>
+                                @foreach ($aulas as $aula)
+                                <option value="{{$aula->id}}">{{$aula->Nombre}}</option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+                       
+
+                    </div><br>
 						@include('livewire.aula-curso-profesors.create')
 						@include('livewire.aula-curso-profesors.update')
 				<div class="table-responsive">
@@ -48,9 +83,9 @@
 							@foreach($aulaCursoProfesors as $row)
 							<tr>
 								<td>{{ $loop->iteration }}</td> 
-								<td>{{ $row->profesore->Nombres}} {{ $row->profesore->Apellidos}}</td>
-								<td>{{ $row->cursosEjecutado->curso->Nombre }}</td>
-								<td>{{ $row->aula->Nombre }}</td>
+								<td>{{ $row->Nombres}} {{ $row->Apellidos}}</td>
+								<td>{{ $row->NombreCurso }}- {{$row->modalidad}}</td>
+								<td>{{ $row->Nombre }} </td>
 								<td width="90">
 								<div class="btn-group">
 									<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -81,6 +116,8 @@
 @push('js')
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
+
 <script>
 
     Livewire.on('deleteRegistro', $RecordId => {
@@ -105,5 +142,37 @@
     })
     
 </script>
+<script>
+    $('#select2-curso').select2({
+        placeholder: "Buscar por curso",
+        allowClear: true
+    });
+    $('#select2-curso').on('change', function (e) {
 
+        var data = $('#select2-curso').val();
+        @this.set('selectedCurso', data);
+    });
+</script>
+<script>
+    $('#select2-aula').select2({
+        placeholder: "Buscar por aula",
+        allowClear: true
+    });
+    $('#select2-aula').on('change', function (e) {
+
+        var data = $('#select2-aula').val();
+        @this.set('selectedAula', data);
+    });
+</script>
+<script>
+    $('#select2-NombreP').select2({
+        placeholder: "Buscar por profesor",
+        allowClear: true
+    });
+    $('#select2-NombreP').on('change', function (e) {
+
+        var data = $('#select2-NombreP').val();
+        @this.set('selectedProfesor', data);
+    });
+</script>
 @endpush

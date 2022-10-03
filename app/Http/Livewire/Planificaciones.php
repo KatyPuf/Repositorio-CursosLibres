@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
 use App\Models\EmpresasTelefonica;
 use App\Http\Controllers\HomeController;
+use Carbon\Carbon;
 
 use Alert;
 use PDF;
@@ -59,7 +60,8 @@ class Planificaciones extends Component
     public $ottPlatform = '';
     public $selectedAnyo = '';
     public $selectedModalidad = '';
-
+    public $visible =  true;
+    public $elementosOcultos = false;
     protected $listeners = ['destroy', 'aperturar', 'generarPdfBienvenida'];
     public $filters = [
         'Anyo' => ''
@@ -70,10 +72,12 @@ class Planificaciones extends Component
     public function render()
     {
         
-        
+        //$date = Carbon::now();
+        error_log("-----------".$this->visible);
 		$keyWord = '%'.$this->selectedModalidad .'%';
         $keyWordAnyo = '%'.$this->selectedAnyo.'%';
         $keyWordCurso= '%'.$this->ottPlatform .'%';
+        $keyVisible = '%'.$this->visible .'%';
         $cursos = Curso::all();
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
@@ -84,9 +88,11 @@ class Planificaciones extends Component
                             ->where('modalidad', 'LIKE', $keyWord)
                             ->where('Anyo', 'LIKE', $keyWordAnyo)
                             ->where('curso_id', 'LIKE', $keyWordCurso)
-                            ->get(['modalidad', 'Precio', 'imagen', 'Nombre', 'curso_id',
+                            ->where('visible', 'LIKE', $keyVisible)
+                            ->select('modalidad', 'Precio', 'imagen', 'Nombre', 'curso_id',
                             'planificaciones.Anyo', 'planificaciones.Trimestre','FechaInicio','FechaFin',
-                            'HorarioInicio', 'HorarioFin', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId'])
+                            'HorarioInicio', 'HorarioFin', 'linkAulaVirtuales', 'planificaciones.Id as PlanificacionId', 'visible')
+                            ->paginate(6)
               		    
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }
@@ -262,6 +268,10 @@ class Planificaciones extends Component
     }
 
     public function aperturar($id){
+
+        date_default_timezone_set("America/Managua");
+        setlocale(LC_TIME, 'es_VE.UTF-8','esp');
+     
         $record = Planificacione::findOrFail($id);
         CursosEjecutado::create([ 
 			'Trimestre' => $record-> Trimestre,
@@ -272,6 +282,7 @@ class Planificaciones extends Component
 			'HorarioInicio' => $record-> HorarioInicio,
             'HorarioFin' => $record-> HorarioFin,
 			'curso_id' => $record-> curso_id,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
         //session()->flash('message', 'Curso aperturado.');
 
@@ -401,6 +412,7 @@ class Planificaciones extends Component
     {
         $record = Estudiante::findOrFail($id);
         $planificacion = Planificacione::findOrFail($this-> idp);
+        error_log($planificacion);
         date_default_timezone_set("America/Managua");
         setlocale(LC_TIME, 'es_VE.UTF-8','esp');
         $data = [
@@ -410,7 +422,8 @@ class Planificaciones extends Component
             'modalidad' =>$planificacion->modalidad,
             'horarioInicio' => date('h:i a', strtotime($planificacion->HorarioInicio)),
             'horarioFin' =>date('h:i a', strtotime($planificacion->HorarioFin)),
-            'fechaInicio' =>strftime('%A %e de %B de %Y',  strtotime($planificacion->FechaInicio)),
+            'fechaInicio' => strftime('%A %e de %B de %Y',  strtotime($planificacion->FechaFin)) ,
+            'fechaInicio2' => strftime('%A %e de %B de %Y',  strtotime($planificacion->FechaInicio)) ,
             'fechaFin' => strftime('%A %e de %B de %Y',  strtotime($planificacion->FechaFin)) ,
             'date' => date('m/d/Y')
         ];
@@ -474,8 +487,32 @@ class Planificaciones extends Component
         ->where('planificaciones.id', $id)
         ->get();
         
-      //  $this-> $idPlanificacion = $id;
+    
         
+    }
+    public function cambiarVisibilidad($id, $visible)
+    {
+        error_log($visible);
+        $record = Planificacione::where('id', $id);
+        $record->update([ 
+			'visible' => $visible]);
+        
+    }
+    public function mostrarTodos()
+    {
+        
+        $this->visible='';
+    }
+
+    public function changeEvent($value)
+    {
+        error_log("CHANGEVENT".$value);
+        if($value == 1)
+        {
+            $this->visible='';
+        }else{
+            $this->visible=true;
+        }
     }
 }
 

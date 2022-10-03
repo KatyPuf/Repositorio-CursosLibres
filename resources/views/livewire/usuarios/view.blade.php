@@ -157,8 +157,15 @@
 	
 </script>
 <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
+	$(document).ready(function() {
+ 
+	 $('[data-toggle="tooltip"]').tooltip();
+	 if (typeof window.Livewire !== 'undefined') {
+	 	window.Livewire.hook('message.processed', (message, component) => {
+		 $('[data-toggle="tooltip"]').tooltip('dispose').tooltip();
+	 }	);
+	 }
+ 
+	});
+ </script>
 @endpush

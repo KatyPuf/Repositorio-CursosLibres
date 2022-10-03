@@ -24,11 +24,12 @@ use App\Http\Livewire\Inscripciones;
                             @endguest
                         </div>
                         <div class="col-md-6">
-                            
+
                         </div>
                         <div class="col-md-2">
                             @can('Crear registros')
-                            <div class="btn btn-sm btn-info float-right" data-toggle="modal" data-target="#exampleModal">
+                            <div class="btn btn-sm btn-info float-right" data-toggle="modal"
+                                data-target="#exampleModal">
                                 <i class="fa fa-plus"></i> Agregar
                             </div>
                             @endcan
@@ -62,45 +63,51 @@ use App\Http\Livewire\Inscripciones;
                 </div>
 
                 <div class="card-body">
-                    <div class = "row ml-2">
+                    <div class="row ml-2">
+
+                        <div>
+                            <i class="fas fa-filter"></i>
+                            <label>Filtrar: </label>
+                        </div>
+                        <div wire:ignore class="col-md-4">
+                            <select class="form-control" id="select2-dropdown" wire:model="keyWordCurso">
+                                <option value="">Select Option</option>
+                                @foreach ($cursos as $curso)
+                                <option value="{{$curso->id}}">{{$curso->Nombre}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div wire:ignore class="col-md-4">
+                            <select class="form-control" id="select2-mod" wire:model="keyWord">
+                                <option value="">Seleccionar modalidad</option>
+                                @foreach ($modalidades as $modalidade)
+                                <option value="{{$modalidade->TipoModalidad}}">{{$modalidade->TipoModalidad}} </option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        <div wire:ignore class="col-md-3">
+                            <select class="form-control" id="select2-anyo">
+                                <option value="">Seleccionar año lectivo</option>
+                                @foreach ($anyos as $anyo)
+                                <option value="{{$anyo->AnyoLectivo}}">{{$anyo->AnyoLectivo}}</option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
                        
-                                <div >
-                                    <i class="fas fa-filter"></i>
-                                    <label>Filtrar: </label>
-                                </div>
-                                <div wire:ignore class="col-md-4">
-                                    <select class="form-control" id="select2-dropdown" wire:model="keyWordCurso">
-                                        <option value="">Select Option</option>
-                                        @foreach ($cursos as $curso)
-                                            <option value="{{$curso->id}}">{{$curso->Nombre}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div wire:ignore class="col-md-4">
-                                    <select class="form-control" id="select2-mod" wire:model="keyWord">
-                                        <option value="">Seleccionar modalidad</option>
-                                        @foreach ($modalidades as $modalidade)
-                                            <option value="{{$modalidade->TipoModalidad}}">{{$modalidade->TipoModalidad}} </option>
-                                        @endforeach
 
-                                    </select>
-                                </div>
-                                <div wire:ignore class="col-md-3">
-                                    <select  class="form-control" id="select2-anyo">
-                                        <option value="">Seleccionar año lectivo</option>
-                                        @foreach ($anyos as $anyo)
-                                            <option value="{{$anyo->AnyoLectivo}}">{{$anyo->AnyoLectivo}}</option>
-                                        @endforeach
-
-                                    </select>
-
-                                </div>
-                                <div>
-                                    
-                                </div>
-                           
-                        
                     </div><br>
+                    <div class="d-flex flex-row-reverse">
+                        @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
+                        <div class="form-check">
+                            <input type="checkbox" wire:change="changeEvent(event.target.checked)" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label text-primary" for="exampleCheck1">Mostrar todos los elementos ocultos</label>
+                        </div>
+                        
+                        @endif
+                    </div>
                     @include('livewire.planificaciones.create')
                     @include('livewire.planificaciones.update')
                     @include('livewire.planificaciones.NuevaInscripcion')
@@ -112,27 +119,50 @@ use App\Http\Livewire\Inscripciones;
                             <div class="card h-100">
                                 <img class="card-img-top img-thumbnail" src="{{asset('storage/'.$row->imagen)}}" alt="">
                                 <div class="card-body">
-                                    <h5 class="card-title ">{{$row->Nombre  }} <br>
-                                        <small>
-                                            <p class="lead h6">Modalidad {{ $row->modalidad }}</p>
-                                            <h6><span class="badge rounded-pill text-dark"
-                                                    style="background-color: #FFCA03">Precio: C${{$row->Precio}}
-                                                </span></h6>
-
-                                        </small>
-                                        <hr>
-                                    </h5>
-                                
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <h5 class="card-title ">{{$row->Nombre  }} <br>
+                                                <small>
+                                                    <p class="lead h6">Modalidad {{ $row->modalidad }}</p>
+                                                    <h6><span class="badge rounded-pill text-dark"
+                                                            style="background-color: #FFCA03">Precio: C${{$row->Precio}}
+                                                        </span></h6>
+        
+                                                </small>
+                                                
+                                            </h5>
+                                        </div>
+                                        <div class="col-md-2">
+                                            @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
+                                                @if($row->visible)
+                                                <a class="text-muted" class="dropdown-item" data-toggle="tooltip" data-placement="bottom" title="Ocultar curso" wire:click="cambiarVisibilidad({{$row->PlanificacionId}}, {{0}})">
+                                                    <i class="fas fa-eye-slash"></i>
+                                                    
+                                                </a>
+                                                @else
+                                                <a class="text-muted" class="dropdown-item" data-toggle="tooltip" data-placement="bottom" title="Mostrar curso" wire:click="cambiarVisibilidad({{$row->PlanificacionId}}, {{1}})">
+                                                    <i class="fas fa-eye"></i>
+                                                    
+                                                </a>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <hr>
                                     <p class="card-text">
                                         <?php $contar = Planificaciones::contar($row->PlanificacionId)  ?>
                                         <!-- contador de inscripciones-->
                                         <?php $response = Planificaciones::buscar($row->curso_id, $row->Trimestre,$row->modalidad, $row->Anyo)  ?>
                                         <!-- Buscador de cursos ejecutados-->
 
+                                        <?php  
+                                            
+                                            $fechaI = strftime('%A %e de %B de %Y',  strtotime($row->FechaInicio))
+                                        ?>
                                         <strong>Año lectivo:</strong> {{ $row->Anyo }}<br>
                                         <strong>Trimestre: </strong>{{$row->Trimestre}}<br>
                                         <strong>Fecha:</strong>
-                                        Del {{date('j F, Y', strtotime($row->FechaInicio))}}
+                                        Del {{$fechaI}}
                                         <strong> al </strong>{{date('j F, Y', strtotime($row->FechaFin))}}<br>
 
                                         <strong>Horario: </strong>{{date('h:i a', strtotime($row->HorarioInicio))}} -
@@ -151,7 +181,7 @@ use App\Http\Livewire\Inscripciones;
 
                                     <div class="row">
                                         <div class="col-md-10">
-                                            <a style="color:#231955" ; href="">
+                                            <a style="color:#231955" ; href="" wire:click="verEstudiantes({{$row->PlanificacionId}})">
                                                 <strong>Estudiantes inscritos: </strong> {{$contar}} </a>
 
                                         </div>
@@ -161,8 +191,7 @@ use App\Http\Livewire\Inscripciones;
                                             <a class="text-muted" data-toggle="modal" data-target="#verEstudiantes"
                                                 class="dropdown-item"
                                                 wire:click="verEstudiantes({{$row->PlanificacionId}})">
-                                                <i class="fas fa-eye">
-                                                </i>
+                                                <i class="fas fa-user"></i>
                                             </a>
                                             @endif
                                         </div>
@@ -219,8 +248,7 @@ use App\Http\Livewire\Inscripciones;
                                                     <a class="dropdown-item"
                                                         href="{{url('/exportar'.'/'.$row->PlanificacionId)}}"
                                                         class="btn btn-info btn-sm"><i class="fas fa-file-alt"></i>
-                                                        Generar
-                                                        reporte
+                                                        Generar reporte
                                                     </a>
                                                     @endcan
                                                 </a>
@@ -229,7 +257,7 @@ use App\Http\Livewire\Inscripciones;
                                     </div>
 
                                     <div class="btn-group">
-                                      
+
                                         <?php $cantidad = Planificaciones::VerificarInscripcion($row->PlanificacionId)  ?>
                                         <!-- contador de inscripciones-->
 
@@ -253,8 +281,8 @@ use App\Http\Livewire\Inscripciones;
                             </div>
                         </div>
                         @endforeach
-
                     </div>
+                    {{ $planificaciones->links() }}
 
                 </div>
 
@@ -351,35 +379,30 @@ use App\Http\Livewire\Inscripciones;
     })
 </script>
 
-<script  type="text/javascript">
-     
+<script type="text/javascript">
     $('#keyWordCurso').select2();
-  
 </script>
 <script>
-   
-        $('#select2-dropdown').select2({
-            placeholder: "Buscar un curso",
-            allowClear: true
-        });
-        $('#select2-dropdown').on('change', function (e) {
-      
-            var data = $('#select2-dropdown').val();
-            @this.set('ottPlatform', data);
-        });
+    $('#select2-dropdown').select2({
+        placeholder: "Buscar un curso",
+        allowClear: true
+    });
+    $('#select2-dropdown').on('change', function (e) {
 
+        var data = $('#select2-dropdown').val();
+        @this.set('ottPlatform', data);
+    });
 </script>
 <script>
-        $('#select2-mod').select2({
-            placeholder: "Buscar modalidad",
-            allowClear: true
-        });
+    $('#select2-mod').select2({
+        placeholder: "Buscar modalidad",
+        allowClear: true
+    });
 
-        $('#select2-mod').on('change', function (e) {
-            var data = $('#select2-mod').val();
-            @this.set('selectedModalidad', data);
-        });
-        
+    $('#select2-mod').on('change', function (e) {
+        var data = $('#select2-mod').val();
+        @this.set('selectedModalidad', data);
+    });
 </script>
 <script>
     $('#select2-anyo').select2({
@@ -390,6 +413,18 @@ use App\Http\Livewire\Inscripciones;
     $('#select2-anyo').on('change', function (e) {
         var data = $('#select2-anyo').val();
         @this.set('selectedAnyo', data);
+    });
+</script>
+<script>
+   $(document).ready(function() {
+
+    $('[data-toggle="tooltip"]').tooltip();
+    if (typeof window.Livewire !== 'undefined') {
+    window.Livewire.hook('message.processed', (message, component) => {
+        $('[data-toggle="tooltip"]').tooltip('dispose').tooltip();
+    });
+    }
+
     });
 </script>
 @endpush

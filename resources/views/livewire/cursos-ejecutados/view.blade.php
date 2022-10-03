@@ -33,7 +33,7 @@
 							<i class="fas fa-filter"></i>
 							<label>Filtrar: </label>
 						</div>
-						<div wire:ignore class="col-md-4">
+						<div wire:ignore class="col-md-3">
 							<select class="form-control" id="select2-NombreCurso" >
 								<option value="">Select Option</option>
 					    			@foreach ($cursos as $curso)
@@ -41,7 +41,7 @@
 									@endforeach
 							</select>
 						</div>
-						<div wire:ignore class="col-md-4">
+						<div wire:ignore class="col-md-3">
 							<select class="form-control" id="select2-modC" >
 								<option value="">Select Option</option>
 					    			@foreach ($modalidades as $modalidad)
@@ -49,7 +49,7 @@
 									@endforeach
 							</select>
 						</div>
-						<div wire:ignore class="col-md-3">
+						<div wire:ignore class="col-md-2">
 							<select class="form-control" id="select2-AnyoC" >
 								<option value="">Select Option</option>
 					    			@foreach ($anyos as $anyo)
@@ -57,9 +57,28 @@
 									@endforeach
 							</select>
 						</div>
+						<div wire:ignore class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input class="form-control form-control-sm" type="date" id="FechaFilterC" class="form-control">
+
+                                </div>
+                                <div>
+                                    <button id="reset-dateC" type="button" class="btn btn-primary btn-sm pt-1">X</button>
+                          
+                                </div>
+                            </div>
+                           
+                        </div>
 					</div><br>
 					@include('livewire.cursos-ejecutados.create')
 					@include('livewire.cursos-ejecutados.update')
+					
+					<?php
+					date_default_timezone_set("America/Managua");
+					setlocale(LC_TIME, 'es_VE.UTF-8','esp'); 
+				   
+				   ?>
 				<div class="table-responsive">
 					<table class="table table-bordered table-sm">
 						<thead class="thead">
@@ -72,11 +91,13 @@
 								<th>Fecha de inicio</th>
 								<th>Fecha de finalización</th>
 								<th>Horario</th>
+								<th>Aperturado en</th>
 								<td>ACCIONES</td>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($cursosEjecutados as $row)
+							
 							<tr>
 								<td>{{ $loop->iteration }}</td> 
 								<td>{{ $row->Nombre }}</td>
@@ -86,6 +107,7 @@
 								<td>{{date('d-m-Y', strtotime($row->FechaInicio))}}</td>
 								<td>{{date('d-m-Y', strtotime($row->FechaFin))}}</td>
 								<td>{{date('h:i a', strtotime($row->HorarioInicio))}} - {{date('h:i a', strtotime($row->HorarioFin))}} </td>
+								<td>{{strftime('%a %e de %b de %Y',  strtotime($row->created_at))}}</td>
 								
 								<td width="90">
 								<div class="btn-group">
@@ -106,7 +128,7 @@
 							@endforeach
 						</tbody>
 					</table>				
-
+					{{ $cursosEjecutados->appends(['cursosEjecutados' => $cursosEjecutados])->links()}}
 					</div>
 				</div>
 			</div>
@@ -181,6 +203,21 @@
 		@this.set('selectedAnyo', data);
 	});
 
+</script>
+<script>
+   
+    $('#FechaFilterC').on('change', function (e) {
+        var data = $('#FechaFilterC').val();
+        @this.set('selectedFecha', data);
+    });
+</script>
+<script>
+    $("#reset-dateC").click(function(){
+    $('#FechaFilterC').val("")
+    var data = $('#FechaFilterC').val();
+        @this.set('selectedFecha', data);
+    })
+  
 </script>
 @endpush
 

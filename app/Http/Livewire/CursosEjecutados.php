@@ -14,7 +14,7 @@ class CursosEjecutados extends Component
     use WithPagination;
 
 	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $keyWordModalidad, $keyWordAnyo, $Trimestre, $Anyo, $modalidad, $FechaInicio, $FechaFin, $HorarioInicio, 
+    public $selected_id, $keyWord, $keyWordModalidad, $keyWordAnyo, $keyWordFecha ,$Trimestre, $Anyo, $modalidad, $FechaInicio, $FechaFin, $HorarioInicio, 
            $HorarioFin, $curso_id;
     public $updateMode = false;
     protected $listeners = ['destroy'];
@@ -22,12 +22,16 @@ class CursosEjecutados extends Component
     public $selectedNombre = '';
     public $selectedModalidad = '';
     public $selectedAnyo = '';
+    public $selectedFecha = '';
+
 
     public function render()
     {
 		$keyWord = '%'.$this->selectedNombre .'%';
 		$keyWordModalidad = '%'.$this->selectedModalidad .'%';
 		$keyWordAnyo = '%'.$this->selectedAnyo .'%';
+		$keyWordFecha = '%'.$this->selectedFecha .'%';
+        
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
         $cursos = Curso::all();
@@ -37,13 +41,15 @@ class CursosEjecutados extends Component
                                   ->where('cursos.id', 'LIKE', $keyWord)
                                   ->where('modalidad', 'LIKE', $keyWordModalidad)
                                   ->where('Anyo' ,'Like', $keyWordAnyo)
-                                  ->get(['cursos_ejecutados.id','Nombre', 'Trimestre', 'Anyo', 'modalidad',
-                                        'FechaInicio', 'FechaFin', 'HorarioInicio', 'HorarioFin', 'cursos_ejecutados.created_at'
-                                    ])
+                                  ->where('cursos_ejecutados.created_at', 'LIKE', $keyWordFecha)
+                                  ->paginate(10),
         ],compact('cursos', 'modalidades', 'anyos'));
     }
 	
     /*latest('id')
+     ->get(['cursos_ejecutados.id','Nombre', 'Trimestre', 'Anyo', 'modalidad',
+                                        'FechaInicio', 'FechaFin', 'HorarioInicio', 'HorarioFin', 'cursos_ejecutados.created_at'
+                                    ])
 						->orWhere('Trimestre', 'LIKE', $keyWord)
 						->orWhere('Anyo', 'LIKE', $keyWord)
                         ->orWhere('modalidad', 'LIKE', $keyWord)
@@ -72,6 +78,9 @@ class CursosEjecutados extends Component
 
     public function store()
     {
+        date_default_timezone_set("America/Managua");
+        setlocale(LC_TIME, 'es_VE.UTF-8','esp');
+
         $this->validate([
 		'Trimestre' => 'required',
 		'Anyo' => 'required',
@@ -91,7 +100,8 @@ class CursosEjecutados extends Component
 			'FechaFin' => $this-> FechaFin,
 			'HorarioInicio' => $this-> HorarioInicio,
             'HorarioFin' => $this-> HorarioFin,
-			'curso_id' => $this-> curso_id
+			'curso_id' => $this-> curso_id,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
         
         $this->resetInput();

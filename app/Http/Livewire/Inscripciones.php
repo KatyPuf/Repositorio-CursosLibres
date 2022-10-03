@@ -82,9 +82,7 @@ class Inscripciones extends Component
 
 	public function changeEvent($value, $id)
     {
-        error_log($value);
-        error_log($id);
-
+        
         $record = Inscripcione::find($id);
         if($value == 1)
         {

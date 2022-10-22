@@ -506,7 +506,7 @@ class Planificaciones extends Component
 
     public function changeEvent($value)
     {
-        error_log("CHANGEVENT".$value);
+        
         if($value == 1)
         {
             $this->visible='';

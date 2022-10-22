@@ -16,6 +16,8 @@ class CursosEjecutados extends Component
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $keyWordModalidad, $keyWordAnyo, $keyWordFecha ,$Trimestre, $Anyo, $modalidad, $FechaInicio, $FechaFin, $HorarioInicio, 
            $HorarioFin, $curso_id;
+    
+           public $visible =  true;
     public $updateMode = false;
     protected $listeners = ['destroy'];
 
@@ -31,7 +33,8 @@ class CursosEjecutados extends Component
 		$keyWordModalidad = '%'.$this->selectedModalidad .'%';
 		$keyWordAnyo = '%'.$this->selectedAnyo .'%';
 		$keyWordFecha = '%'.$this->selectedFecha .'%';
-        
+        $keyVisible = '%'.$this->visible .'%';
+
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
         $cursos = Curso::all();
@@ -42,6 +45,7 @@ class CursosEjecutados extends Component
                                   ->where('modalidad', 'LIKE', $keyWordModalidad)
                                   ->where('Anyo' ,'Like', $keyWordAnyo)
                                   ->where('cursos_ejecutados.created_at', 'LIKE', $keyWordFecha)
+                                  ->where('visible', 'LIKE', $keyVisible)
                                   ->paginate(10),
         ],compact('cursos', 'modalidades', 'anyos'));
     }
@@ -169,5 +173,25 @@ class CursosEjecutados extends Component
     {
         $this->emit('deleteRegistro', $id);
 
+    }
+
+    public function changeEvent($value)
+    {
+        
+        if($value == 1)
+        {
+            $this->visible='';
+        }else{
+            $this->visible=true;
+        }
+    }
+
+    public function cambiarVisibilidad($id, $visible)
+    {
+        error_log("!!!!Visible");
+        $record = CursosEjecutado::where('id', $id);
+        $record->update([ 
+			'visible' => $visible]);
+        
     }
 }

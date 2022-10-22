@@ -71,6 +71,16 @@
                            
                         </div>
 					</div><br>
+
+					<div class="d-flex flex-row-reverse">
+                        @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
+                        <div class="form-check">
+                            <input type="checkbox" wire:change="changeEvent(event.target.checked)" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label text-primary" for="exampleCheck1">Mostrar todos los elementos ocultos</label>
+                        </div>
+                        
+                        @endif
+                    </div><br>
 					@include('livewire.cursos-ejecutados.create')
 					@include('livewire.cursos-ejecutados.update')
 					
@@ -84,6 +94,7 @@
 						<thead class="thead">
 							<tr> 
 								<td>#</td> 
+								<th></th>
 								<th>Nombre del curso</th>
 								<th>Trimestre</th>
 								<th>Año</th>
@@ -96,10 +107,26 @@
 							</tr>
 						</thead>
 						<tbody>
+							
 							@foreach($cursosEjecutados as $row)
 							
 							<tr>
 								<td>{{ $loop->iteration }}</td> 
+								<td>
+									@if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
+                                    	 @if($row->visible)
+                                                <a class="text-muted" class="dropdown-item" data-toggle="tooltip" data-placement="bottom" title="Ocultar curso" wire:click="cambiarVisibilidad({{$row->curso_ejecutado_id}}, {{0}})">
+                                                    <i class="fas fa-eye-slash"></i>
+                                                    
+                                                </a>
+                                                @else
+                                                <a class="text-muted" class="dropdown-item" data-toggle="tooltip" data-placement="bottom" title="Mostrar curso" wire:click="cambiarVisibilidad({{$row->curso_ejecutado_id}}, {{1}})">
+                                                    <i class="fas fa-eye"></i>
+                                                    
+                                                </a>
+                                            @endif
+                                     @endif
+								</td>
 								<td>{{ $row->Nombre }}</td>
 								<td>{{ $row->Trimestre }}</td>
 								<td>{{ $row->Anyo }}</td>

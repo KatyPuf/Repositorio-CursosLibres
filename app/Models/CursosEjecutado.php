@@ -13,7 +13,7 @@ class CursosEjecutado extends Model
 
     protected $table = 'cursos_ejecutados';
 
-    protected $fillable = ['Trimestre','Anyo','modalidad','FechaInicio','FechaFin','HorarioInicio','HorarioFin','curso_id'];
+    protected $fillable = ['Trimestre','Anyo','modalidad','FechaInicio','FechaFin','HorarioInicio','HorarioFin','curso_id', 'visible'];
 	
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -72,8 +72,6 @@ class Planificaciones extends Component
     public function render()
     {
         
-        //$date = Carbon::now();
-        error_log("-----------".$this->visible);
 		$keyWord = '%'.$this->selectedModalidad .'%';
         $keyWordAnyo = '%'.$this->selectedAnyo.'%';
         $keyWordCurso= '%'.$this->ottPlatform .'%';

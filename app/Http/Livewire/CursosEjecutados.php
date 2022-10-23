@@ -40,7 +40,7 @@ class CursosEjecutados extends Component
         $cursos = Curso::all();
 
         return view('livewire.cursos-ejecutados.view', [
-            'cursosEjecutados' => CursosEjecutado::join('cursos', 'cursos_ejecutados.curso_id', "=", "cursos.id")
+            'cursosEjecutados' => Curso::join('cursos_ejecutados', 'cursos_ejecutados.curso_id', "=", "cursos.id")
                                   ->where('cursos.id', 'LIKE', $keyWord)
                                   ->where('modalidad', 'LIKE', $keyWordModalidad)
                                   ->where('Anyo' ,'Like', $keyWordAnyo)
@@ -188,7 +188,7 @@ class CursosEjecutados extends Component
 
     public function cambiarVisibilidad($id, $visible)
     {
-        error_log("!!!!Visible");
+        error_log($id);
         $record = CursosEjecutado::where('id', $id);
         $record->update([ 
 			'visible' => $visible]);

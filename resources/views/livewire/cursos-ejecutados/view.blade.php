@@ -115,12 +115,12 @@
 								<td>
 									@if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') )
                                     	 @if($row->visible)
-                                                <a class="text-muted" class="dropdown-item" data-toggle="tooltip" data-placement="bottom" title="Ocultar curso" wire:click="cambiarVisibilidad({{$row->curso_ejecutado_id}}, {{0}})">
+                                                <a class="text-muted" class="dropdown-item" data-toggle="tooltip" data-placement="bottom" title="Ocultar curso" wire:click="cambiarVisibilidad({{$row->id}},{{0}})" >
                                                     <i class="fas fa-eye-slash"></i>
                                                     
                                                 </a>
                                                 @else
-                                                <a class="text-muted" class="dropdown-item" data-toggle="tooltip" data-placement="bottom" title="Mostrar curso" wire:click="cambiarVisibilidad({{$row->curso_ejecutado_id}}, {{1}})">
+                                                <a class="text-muted" class="dropdown-item" data-toggle="tooltip" data-placement="bottom" title="Mostrar curso" wire:click="cambiarVisibilidad({{$row->id}},{{1}})">
                                                     <i class="fas fa-eye"></i>
                                                     
                                                 </a>
@@ -152,6 +152,7 @@
 									</div>
 								</div>
 								</td>
+							</tr>
 							@endforeach
 						</tbody>
 					</table>				
@@ -246,6 +247,18 @@
     })
   
 </script>
+<script>
+	$(document).ready(function() {
+ 
+	 $('[data-toggle="tooltip"]').tooltip();
+	 if (typeof window.Livewire !== 'undefined') {
+	 window.Livewire.hook('message.processed', (message, component) => {
+		 $('[data-toggle="tooltip"]').tooltip('dispose').tooltip();
+	 });
+	 }
+ 
+	 });
+ </script>
 @endpush
 
 

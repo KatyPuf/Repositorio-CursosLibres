@@ -11,8 +11,8 @@
            <div class="modal-body">
 				<form>
             <div class="form-group">
-                <label for="AnyoLectivo"></label>
-                <input wire:model="AnyoLectivo" type="text" class="form-control" id="AnyoLectivo" placeholder="Año lectivo">@error('AnyoLectivo') <span class="error text-danger">{{ $message }}</span> @enderror
+                <label for="AnyoLectivo">Año Lectivo</label>
+                <input wire:model="AnyoLectivo" type="text" class="form-control" id="AnyoLectivo" placeholder="Ingrese nuevo año lectivo">@error('AnyoLectivo') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
 
                 </form>

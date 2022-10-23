@@ -11,11 +11,11 @@
            <div class="modal-body">
 				<form>
             <div class="form-group">
-                <label for="Nombre"></label>
+                <label for="Nombre">Nombre</label>
                 <input wire:model="Nombre" type="number" class="form-control" id="Nombretri" max='4' min="1" placeholder="Ingrese trimeste como numero">@error('Nombre') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
-                <label for="Estado"></label>
+                <label for="Estado">Estados</label>
                 <select wire:model.defer="Estado" id="Estado" class="form-control @error('Estado') is-invalid @enderror">
                     <option value="">Seleccionar estado</option>
                     <option value="Activo">Activo</option>

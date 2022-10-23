@@ -13,7 +13,7 @@
                 <form>
                    
                     <div class="form-group">
-                        <label for="TipoModalidad"></label>
+                        <label for="TipoModalidad">Modalidades</label>
                         <select wire:model.defer="TipoModalidad"
                             class="form-control @error('TipoModalidad') is-invalid @enderror">
                             <option value="">Seleccionar Modalidad</option>

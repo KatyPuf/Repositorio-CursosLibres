@@ -4,10 +4,15 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header"><h4>{{ __('Inicio de sesión') }}</h4></div>
+            <div class="card ">
+                <div class="card-header text-center"><h4>{{ __('Inicio de sesión') }}</h4></div>
 
                 <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img class="" src="{{asset('Galeria/login.png')}}" style="width: 100px" >
+
+                    </div>
+                
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

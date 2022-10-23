@@ -12,33 +12,33 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="Cedula"></label>
+                        <label for="Cedula">Cédula</label>
                         <input wire:model="Cedula" type="text" class="form-control" id="Cedula"
-                            placeholder="Cedula">@error('Cedula') <span class="error text-danger">{{ $message }}</span>
+                            placeholder="Ingrese su cédula de Identidad">@error('Cedula') <span class="error text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="Nombres"></label>
+                        <label for="Nombres">Nombres</label>
                         <input wire:model="Nombres" type="text" class="form-control" id="Nombres"
-                            placeholder="Nombres">@error('Nombres') <span
+                            placeholder="Ingrese nombres del profesor">@error('Nombres') <span
                             class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group">
-                        <label for="Apellidos"></label>
+                        <label for="Apellidos">Apellidos</label>
                         <input wire:model="Apellidos" type="text" class="form-control" id="Apellidos"
-                            placeholder="Apellidos">@error('Apellidos') <span
+                            placeholder="Ingrese apellidos del profesor">@error('Apellidos') <span
                             class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group">
-                        <label for="Correo"></label>
+                        <label for="Correo">Correo</label>
                         <input wire:model="Correo" type="text" class="form-control" id="Correo"
-                            placeholder="Correo">@error('Correo') <span class="error text-danger">{{ $message }}</span>
+                            placeholder="Ingrese correo electrónico">@error('Correo') <span class="error text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="Celular"></label>
+                        <label for="Celular">Celular</label>
                         <input wire:model="Celular" type="text" class="form-control" id="Celular"
-                            placeholder="Celular">@error('Celular') <span
+                            placeholder="Ingrese número de celular">@error('Celular') <span
                             class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                     

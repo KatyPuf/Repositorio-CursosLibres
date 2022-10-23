@@ -11,12 +11,12 @@
            <div class="modal-body">
 				<form>
             <div class="form-group">
-                <label for="Nombre"></label>
-                <input wire:model="Nombre" type="text" class="form-control" id="Nombre" placeholder="Nombre">@error('Nombre') <span class="error text-danger">{{ $message }}</span> @enderror
+                <label for="Nombre">Nombre</label>
+                <input wire:model="Nombre" type="text" class="form-control" id="Nombre" placeholder="Ingrese un nombre">@error('Nombre') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
-                <label for="Ubicacion"></label>
-                <input wire:model="Ubicacion" type="text" class="form-control" id="Ubicacion" placeholder="Ubicacion">@error('Ubicacion') <span class="error text-danger">{{ $message }}</span> @enderror
+                <label for="Ubicacion">Ubicación</label>
+                <input wire:model="Ubicacion" type="text" class="form-control" id="Ubicacion" placeholder="Ingrese una ubicación">@error('Ubicacion') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
 
                 </form>

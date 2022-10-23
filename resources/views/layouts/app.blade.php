@@ -162,6 +162,10 @@
                                         <i class="fas fa-database"></i>
                                         <span>Respaldar Base de datos</span>
                                     </a>
+                                    <a class="dropdown-item" href="{{url('/restoreDatabase')}}">
+                                        <i class="fas fa-window-restore"></i>
+                                        <span>Restaurar datos de BD</span>
+                                    </a>
                                     <!--<a class="dropdown-item" href="cards.html">Permisos</a> -->
 
                                 </div>

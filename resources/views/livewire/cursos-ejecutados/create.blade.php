@@ -46,7 +46,7 @@
                     </div>
                  @enderror
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group">
                 <label>Modalidad</label>
                 <select wire:model.defer="modalidad" class="form-control @error('modalidad') is-invalid @enderror">
                     <option value="">Seleccionar modalidad</option>

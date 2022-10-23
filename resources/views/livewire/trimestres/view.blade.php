@@ -37,7 +37,7 @@
 						<thead class="thead">
 							<tr> 
 								<td>#</td> 
-								<th>Nombre</th>
+								<th>Trimestre</th>
 								<th>Estado</th>
 								<td>ACCIONES</td>
 							</tr>

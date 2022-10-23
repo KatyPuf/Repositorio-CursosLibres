@@ -420,9 +420,8 @@ class Planificaciones extends Component
             'modalidad' =>$planificacion->modalidad,
             'horarioInicio' => date('h:i a', strtotime($planificacion->HorarioInicio)),
             'horarioFin' =>date('h:i a', strtotime($planificacion->HorarioFin)),
-            'fechaInicio' => strftime('%A %e de %B de %Y',  strtotime($planificacion->FechaFin)) ,
-            'fechaInicio2' => strftime('%A %e de %B de %Y',  strtotime($planificacion->FechaInicio)) ,
-            'fechaFin' => strftime('%A %e de %B de %Y',  strtotime($planificacion->FechaFin)) ,
+            'fechaInicio' => $planificacion->FechaInicio ,
+            'fechaFin' => $planificacion->FechaFin ,
             'date' => date('m/d/Y')
         ];
           

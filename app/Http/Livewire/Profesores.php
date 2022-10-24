@@ -50,13 +50,22 @@ class Profesores extends Component
     public function store()
     {
         $this->validate([
-		'Cedula' => 'required',
-		'Nombres' => 'required',
-		'Apellidos' => 'required',
-		'Correo' => 'required',
-		'Celular' => 'required',
+		'Cedula' => 'required|max:16|regex:/^\d{3}-\d{6}-\d{4}[A-Z]$/',
+		'Nombres' => 'required|regex:/^[\pL\s\-]+$/u',
+		'Apellidos' => 'required|regex:/^[\pL\s\-]+$/u',
+		'Correo' => 'required|email',
+		'Celular' => 'required|max:8|min:8',
 		'EmpresaTelefonica' => 'required',
-        ]);
+        ],
+    [
+        'Correo.email' => 'Formato de correo no valido',
+        'Celular.max' => 'Maximo 8 digitos',
+        'Celular.min' => 'Minimo 8 digitos',
+        'Nombres.regex' => 'El nombre no incluye numeros',
+        'Apellidos.regex' => 'El apellido no incluye numeros',
+        'Cedula.max' => 'Maximo 16 caracteres para cedula',
+        'Cedula.regex' => 'Formato de cedula invalido'
+    ]);
 
         Profesore::create([ 
 			'Cedula' => $this-> Cedula,

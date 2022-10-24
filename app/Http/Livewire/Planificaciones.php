@@ -345,15 +345,24 @@ class Planificaciones extends Component
         
         
        $this->validate([
-            'cedula' => 'required',
-            'nombres' => 'required',
-            'apellidos' => 'required',
-            'correo' => 'required',
-            'celular' => 'required',
-            'EmpresaTelefonica' => 'required',
+        'cedula' => 'required|max:16|regex:/^\d{3}-\d{6}-\d{4}[A-Z]$/',
+        'nombres' => 'required|regex:/^[\pL\s\-]+$/u',
+        'apellidos' => 'required|regex:/^[\pL\s\-]+$/u',
+        'correo' => 'required|email',
+        'celular' => 'required|max:8|min:8',
+        'EmpresaTelefonica' => 'required',
             
             
-        ]);
+       ],
+     ['correo.email' => 'Formato de correo no valido',
+      'celular.max' => 'Maximo 8 digitos',
+      'celular.min' => 'Minimo 8 digitos',
+      'nombres.regex' => 'El Nombre no incluye numeros',
+      'apellidos.regex' => 'El Apellido no incluye numeros',
+      'cedula.max' => 'Maximo 16 caracteres para cedula',
+      'cedula.regex' => 'Formato de cedula no valido'
+
+      ]);
 
        
         if($this->comprobarEstudiante() > 0)

@@ -19,7 +19,6 @@
   </head>
   <body>
     {{$date}}
-    {{$fechaInicio2}}
         <div class="container" >
             
                 <div class="row text-center">
@@ -43,7 +42,7 @@
                 <p class="text-justify">
                     Hola {{$estudiante}}, te damos la bienvenida a los cursos libres del departamento de computación de UNAN-LEÓN.
                     Usted se ha inscrito en el curso de <strong>{{$planificacion}} </strong> en modalidad {{$modalidad}}, 
-                   el cual da inicio el  lunes 20 de noviembre de 2023 y finaliza el {{$fechaFin}} en horario de {{$horarioInicio}} a {{$horarioFin}}.
+                   el cual da inicio el  {{ \Carbon\Carbon::parse($fechaInicio)->formatLocalized('%d de %B del %Y') }} y finaliza el {{ \Carbon\Carbon::parse($fechaFin)->formatLocalized('%d de %B del %Y') }} en horario de {{$horarioInicio}} a {{$horarioFin}}.
                    
                 </p>
                 <p class="text-justify">

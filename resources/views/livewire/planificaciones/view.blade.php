@@ -115,6 +115,7 @@ use App\Http\Livewire\Inscripciones;
                     <div class="row row-cols-1 row-cols-md-3 g-4 m-1">
 
                         @foreach($planificaciones as $row)
+                       
                         <div class="col p-1">
                             <div class="card h-100">
                                 <img class="card-img-top img-thumbnail" src="{{asset('storage/'.$row->imagen)}}" alt="">
@@ -162,8 +163,10 @@ use App\Http\Livewire\Inscripciones;
                                         <strong>Año lectivo:</strong> {{ $row->Anyo }}<br>
                                         <strong>Trimestre: </strong>{{$row->Trimestre}}<br>
                                         <strong>Fecha:</strong>
-                                        Del {{$fechaI}}
-                                        <strong> al </strong>{{date('j F, Y', strtotime($row->FechaFin))}}<br>
+                                        Del {{ \Carbon\Carbon::parse($row->FechaInicio)->formatLocalized('%d %B %Y') }}
+
+                                        <strong> al </strong> {{ \Carbon\Carbon::parse($row->FechaFin)->formatLocalized('%d %B %Y') }}
+                                        <br>
 
                                         <strong>Horario: </strong>{{date('h:i a', strtotime($row->HorarioInicio))}} -
                                         {{date('h:i a', strtotime($row->HorarioFin))}}<br>

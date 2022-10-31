@@ -70,6 +70,21 @@ class Inscripciones extends Component
         'Trimestre' => '',
 
     ];
+
+    protected $rules = [
+       
+        'planificacione_id'=> 'required',
+        'estudiante_id'=> 'required',
+        'Anyo' => 'required',
+        'Trimestre' => 'required',
+
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function getInscriptionProperty ()
     {
         return Estudiante::query()
@@ -107,6 +122,7 @@ class Inscripciones extends Component
         }
    
     }
+    
     public function cancel()
     {
         $this->resetErrorBag();
@@ -131,6 +147,12 @@ class Inscripciones extends Component
 		'estudiante_id' => 'required',
 		'planificacione_id' => 'required',
         
+        ],[
+            'Trimestre.required' => 'Debes seleccionar un Trimestre',
+            'Anyo.required' => 'Debes seleccionar un año lectivo',
+            'estudiante_id.required' => 'Debes seleccionar un estudiante',
+            'planificacione_id.required' => 'Debes seleccionar una planificación',
+
         ]);
 
             if($this->validar($this->Trimestre, $this->estudiante_id)==0){
@@ -175,6 +197,12 @@ class Inscripciones extends Component
 		'Anyo' => 'required',
 		'estudiante_id' => 'required',
 		'planificacione_id' => 'required',
+        ],[
+            'Trimestre.required' => 'Debes seleccionar un Trimestre',
+            'Anyo.required' => 'Debes seleccionar un año lectivo',
+            'estudiante_id.required' => 'Debes seleccionar un estudiante',
+            'planificacione_id.required' => 'Debes seleccionar una planificación',
+
         ]);
 
         if ($this->selected_id) {
@@ -208,12 +236,7 @@ class Inscripciones extends Component
                     ->where('Trimestre',$tri)
                     ->where('estudiante_id',$id)
                     ->count('estudiante_id');
-                    error_log('------'.$resultado);
-       /* $resultado = DB::table('inscripciones')
-        ->join('estudiantes', 'inscripciones.estudiante_id', '=',  'estudiantes.id')
-        ->where('trimestre','=',$tri)
-        ->where('inscripciones.estudiante_id', '=', $id)
-        ->count('inscripciones.estudiante_id');*/
+                    
         return $resultado;
     }
 

@@ -31,6 +31,8 @@ class usuarios extends Component
 	
     public function cancel()
     {
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->resetInput();
         $this->updateMode = false;
     }

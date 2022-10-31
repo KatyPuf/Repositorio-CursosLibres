@@ -31,6 +31,16 @@ class Aulas extends Component
     
     
     }
+
+    protected $rules = [
+        'Nombre'=> 'required',
+        'Ubicacion'=> 'required',
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
 	
     public function cancel()
     {
@@ -39,7 +49,9 @@ class Aulas extends Component
     }
 	
     private function resetInput()
-    {		
+    {   
+        $this->resetErrorBag();
+        $this->resetValidation();
 		$this->Nombre = null;
 		$this->Ubicacion = null;
     }

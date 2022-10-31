@@ -24,7 +24,15 @@ class Modalidades extends Component
 						->paginate(10),
         ]);
     }
-	
+    protected $rules = [
+        'TipoModalidad'=> 'required',
+       
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function cancel()
     {
         $this->resetInput();
@@ -32,7 +40,9 @@ class Modalidades extends Component
     }
 	
     private function resetInput()
-    {		
+    {	
+        $this->resetErrorBag();
+        $this->resetValidation();
 		$this->TipoModalidad = null;
     }
 

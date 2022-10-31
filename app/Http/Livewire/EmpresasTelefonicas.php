@@ -25,6 +25,16 @@ class EmpresasTelefonicas extends Component
         ]);
     }
 	
+    protected $rules = [
+        'Nombre'=> 'required',
+      
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function cancel()
     {
         $this->resetInput();
@@ -32,7 +42,9 @@ class EmpresasTelefonicas extends Component
     }
 	
     private function resetInput()
-    {		
+    {   
+        $this->resetErrorBag();
+        $this->resetValidation();
 		$this->Nombre = null;
     }
 

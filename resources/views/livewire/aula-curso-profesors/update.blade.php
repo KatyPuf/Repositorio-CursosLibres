@@ -19,9 +19,9 @@
                             @endforeach
                         </select>
                         @error('$profesor_id')
-                            <div class="invalid-feedback">
+                            <span class="error text-danger">
                                 {{ $message }}
-                            </div>
+                            </span>
                          @enderror
                     </div>
                     <div class="form-group">
@@ -33,9 +33,9 @@
                             @endforeach
                          </select>
                             @error('$curso_ejecutado_id')
-                                <div class="invalid-feedback">
+                                <span class="error text-danger">
                                     {{ $message }}
-                                </div>
+                                </span>
                              @enderror
                     </div>
                     <div class="form-group">
@@ -47,9 +47,9 @@
                            @endforeach
                         </select>
                            @error('$aula_id')
-                               <div class="invalid-feedback">
+                               <span class="error text-danger">
                                    {{ $message }}
-                               </div>
+                               </span>
                             @enderror
                    </div>
 

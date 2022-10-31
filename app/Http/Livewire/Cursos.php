@@ -28,6 +28,18 @@ class Cursos extends Component
 						->paginate(10),
         ]);
     }
+
+    protected $rules = [
+        'Nombre'=> 'required',
+        'Semanas'=> 'required',
+        'Horas'=> 'required',
+        'Precio'=> 'required'
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
 	
     public function cancel()
     {
@@ -36,7 +48,9 @@ class Cursos extends Component
     }
 	
     private function resetInput()
-    {		
+    {	
+        $this->resetErrorBag();
+        $this->resetValidation();
 		$this->Nombre = null;
 		$this->Semanas = null;
 		$this->Horas = null;

@@ -16,23 +16,23 @@
             </div>
             <div class="form-group">
                 <label for="Estado">Estados</label>
-                <select wire:model.defer="Estado" id="Estado" class="form-control @error('Estado') is-invalid @enderror">
+                <select wire:model="Estado" id="Estado" class="form-control @error('Estado') is-invalid @enderror">
                     <option value="">Seleccionar estado</option>
                     <option value="Activo">Activo</option>
                     <option value="No activo">No activo</option>
                     
                 </select>
                 @error('Estado')
-                    <div class="invalid-feedback">
+                   <span class="error text-danger">
                         {{ $message }}
-                    </div>
+                   </span>
                  @enderror
             </div>
 
         </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-secondary close-btn" wire:click="cancel()" data-dismiss="modal">Cancelar</button>
                 <button type="button" wire:click.prevent="store()" class="btn btn-primary close-modal">Guardar</button>
             </div>
         </div>

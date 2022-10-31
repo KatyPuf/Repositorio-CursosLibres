@@ -21,6 +21,13 @@
 
                 </form>
             </div>
+            <div class="col-md-6">
+                <label for="validationCustom03" class="form-label">Ciudad</label>
+                <input type="text" class="form-control" id="validationCustom03" required>
+                <div class="invalid-feedback">
+                  Proporciona una ciudad válida.
+                </div>
+              </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>
                 <button type="button" wire:click.prevent="store()" class="btn btn-primary close-modal">Guardar</button>

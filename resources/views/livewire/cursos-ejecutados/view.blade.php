@@ -173,7 +173,7 @@
 
     Livewire.on('deleteRegistro', $RecordId => {
         Swal.fire({
-            title: '¿Estás seguro?',
+            title: '¿Desea eliminar el registro?',
             text: "No podrás revertir esta acción!",
             icon: 'warning',
             showCancelButton: true,
@@ -181,11 +181,12 @@
             cancelButtonColor: '#d33',
             confirmButtonText: 'Si, eliminar!'
         }).then((result) => {
+			console.log(result)
             if (result.isConfirmed) {
                 Livewire.emitTo('cursos-ejecutados', 'destroy', $RecordId )
                 Swal.fire(
                     'Eliminado!',
-                    'Su archivo ha sido eliminado.',
+                    'Su registro ha sido eliminado.',
                     'success'
                 )
             }

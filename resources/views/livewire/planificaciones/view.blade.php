@@ -313,7 +313,7 @@ use App\Http\Livewire\Inscripciones;
                 Livewire.emitTo('planificaciones', 'destroy', $PlanificacionId)
                 Swal.fire(
                     'Eliminado!',
-                    'Su archivo ha sido eliminado.',
+                    'Su registro ha sido eliminado.',
                     'success'
                 )
             }

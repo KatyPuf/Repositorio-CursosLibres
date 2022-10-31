@@ -29,6 +29,7 @@ class CursosEjecutados extends Component
 
     public function render()
     {
+        error_log("RENDER RENDER");
 		$keyWord = '%'.$this->selectedNombre .'%';
 		$keyWordModalidad = '%'.$this->selectedModalidad .'%';
 		$keyWordAnyo = '%'.$this->selectedAnyo .'%';
@@ -166,7 +167,8 @@ class CursosEjecutados extends Component
     {
         if ($id) {
             $record = CursosEjecutado::where('id', $id);
-            $record->delete();
+             $record->delete();
+            
         }
     }
     public function emitirEvento($id)

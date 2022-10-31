@@ -8,6 +8,7 @@ use App\Models\CursosEjecutado;
 use App\Models\Curso;
 use App\Models\AnyosLectivo;
 use App\Models\Modalidade;
+use App\Models\Trimestre;
 
 class CursosEjecutados extends Component
 {
@@ -29,6 +30,7 @@ class CursosEjecutados extends Component
 
     public function render()
     {
+        error_log("RENDER RENDER");
 		$keyWord = '%'.$this->selectedNombre .'%';
 		$keyWordModalidad = '%'.$this->selectedModalidad .'%';
 		$keyWordAnyo = '%'.$this->selectedAnyo .'%';
@@ -38,6 +40,7 @@ class CursosEjecutados extends Component
         $modalidades = Modalidade::all();
         $anyos = AnyosLectivo::all();
         $cursos = Curso::all();
+        $trimestres = Trimestre::all();
 
         return view('livewire.cursos-ejecutados.view', [
             'cursosEjecutados' => Curso::join('cursos_ejecutados', 'cursos_ejecutados.curso_id', "=", "cursos.id")
@@ -47,21 +50,26 @@ class CursosEjecutados extends Component
                                   ->where('cursos_ejecutados.created_at', 'LIKE', $keyWordFecha)
                                   ->where('visible', 'LIKE', $keyVisible)
                                   ->paginate(10),
-        ],compact('cursos', 'modalidades', 'anyos'));
+        ],compact('cursos', 'modalidades', 'anyos', 'trimestres'));
     }
 	
-    /*latest('id')
-     ->get(['cursos_ejecutados.id','Nombre', 'Trimestre', 'Anyo', 'modalidad',
-                                        'FechaInicio', 'FechaFin', 'HorarioInicio', 'HorarioFin', 'cursos_ejecutados.created_at'
-                                    ])
-						->orWhere('Trimestre', 'LIKE', $keyWord)
-						->orWhere('Anyo', 'LIKE', $keyWord)
-                        ->orWhere('modalidad', 'LIKE', $keyWord)
-						->orWhere('FechaInicio', 'LIKE', $keyWord)
-						->orWhere('FechaFin', 'LIKE', $keyWord)
-						->orWhere('HorarioInicio', 'LIKE', $keyWord)
-                        ->orWhere('HorarioFin', 'LIKE', $keyWord)
-						->orWhere('curso_id', 'LIKE', $keyWord) */
+    protected $rules = [
+        'Trimestre'=> 'required',
+        'Anyo'=> 'required',
+        'modalidad'=> 'required',
+        'FechaInicio'=> 'required',
+        'FechaFin'=> 'required',
+        'HorarioInicio'=> 'required',
+        'HorarioFin'=> 'required',
+        'curso_id' => 'required'
+
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function cancel()
     {
         $this->resetInput();
@@ -69,7 +77,9 @@ class CursosEjecutados extends Component
     }
 	
     private function resetInput()
-    {		
+    {	
+        $this->resetErrorBag();
+        $this->resetValidation();	
 		$this->Trimestre = null;
 		$this->Anyo = null;
         $this->modalidad = null;
@@ -94,6 +104,12 @@ class CursosEjecutados extends Component
 		'HorarioInicio' => 'required',
         'HorarioFin' => 'required',
 		'curso_id' => 'required',
+        ],[
+            'Trimestre.required' => 'Debes seleccionar un trimestre',
+            'Anyo.required' => 'Debes seleccionar un año lectivo',
+            'curso_id.required' => 'Debes seleccionar un curso',
+            'modalidad.required' => 'Debes seleccionar una modalidad',
+
         ]);
 
         CursosEjecutado::create([ 
@@ -141,6 +157,12 @@ class CursosEjecutados extends Component
 		'HorarioInicio' => 'required',
         'HorarioFin' => 'required',
 		'curso_id' => 'required',
+        ],[
+            'Trimestre.required' => 'Debes seleccionar un trimestre',
+            'Anyo.required' => 'Debes seleccionar un año lectivo',
+            'curso_id.required' => 'Debes seleccionar un curso',
+            'modalidad.required' => 'Debes seleccionar una modalidad',
+
         ]);
 
         if ($this->selected_id) {
@@ -166,7 +188,8 @@ class CursosEjecutados extends Component
     {
         if ($id) {
             $record = CursosEjecutado::where('id', $id);
-            $record->delete();
+             $record->delete();
+            
         }
     }
     public function emitirEvento($id)

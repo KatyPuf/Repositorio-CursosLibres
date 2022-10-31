@@ -93,7 +93,7 @@
                 Livewire.emitTo('anyos-lectivos', 'destroy', $RecordId )
                 Swal.fire(
                     'Eliminado!',
-                    'Su archivo ha sido eliminado.',
+                    'Su registro ha sido eliminado.',
                     'success'
                 )
             }

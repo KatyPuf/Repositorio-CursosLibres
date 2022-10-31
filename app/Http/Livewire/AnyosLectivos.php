@@ -25,8 +25,20 @@ class AnyosLectivos extends Component
         ]);
     }
 	
+    protected $rules = [
+        'AnyoLectivo'=> 'required',
+       
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function cancel()
     {
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->resetInput();
         $this->updateMode = false;
     }
@@ -40,6 +52,10 @@ class AnyosLectivos extends Component
     {
         $this->validate([
 		'AnyoLectivo' => 'required',
+        ],[
+            'AnyoLectivo.required' => 'Debes ingresar un año lectivo',
+            
+
         ]);
 
         AnyosLectivo::create([ 
@@ -65,6 +81,10 @@ class AnyosLectivos extends Component
     {
         $this->validate([
 		'AnyoLectivo' => 'required',
+        ],[
+            'AnyoLectivo.required' => 'Debes ingresar un año lectivo',
+            
+
         ]);
 
         if ($this->selected_id) {

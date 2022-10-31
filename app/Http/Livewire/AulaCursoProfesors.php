@@ -52,8 +52,23 @@ class AulaCursoProfesors extends Component
         ], compact('cursos','profesores', 'aulas'));
     }
 	
+
+    protected $rules = [
+        'profesor_id'=> 'required',
+        'curso_ejecutado_id'=> 'required',
+        'aula_id'=> 'required',
+
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+	
     public function cancel()
     {
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->resetInput();
         $this->updateMode = false;
     }
@@ -71,6 +86,11 @@ class AulaCursoProfesors extends Component
 		'profesor_id' => 'required',
 		'curso_ejecutado_id' => 'required',
 		'aula_id' => 'required',
+        ],[
+            'profesor_id.required' => 'El campo profesor es requerido',
+            'curso_ejecutado_id.required' => 'El campo Curso Aperturado es requerido',
+            'aula_id.required' => 'El campo aula es requerido',
+
         ]);
 
         AulaCursoProfesor::create([ 
@@ -102,6 +122,11 @@ class AulaCursoProfesors extends Component
 		'profesor_id' => 'required',
 		'curso_ejecutado_id' => 'required',
 		'aula_id' => 'required',
+        ],[
+            'profesor_id.required' => 'El campo profesor es requerido',
+            'curso_ejecutado_id.required' => 'El campo Curso Aperturado es requerido',
+            'aula_id.required' => 'El campo aula es requerido',
+
         ]);
 
         if ($this->selected_id) {

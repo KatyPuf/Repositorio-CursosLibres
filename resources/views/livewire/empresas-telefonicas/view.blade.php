@@ -53,7 +53,7 @@
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
 									@can('Editar registros')
-									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Edit </a>							 
+									<a data-toggle="modal" data-target="#updateModal" class="dropdown-item" wire:click="edit({{$row->id}})"><i class="fa fa-edit"></i> Editar </a>							 
 									@endcan
 									@can('Eliminar registros')
 									<a class="dropdown-item" wire:click="emitirEvento({{$row->id}})"><i class="fa fa-trash"></i> Borrar </a>   
@@ -90,7 +90,7 @@
                 Livewire.emitTo('empresas-telefonicas', 'destroy', $RecordId )
                 Swal.fire(
                     'Eliminado!',
-                    'Su archivo ha sido eliminado.',
+                    'Su registro ha sido eliminado.',
                     'success'
                 )
             }

@@ -31,6 +31,8 @@ class roles extends Component
 	
     public function cancel()
     {
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->resetInput();
         
     }

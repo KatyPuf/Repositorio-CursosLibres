@@ -37,7 +37,7 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="Trimestre">Trimestre</label>
-                                    <select wire:model.defer="Trimestre"
+                                    <select wire:model="Trimestre"
                                         class="form-control @error('Trimestre') is-invalid @enderror">
                                         <option value="">Seleccionar trimestre</option>
                                         @foreach ($trimestres as $trimestre)
@@ -55,7 +55,7 @@
 
                                     <label for="Anyo">Año lectivo</label>
 
-                                    <select wire:model.defer="Anyo"
+                                    <select wire:model="Anyo"
                                         class="form-control @error('Anyo') is-invalid @enderror">
                                         <option value="">Seleccionar Año lectivo</option>
                                         @foreach ($anyos as $anyo)
@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="horafin"><span>Hora de finalización</span></label>
-                                    <input wire:model.defer="HorarioFin" type="time"
+                                    <input wire:model="HorarioFin" type="time"
                                         class="form-control @error('HorarioFin') is-invalid @enderror" id="HorarioFin"
                                         placeholder="HorarioFin" />
 
@@ -125,7 +125,7 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Cursos</label>
-                                    <select wire:model.defer="curso_id"
+                                    <select wire:model="curso_id"
                                         class="form-control @error('curso_id') is-invalid @enderror">
                                         <option value="">Seleccione un curso</option>
                                         @foreach ($cursos as $curso)
@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Modalidad</label>
-                                    <select wire:model.defer="modalidad"
+                                    <select wire:model="modalidad"
                                         class="form-control @error('modalidad') is-invalid @enderror">
                                         <option value="">Seleccionar modalidad</option>
 
@@ -161,7 +161,7 @@
                                 <div class="form-group col-md-10">
                                     <label>Link de aula virtual</label>
 
-                                    <input wire:model.defer="linkAulaVirtuales" type="url"
+                                    <input wire:model="linkAulaVirtuales" type="url"
                                         class="form-control @error('linkAulaVirtuales') is-invalid @enderror"
                                         id="linkAulaVirtuales" placeholder="URL" />
 
@@ -184,7 +184,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary close-btn" wire:click="cancel()" data-dismiss="modal">Cerrar</button>
                 <button type="button" wire:loading.attr="disabled" wire:target="imagen" wire:click.prevent="store()"
                     class="btn btn-primary close-modal">Guardar</button>
             </div>

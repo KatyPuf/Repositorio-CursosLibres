@@ -23,7 +23,7 @@
 						</div>
 						@can('Crear registros')
 						<div class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
-						<i class="fa fa-plus"></i>Agregar estudiante
+						<i class="fa fa-plus"></i> Agregar estudiante
 						</div>
 						@endcan
 					</div>
@@ -100,7 +100,7 @@
                 Livewire.emitTo('estudiantes', 'destroy', $RecordId )
                 Swal.fire(
                     'Eliminado!',
-                    'Su archivo ha sido eliminado.',
+                    'Su registro ha sido eliminado.',
                     'success'
                 )
             }

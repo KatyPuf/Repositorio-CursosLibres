@@ -14,7 +14,7 @@
                    
                     <div class="form-group">
                         <label for="TipoModalidad">Modalidades</label>
-                        <select wire:model.defer="TipoModalidad"
+                        <select wire:model="TipoModalidad"
                             class="form-control @error('TipoModalidad') is-invalid @enderror">
                             <option value="">Seleccionar Modalidad</option>
                             <option value="Regular">Regular</option>
@@ -23,15 +23,15 @@
                             <option value="Nocturno">Nocturno</option>
                         </select>
                         @error('TipoModalidad')
-                        <div class="invalid-feedback">
+                        <span class="error text-danger">
                             {{ $message }}
-                        </div>
+                        </span>
                         @enderror
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary close-btn" wire:click="cancel()" data-dismiss="modal">Cerrar</button>
                 <button type="button" wire:click.prevent="store()" class="btn btn-primary close-modal">Guardar</button>
             </div>
         </div>

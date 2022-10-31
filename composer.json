@@ -23,8 +23,7 @@
         "mediconesystems/livewire-datatables": "^0.9.4",
         "spatie/laravel-backup": "^6.16",
 
-        "spatie/laravel-backup": "*",
-
+        
         "spatie/laravel-permission": "^5.5"
     },
     "require-dev": {

@@ -33,8 +33,25 @@ class Estudiantes extends Component
           ],compact('telefonias'));
     }
 	
+    protected $rules = [
+        'Cedula'=> 'required',
+        'Nombres'=> 'required',
+        'Apellidos'=> 'required',
+        'Correo'=> 'required',
+        'Celular'=> 'required',
+        'EmpresaTelefonica'=> 'required'
+
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+    
     public function cancel()
     {
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->resetInput();
         $this->updateMode = false;
     }

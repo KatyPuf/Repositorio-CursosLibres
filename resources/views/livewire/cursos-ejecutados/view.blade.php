@@ -173,7 +173,7 @@
 
     Livewire.on('deleteRegistro', $RecordId => {
         Swal.fire({
-            title: '¿Estás seguro?',
+            title: '¿Desea eliminar el registro?',
             text: "No podrás revertir esta acción!",
             icon: 'warning',
             showCancelButton: true,
@@ -181,11 +181,12 @@
             cancelButtonColor: '#d33',
             confirmButtonText: 'Si, eliminar!'
         }).then((result) => {
+			console.log(result)
             if (result.isConfirmed) {
                 Livewire.emitTo('cursos-ejecutados', 'destroy', $RecordId )
                 Swal.fire(
                     'Eliminado!',
-                    'Su archivo ha sido eliminado.',
+                    'Su registro ha sido eliminado.',
                     'success'
                 )
             }
@@ -258,6 +259,28 @@
 	 }
  
 	 });
+ </script>
+ <script>
+	// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
  </script>
 @endpush
 

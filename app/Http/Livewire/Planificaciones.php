@@ -95,7 +95,33 @@ class Planificaciones extends Component
         ],compact('cursos', 'modalidades', 'anyos','trimestres','telefonias'));
     }
 
-  
+    protected $rules = [
+       
+       
+        'Anyo' => 'required',
+        'Trimestre' => 'required',
+        'modalidad'=> 'required',
+        'FechaInicio'=> 'required',
+        'FechaFin'=> 'required',
+        'HorarioInicio'=> 'required',
+        'HorarioFin'=> 'required',
+        'curso_id'=> 'required',
+        'imagen'=> 'required',
+        'linkAulaVirtuales'=> 'required',
+        'cedula' => 'required',
+        'nombres' => 'required',
+        'apellidos' => 'required',
+        'correo' => 'required',
+        'celular' => 'required',
+        'EmpresaTelefonica' => 'required'
+        
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function getPlanificacionProperty ()
     {
         error_log("FILTRANDO");
@@ -123,7 +149,8 @@ class Planificaciones extends Component
         Alert::message('error');
     }
     private function resetInput()
-    {		
+    {	$this->resetErrorBag();
+        $this->resetValidation();
 		$this->Trimestre = null;
 		$this->Anyo = null;
         $this->modalidad = null;

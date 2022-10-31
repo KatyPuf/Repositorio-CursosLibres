@@ -12,14 +12,19 @@
 				<form>
             <div class="form-group">
                 <label for="Nombre">Nombre</label>
-                <input wire:model="Nombre" type="text" class="form-control" id="Nombre" placeholder="Ingrese nombre del aula">@error('Nombre') <span class="error text-danger">{{ $message }}</span> @enderror
+                <input wire:model="Nombre" type="text" class="form-control @error('Nombre') is-invalid @enderror" id="Nombre" placeholder="Ingrese nombre del aula">
+                @error('Nombre')
+                <span class="error text-danger">
+                    {{ $message }}
+                </span> 
+                @enderror
             </div>
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
-                <button type="button" wire:click.prevent="store()" class="btn btn-primary close-modal">Save</button>
+                <button type="button" class="btn btn-secondary close-btn" wire:click="cancel()" data-dismiss="modal">Cancelar</button>
+                <button type="button" wire:click.prevent="store()" class="btn btn-primary close-modal">Guardar</button>
             </div>
         </div>
     </div>

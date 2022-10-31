@@ -26,8 +26,21 @@ class Trimestres extends Component
         ]);
     }
 	
+    protected $rules = [
+      
+        'Nombre'=> 'required',
+        'Estado'=> 'required',
+        
+
+    ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
     public function cancel()
     {
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->resetInput();
         $this->updateMode = false;
     }

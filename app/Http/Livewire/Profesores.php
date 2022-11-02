@@ -32,12 +32,13 @@ class Profesores extends Component
     }
 	
     protected $rules = [
-        'Cedula'=> 'required',
-        'Nombres'=> 'required',
-        'Apellidos'=> 'required',
-        'Correo'=> 'required',
-        'Celular'=> 'required',
+        'Cedula'=> 'required|max:16|min:16',
+        'Nombres'=> 'required|regex:/^[\pL\s\-]+$/u',
+        'Apellidos'=> 'required|regex:/^[\pL\s\-]+$/u',
+        'Correo'=> 'required|email',
+        'Celular'=> 'required|max:8|min:8',
         'EmpresaTelefonica'=> 'required'
+
 
 
     ];
@@ -67,12 +68,12 @@ class Profesores extends Component
     public function store()
     {
         $this->validate([
-		'Cedula' => 'required',
-		'Nombres' => 'required',
-		'Apellidos' => 'required',
-		'Correo' => 'required',
-		'Celular' => 'required',
-		'EmpresaTelefonica' => 'required',
+            'Cedula'=> 'required|max:16|min:16',
+            'Nombres'=> 'required|regex:/^[\pL\s\-]+$/u',
+            'Apellidos'=> 'required|regex:/^[\pL\s\-]+$/u',
+            'Correo'=> 'required|email',
+            'Celular'=> 'required|max:8|min:8',
+            'EmpresaTelefonica'=> 'required'
         ]);
 
         Profesore::create([ 
@@ -107,12 +108,12 @@ class Profesores extends Component
     public function update()
     {
         $this->validate([
-		'Cedula' => 'required',
-		'Nombres' => 'required',
-		'Apellidos' => 'required',
-		'Correo' => 'required',
-		'Celular' => 'required',
-		'EmpresaTelefonica' => 'required',
+            'Cedula'=> 'required|max:16|min:16',
+            'Nombres'=> 'required|regex:/^[\pL\s\-]+$/u',
+            'Apellidos'=> 'required|regex:/^[\pL\s\-]+$/u',
+            'Correo'=> 'required|email',
+            'Celular'=> 'required|max:8|min:8',
+            'EmpresaTelefonica'=> 'required'
         ]);
 
         if ($this->selected_id) {

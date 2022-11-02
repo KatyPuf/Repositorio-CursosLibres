@@ -34,11 +34,11 @@ class Estudiantes extends Component
     }
 	
     protected $rules = [
-        'Cedula'=> 'required',
-        'Nombres'=> 'required',
-        'Apellidos'=> 'required',
-        'Correo'=> 'required',
-        'Celular'=> 'required',
+        'Cedula'=> 'required|max:16|min:16',
+        'Nombres'=> 'required|regex:/^[\pL\s\-]+$/u',
+        'Apellidos'=> 'required|regex:/^[\pL\s\-]+$/u',
+        'Correo'=> 'required|email',
+        'Celular'=> 'required|max:8|min:8',
         'EmpresaTelefonica'=> 'required'
 
 
@@ -71,12 +71,12 @@ class Estudiantes extends Component
     {
         
         $this->validate([
-		'Cedula' => 'required',
-		'Nombres' => 'required',
-		'Apellidos' => 'required',
-		'Correo' => 'required',
-		'Celular' => 'required',
-		'EmpresaTelefonica' => 'required',
+            'Cedula'=> 'required|max:16|min:16',
+            'Nombres'=> 'required|regex:/^[\pL\s\-]+$/u',
+            'Apellidos'=> 'required|regex:/^[\pL\s\-]+$/u',
+            'Correo'=> 'required|email',
+            'Celular'=> 'required|max:8|min:8',
+            'EmpresaTelefonica'=> 'required'
         ]);
 
         //if(Gate::allows('create')){
@@ -119,12 +119,12 @@ class Estudiantes extends Component
     public function update()
     {
         $this->validate([
-		'Cedula' => 'required',
-		'Nombres' => 'required',
-		'Apellidos' => 'required',
-		'Correo' => 'required',
-		'Celular' => 'required',
-		'EmpresaTelefonica' => 'required',
+            'Cedula'=> 'required|max:16|min:16',
+            'Nombres'=> 'required|regex:/^[\pL\s\-]+$/u',
+            'Apellidos'=> 'required|regex:/^[\pL\s\-]+$/u',
+            'Correo'=> 'required|email',
+            'Celular'=> 'required|max:8|min:8',
+            'EmpresaTelefonica'=> 'required'
         ]);
 
         if ($this->selected_id) {

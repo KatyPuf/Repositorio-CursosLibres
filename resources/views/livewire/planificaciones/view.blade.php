@@ -69,7 +69,7 @@ use App\Http\Livewire\Inscripciones;
                             <i class="fas fa-filter"></i>
                             <label>Filtrar: </label>
                         </div>
-                        <div wire:ignore class="col-md-4">
+                        <div wire:ignore class="col-md-4 mt-1">
                             <select class="form-control" id="select2-dropdown" wire:model="keyWordCurso">
                                 <option value="">Select Option</option>
                                 @foreach ($cursos as $curso)
@@ -77,7 +77,7 @@ use App\Http\Livewire\Inscripciones;
                                 @endforeach
                             </select>
                         </div>
-                        <div wire:ignore class="col-md-4">
+                        <div wire:ignore class="col-md-4 mt-1">
                             <select class="form-control" id="select2-mod" wire:model="keyWord">
                                 <option value="">Seleccionar modalidad</option>
                                 @foreach ($modalidades as $modalidade)
@@ -86,7 +86,7 @@ use App\Http\Livewire\Inscripciones;
 
                             </select>
                         </div>
-                        <div wire:ignore class="col-md-3">
+                        <div wire:ignore class="col-md-3 mt-1">
                             <select class="form-control" id="select2-anyo">
                                 <option value="">Seleccionar año lectivo</option>
                                 @foreach ($anyos as $anyo)
@@ -285,6 +285,7 @@ use App\Http\Livewire\Inscripciones;
                         </div>
                         @endforeach
                     </div>
+                    
                     {{ $planificaciones->links() }}
 
                 </div>

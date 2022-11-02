@@ -55,8 +55,7 @@
 
                                     <label for="Anyo">Año lectivo</label>
 
-                                    <select wire:model="Anyo"
-                                        class="form-control @error('Anyo') is-invalid @enderror">
+                                    <select wire:model="Anyo" class="form-control @error('Anyo') is-invalid @enderror">
                                         <option value="">Seleccionar Año lectivo</option>
                                         @foreach ($anyos as $anyo)
                                         <option value="{{$anyo->AnyoLectivo}}">{{$anyo->AnyoLectivo}}</option>
@@ -175,16 +174,22 @@
 
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <input type="file" wire:model="imagen">
-                                @error('imagen') <span class="error">{{ $message }}</span> @enderror
+                            <div class="form-group ">
+                                <div class="mb-3">
+
+                                    <label for="formFile" class="form-label">Escoja una imagen</label>
+                                    <input type="file" class="form-control" wire:model="imagen">
+                                    
+                                    @error('imagen') <span class="error text-danger">{{ $message }}</span> @enderror
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-btn" wire:click="cancel()" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary close-btn" wire:click="cancel()"
+                    data-dismiss="modal">Cerrar</button>
                 <button type="button" wire:loading.attr="disabled" wire:target="imagen" wire:click.prevent="store()"
                     class="btn btn-primary close-modal">Guardar</button>
             </div>

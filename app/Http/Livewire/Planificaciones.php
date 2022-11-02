@@ -108,13 +108,13 @@ class Planificaciones extends Component
         'curso_id'=> 'required',
         'imagen'=> 'required',
         'linkAulaVirtuales'=> 'required',
-        'cedula' => 'required',
-        'nombres' => 'required',
-        'apellidos' => 'required',
-        'correo' => 'required',
-        'celular' => 'required',
-        'EmpresaTelefonica' => 'required'
-        
+        'EmpresaTelefonica' => 'required',
+        'cedula' => 'required|max:16|min:16',
+        'nombres' => 'required|regex:/^[\pL\s\-]+$/u',
+        'apellidos' => 'required|regex:/^[\pL\s\-]+$/u',
+        'correo' => 'required|email',
+        'celular' => 'required|max:8|min:8',
+        'EmpresaTelefonica' => 'required',
 
     ];
     public function updated($propertyName)
@@ -177,6 +177,16 @@ class Planificaciones extends Component
 		'curso_id' => 'required',
         'linkAulaVirtuales' => 'required',
         'imagen' => 'required|image|max:2048'
+        ],[
+            'Trimestre.required' => 'Debes seleccionar un trimestre',
+            'Anyo.required' => 'Debes seleccionar un año lectivo',
+            'curso_id.required' => 'Debes seleccionar un curso',
+            'modalidad.required' => 'Debes seleccionar una modalidad',
+            'FechaInicio.required' => 'Debes seleccionar una fecha de inicio',
+            'FechaFin.required' => 'Debes seleccionar una fecha de finalización',
+            'HorarioInicio.required' => 'Debes seleccionar una horario de inicio',
+            'HorarioFin.required' => 'Debes seleccionar una horario de finalización',
+
         ]);
 
        if($this->verificarPlanificacion($this->Trimestre, $this->curso_id, $this->modalidad, $this->Anyo) >0){
@@ -238,6 +248,16 @@ class Planificaciones extends Component
         'HorarioFin' => 'required',
 		'curso_id' => 'required',
         'linkAulaVirtuales' => 'required'
+        ],[
+            'Trimestre.required' => 'Debes seleccionar un trimestre',
+            'Anyo.required' => 'Debes seleccionar un año lectivo',
+            'curso_id.required' => 'Debes seleccionar un curso',
+            'modalidad.required' => 'Debes seleccionar una modalidad',
+            'FechaInicio.required' => 'Debes seleccionar una fecha de inicio',
+            'FechaFin.required' => 'Debes seleccionar una fecha de finalización',
+            'HorarioInicio.required' => 'Debes seleccionar una horario de inicio',
+            'HorarioFin.required' => 'Debes seleccionar una horario de finalización',
+
         ]);
 
         if ($this->selected_id) {
@@ -371,16 +391,25 @@ class Planificaciones extends Component
     {
         
         
-       $this->validate([
-            'cedula' => 'required',
-            'nombres' => 'required',
-            'apellidos' => 'required',
-            'correo' => 'required',
-            'celular' => 'required',
+        $this->validate([
+            'cedula' => 'required|max:16|min:16',
+            'nombres' => 'required|regex:/^[\pL\s\-]+$/u',
+            'apellidos' => 'required|regex:/^[\pL\s\-]+$/u',
+            'correo' => 'required|email',
+            'celular' => 'required|max:8|min:8',
             'EmpresaTelefonica' => 'required',
             
             
-        ]);
+       ],
+       ['correo.email' => 'Formato de correo no valido',
+        'celular.max' => 'Ingrese máximo 8 digitos',
+        'celular.min' => 'Ingrese mínimo 8 digitos',
+        'nombres.regex' => 'El nombre no incluye numeros',
+        'apellidos.regex' => 'El apellido no incluye numeros',
+        'cedula.max' => 'Maximo 16 caracteres para cedula',
+        'cedula.min' => 'Maximo 16 caracteres para cedula'
+
+    ]);
 
        
         if($this->comprobarEstudiante() > 0)

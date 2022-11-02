@@ -23,9 +23,9 @@
                                 @endforeach
                             </select>
                             @error('Trimestre')
-                            <div class="invalid-feedback">
+                            <span class="error text-danger">
                                 {{ $message }}
-                            </div>
+                            </span>
                             @enderror
                         </div>
                         <div class="form-group col-md-6">
@@ -38,9 +38,9 @@
                                 @endforeach
                             </select>
                             @error('Anyo')
-                            <div class="invalid-feedback">
+                            <span class="error text-danger">
                                 {{ $message }}
-                            </div>
+                            </span>
                             @enderror
                         </div>
                     </div>

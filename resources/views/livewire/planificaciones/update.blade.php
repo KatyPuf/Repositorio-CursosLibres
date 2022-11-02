@@ -147,9 +147,14 @@
                                 </div>
                             </div>
                            
-                            <div class="form-group">
-                                <input type="file" wire:model="imagen" value="" >
-                                @error('imagen') <span class="error">{{ $message }}</span> @enderror
+                            <div class="form-group ">
+                                <div class="mb-3">
+
+                                    <label for="formFile" class="form-label">Escoja una imagen</label>
+                                    <input type="file" class="form-control" wire:model="imagen">
+                                    
+                                    @error('imagen') <span class="error text-danger">{{ $message }}</span> @enderror
+                                </div>
                             </div>
                             
                         </form>

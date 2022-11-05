@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Update Trimestre</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Actualizar Trimestre</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span wire:click.prevent="cancel()" aria-hidden="true">×</span>
                 </button>
@@ -14,9 +14,8 @@
                     <input type="hidden" wire:model="selected_id">
                     <div class="form-group">
                         <label for="Nombre"></label>
-                        <input wire:model="Nombre" type="text" class="form-control" id="Nombre"
-                            placeholder="Nombre">@error('Nombre') <span class="error text-danger">{{ $message }}</span>
-                        @enderror
+                        <label for="Nombre">Nombre</label>
+                        <input wire:model="Nombre" type="number" class="form-control" id="Nombretri" max='4' min="1" placeholder="Ingrese trimeste como numero">@error('Nombre') <span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group">
                         <label for="Estado">Estados</label>

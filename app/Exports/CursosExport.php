@@ -25,13 +25,14 @@ class CursosExport implements FromCollection,WithHeadings, WithCustomStartCell, 
     public function headings(): array
     {
         return [
-            'id',
+            'Id',
             'Cedula',
             'Nombres',
             'Apellidos',
             'Correo',
             'Teléfono',
             'Empresa Telefónica',
+            'Estado de pagado'
         ];
     }
     /**
@@ -43,7 +44,8 @@ class CursosExport implements FromCollection,WithHeadings, WithCustomStartCell, 
          ->join ("estudiantes","inscripciones.estudiante_id", "=", "estudiantes.id")
          ->join ("cursos","planificaciones.curso_id", "=", "cursos.id")
          ->where("inscripciones.planificacione_id", $this->data)
-         ->get("estudiantes.*");
+         ->select("estudiantes.Id" ,"Cedula","Nombres","Apellidos","Correo", "Celular", "EmpresaTelefonica","estadoPago")
+         ->get();
          
          return $resultado;
     }
@@ -71,6 +73,8 @@ class CursosExport implements FromCollection,WithHeadings, WithCustomStartCell, 
             'F'  => ['font' => ['size' => 12],'alignment' => ['horizontal' => 'center']],
             'G'  => ['font' => ['size' => 12],'alignment' => ['horizontal' => 'center']],
             'H'  => ['font' => ['size' => 12],'alignment' => ['horizontal' => 'center']],
+            'I'  => ['font' => ['size' => 12],'alignment' => ['horizontal' => 'center']],
+
         ];
     }
 
@@ -83,6 +87,7 @@ class CursosExport implements FromCollection,WithHeadings, WithCustomStartCell, 
             'F' => 40,
             'G' => 15,
             'H' => 22,
+            'I' => 30,
        
         ];
     }

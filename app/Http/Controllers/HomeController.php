@@ -11,6 +11,7 @@ use App\Models\Inscripcione;
 use App\Exports\CursosExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
+
 use PDF;
 class HomeController extends Controller
 {
@@ -33,6 +34,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function pruebaRestore(Request $request)
+    {
+      
+       $path = $request->fullUrl();
+        dd($path);
+    }
+
     public function  prueba()
     {
         return view('bienvenida');
@@ -89,7 +98,7 @@ class HomeController extends Controller
         $DbName             = env('DB_DATABASE');
         $backup_name        = "mybackup.sql";
     
-        error_log("---".$Dbport);
+        
         $queryTables = \DB::select(\DB::raw('SHOW TABLES'));
             foreach ( $queryTables as $table )
             {

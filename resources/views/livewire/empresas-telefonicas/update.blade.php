@@ -14,7 +14,7 @@
                     <input type="hidden" wire:model="selected_id">
                     <div class="form-group">
                         <label for="Nombre">Nombre</label>
-                        <input wire:model="Nombre" type="text" class="form-control @error('Nombre') is-invalid @enderror" id="Nombre" placeholder="Ingrese nombre del aula">
+                        <input wire:model="Nombre" type="text" class="form-control @error('Nombre') is-invalid @enderror" id="Nombre" placeholder="Ingrese nombre de la empresa telefónica">
                         @error('Nombre')
                         <span class="error text-danger">
                             {{ $message }}

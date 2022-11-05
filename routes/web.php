@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Crud;
 use App\Http\Livewire\EstudianteComponent;
-
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -73,3 +73,12 @@ Route::group(['middleware'=> ['role:Administrador|Super-admin|Editor']], functio
 	Route::get('/backup_database', [App\Http\Controllers\HomeController::class, 'backup_database']) ->name('backup_database');
     Route::get('/restoreDatabase', [App\Http\Controllers\HomeController::class, 'restoreDatabase']) ->name('restoreDatabase');
 	
+	//Route::view('restoreDatabase', 'HomeController')->middleware('auth');
+	//Route::view('restoreDatabase', [App\Http\Controllers\HomeController::class, 'export']);
+	Route::get('/restaurar', function () {
+           return view('restoreDatabase');
+
+
+	});
+
+	Route::post('/restaurarDB',[HomeController::class, 'pruebaRestore'])->name('restaurarDB');

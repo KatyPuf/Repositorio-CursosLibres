@@ -77,6 +77,8 @@ class Estudiantes extends Component
             'Correo'=> 'required|email',
             'Celular'=> 'required|max:8|min:8',
             'EmpresaTelefonica'=> 'required'
+        ],[
+            'Cedula.max' => 'Ingrese máximo 16 digitos'
         ]);
 
         //if(Gate::allows('create')){

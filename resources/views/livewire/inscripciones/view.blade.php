@@ -101,7 +101,7 @@
                                     <th>Año</th>
                                     <th>Estudiante</th>
                                     <th>Planificación</th>
-                                    <th>Fecha creación</th>
+                                    <th>Fecha de Inscripción</th>
                                     <th>Pagado</th>
                                     <th>ACCIONES</th>
                                 </tr>
@@ -115,7 +115,7 @@
                                     <td>{{ $row->Anyo }}</td>
                                     <td>{{ $row->Nombres }} {{ $row->Apellidos }}</td>
                                     <td>{{ $row->Nombre }} - {{$row->modalidad}}</td>
-                                    <td>{{strftime('%a %e de %b de %Y',  strtotime($row->created_at))}}</td>
+                                    <td>{{ \Carbon\Carbon::parse($row->created_at)->formatLocalized('%d %B %Y') }}</td>
 
                                     <td>
 

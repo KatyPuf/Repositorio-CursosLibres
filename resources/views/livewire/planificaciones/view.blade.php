@@ -156,10 +156,7 @@ use App\Http\Livewire\Inscripciones;
                                         <?php $response = Planificaciones::buscar($row->curso_id, $row->Trimestre,$row->modalidad, $row->Anyo)  ?>
                                         <!-- Buscador de cursos ejecutados-->
 
-                                        <?php  
-                                            
-                                            $fechaI = strftime('%A %e de %B de %Y',  strtotime($row->FechaInicio))
-                                        ?>
+                                       
                                         <strong>Año lectivo:</strong> {{ $row->Anyo }}<br>
                                         <strong>Trimestre: </strong>{{$row->Trimestre}}<br>
                                         <strong>Fecha:</strong>

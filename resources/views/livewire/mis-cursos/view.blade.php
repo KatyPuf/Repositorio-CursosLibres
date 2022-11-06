@@ -110,14 +110,14 @@ use App\Http\Livewire\Inscripciones;
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, eliminar!'
+            confirmButtonText: 'Si, darme de baja!'
         }).then((result) => {
 			Livewire.emitTo('mis-cursos', 'destroy', $InscripcionId)
             if (result.isConfirmed) {
                
                 Swal.fire(
-                    'Eliminado!',
-                    'Su archivo ha sido eliminado.',
+                    'Completado con éxito!',
+                    'Se ha dado de baja del curso',
                     'success'
                 )
 			

@@ -71,7 +71,7 @@ Route::group(['middleware'=> ['role:Administrador|Super-admin|Editor']], functio
 	Route::view('mis_cursos', 'livewire.mis-cursos.index')->middleware('auth');
 	Route::view('planificaciones', 'livewire.planificaciones.index')->middleware('auth');
 	Route::get('/backup_database', [App\Http\Controllers\HomeController::class, 'backup_database']) ->name('backup_database');
-    Route::get('/restoreDatabase', [App\Http\Controllers\HomeController::class, 'restoreDatabase']) ->name('restoreDatabase');
+    Route::post('/restoreDatabase', [App\Http\Controllers\HomeController::class, 'restoreDatabase']) ->name('restoreDatabase');
 	
 	//Route::view('restoreDatabase', 'HomeController')->middleware('auth');
 	//Route::view('restoreDatabase', [App\Http\Controllers\HomeController::class, 'export']);

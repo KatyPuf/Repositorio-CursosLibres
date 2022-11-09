@@ -75,6 +75,16 @@
 				
 					</div>
 				</div>
+				<form form wire:submit.prevent="restore" enctype="multipart/form-data" >
+					@csrf 
+					<div class="mb-3">
+						<label for="formFile" class="form-label">Seleccione el archivo .sql</label>
+						<input type="file" class="form-control" wire:model="imagen">
+						
+						<button type="button" wire:click.prevent="restore()" class="btn btn-primary">Restaurar</button>
+						
+
+				</form>
 			</div>
 		</div>
 	</div>

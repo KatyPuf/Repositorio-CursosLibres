@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
 
 use PDF;
+use Artisan;
 class HomeController extends Controller
 {
     /**
@@ -38,14 +39,7 @@ class HomeController extends Controller
     public function pruebaRestore(Request $request)
     {
       
-    $path = $request->all(["formFile"]);
-    
-      //$path = Input::file('formFile')->getRealPath();;
-      //dd($request->file('formFile'));
-     $file = fopen($request->file('formFile') ,"r");
-     $line = fgets($file);
-  echo $line. "<br>";
-      dd($line);
+        $image = $this->imagen->store('planificacion', 'public');
     }
 
     public function  prueba()
@@ -95,9 +89,10 @@ class HomeController extends Controller
     }
 
     public function backup_database(){
-
+        Artisan::call('backup:run');
+        dd(Artisan::output());
         //ENTER THE RELEVANT INFO BELOW
-        $mysqlHostName      = env('DB_HOST');
+       /* $mysqlHostName      = env('DB_HOST');
         $mysqlUserName      = env('DB_USERNAME');
         $mysqlPassword      = env('DB_PASSWORD');
         $Dbport             = env('DB_PORT');
@@ -172,7 +167,7 @@ class HomeController extends Controller
            readfile($file_name);
            unlink($file_name);
     
-    
+    */
     }
 
 

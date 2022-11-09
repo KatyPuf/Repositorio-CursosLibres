@@ -49,6 +49,7 @@ Route::group(['middleware'=> ['role:Administrador|Super-admin|Editor']], functio
 	Route::view('cursos', 'livewire.cursos.index')->middleware('auth');
 	Route::view('profesores', 'livewire.profesores.index')->middleware('auth');
 	Route::view('estudiantes', 'livewire.estudiantes.index')->middleware('auth');
+	Route::view('CopiaSeguridad', 'livewire.backups.index')->middleware('auth');
 	Route::get('/exportar/{id}', [App\Http\Controllers\HomeController::class, 'export']);
 	Route::get('/bienvenida', [App\Http\Controllers\HomeController::class, 'generatePDF']);
 	Route::match(['get', 'post'], '/botman', [App\Http\Controllers\BotManController::class, 'handle']);
@@ -82,3 +83,13 @@ Route::group(['middleware'=> ['role:Administrador|Super-admin|Editor']], functio
 	});
 
 	Route::post('/restaurarDB',[HomeController::class, 'pruebaRestore'])->name('restaurarDB');
+	Route::get('/backup', function() {
+		$exit  = Artisan::call('backup:run --disable-notifications');
+		return Artisan::output();
+	});
+
+	Route::get('/backup-partial', function() {
+		$exit  = Artisan::call('backup:run --only-db --disable-notifications');
+		
+		return Artisan::output();
+	});

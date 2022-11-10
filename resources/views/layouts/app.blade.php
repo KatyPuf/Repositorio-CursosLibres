@@ -158,7 +158,7 @@
                                         <i class="fas fa-check-circle"></i>
                                         <span> Permisos</span>
                                     </a>
-                                    <a class="dropdown-item" href="{{url('/backup_database')}}">
+                                    <a class="dropdown-item" href="{{url('/CopiaSeguridad')}}">
                                         <i class="fas fa-database"></i>
                                         <span>Respaldar Base de datos</span>
                                     </a>

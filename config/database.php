@@ -47,7 +47,7 @@ return [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
+            'port' => env('DB_PORT', '3308'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
@@ -58,6 +58,10 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            'dump' => [
+                'dump_binary_path' => 'C:/xampp/mysql/bin/',
+                'timeout' => 60 * 5, // 5 minute timeout
+             ],
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
@@ -144,4 +148,5 @@ return [
 
     ],
 
+    
 ];

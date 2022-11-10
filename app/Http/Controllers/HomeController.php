@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Component;
 
 use PDF;
+use Artisan;
 class HomeController extends Controller
 {
     /**
@@ -38,8 +39,7 @@ class HomeController extends Controller
     public function pruebaRestore(Request $request)
     {
       
-       $path = $request->fullUrl();
-        dd($path);
+        $image = $this->imagen->store('planificacion', 'public');
     }
 
     public function  prueba()
@@ -89,9 +89,10 @@ class HomeController extends Controller
     }
 
     public function backup_database(){
-
+        Artisan::call('backup:run');
+        dd(Artisan::output());
         //ENTER THE RELEVANT INFO BELOW
-        $mysqlHostName      = env('DB_HOST');
+       /* $mysqlHostName      = env('DB_HOST');
         $mysqlUserName      = env('DB_USERNAME');
         $mysqlPassword      = env('DB_PASSWORD');
         $Dbport             = env('DB_PORT');
@@ -99,7 +100,10 @@ class HomeController extends Controller
         $backup_name        = "mybackup.sql";
     
         
-        $queryTables = \DB::select(\DB::raw('SHOW TABLES'));
+        $queryTables = \DB::select(\DB::raw("SELECT TABLE_NAME
+                                            FROM information_schema.tables    
+                                            WHERE table_type = 'BASE TABLE' AND table_schema='proyecto_cursos_libres' 
+                                            ORDER BY create_time"));
             foreach ( $queryTables as $table )
             {
                 foreach ( $table as $tName)
@@ -110,15 +114,18 @@ class HomeController extends Controller
         //$tables             = array("users","aulas","cursos","empleados","estudiantes", "failed_jobs","inscripciones", "migrations", "password_resets","personal_access_tokens","planificaciones","tests"); //here your tables...
     
         $connect = new \PDO("mysql:host=$mysqlHostName;port=$Dbport ;dbname=$DbName;charset=utf8", "$mysqlUserName", "$mysqlPassword",array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-        $get_all_table_query = "SHOW TABLES";
+        $get_all_table_query = "SELECT TABLE_NAME
+        FROM information_schema.tables    
+        WHERE table_type = 'BASE TABLE' AND table_schema='proyecto_cursos_libres' 
+        ORDER BY create_time";
         $statement = $connect->prepare($get_all_table_query);
         $statement->execute();
         $result = $statement->fetchAll();
     
-    
         $output = '';
         foreach($tables as $table)
         {
+            
          $show_table_query = "SHOW CREATE TABLE " . $table . "";
          $statement = $connect->prepare($show_table_query);
          $statement->execute();
@@ -160,18 +167,22 @@ class HomeController extends Controller
            readfile($file_name);
            unlink($file_name);
     
-    
+    */
     }
 
 
-    function restoreDatabase(){
-        $dbHost     = 'localhost';
-        $dbUsername = 'root';
-        $dbPassword = '';
-        $dbName     = 'laravel';
-        $dbPort     ='3306';
-        $filePath   = 'C:\Respaldo\CursosLibres_Backup.sql';
+    function restoreDatabase(Request $request){
+
+        $path = $request->input("url");
+
+        $dbHost     =env('DB_HOST');;
+        $dbUsername = env('DB_USERNAME');
+        $dbPassword = env('DB_PASSWORD');
+        $dbName     = env('DB_DATABASE');
+        $dbPort     = env('DB_PORT');
+        $filePath   = $path;
   
+       
          //restoreDatabaseTables($dbHost, $dbUsername, $dbPassword,$dbPort, $dbName, $filePath);
   
   

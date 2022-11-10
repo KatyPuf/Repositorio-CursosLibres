@@ -22,7 +22,20 @@
                                                 @csrf 
                                                 <div class="mb-3">
                                                     <label for="formFile" class="form-label">Seleccione el archivo .sql</label>
-                                                    <input class="form-control" type="file" accept=".sql" name="formFile" id="formFile" required>
+                                                    <input class="form-control" type="file" accept=".sql" name="formFile" id="formFile" onchange="loadFile(event)" required>
+                                                    <div class="form-group">
+                                                    
+                                                        <input type="text"  class="form-control" name = "url" id="url" >
+                                                      </div>
+                                                   <script>
+                                                        var loadFile = function(event) {
+                                                          var output = document.getElementById('url');
+                                                          output.value = document.getElementById('formFile').value;  //URL.createObjectURL(event.target.files[0]);
+                                                          output.onload = function() {
+                                                            URL.revokeObjectURL(output.value) // free memory
+                                                          }
+                                                        };
+                                                      </script>
                                                   </div>
                                                 
                                                 <button type="submit" class="btn btn-primary">Restaurar</button>

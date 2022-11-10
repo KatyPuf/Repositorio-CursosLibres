@@ -6,17 +6,19 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Aula;
 use App\Models\Profesore;
+use Livewire\WithFileUploads;
+use Illuminate\Http\Request;
 
 class Aulas extends Component
 {
     use WithPagination;
-
+   
 	protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $Nombre, $Ubicacion;
     public $updateMode = false;
     public $vista;
     protected $listeners = ['destroy'];
-
+    public $imagen;
     public function render()
     {
 
@@ -116,4 +118,6 @@ class Aulas extends Component
         $this->emit('deleteRegistro', $id);
 
     }
+
+   
 }

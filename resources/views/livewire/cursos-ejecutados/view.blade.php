@@ -134,7 +134,7 @@
 								<td>{{date('d-m-Y', strtotime($row->FechaInicio))}}</td>
 								<td>{{date('d-m-Y', strtotime($row->FechaFin))}}</td>
 								<td>{{date('h:i a', strtotime($row->HorarioInicio))}} - {{date('h:i a', strtotime($row->HorarioFin))}} </td>
-								<td>{{strftime('%a %e de %b de %Y',  strtotime($row->created_at))}}</td>
+								<td>{{ \Carbon\Carbon::parse($row->created_at)->formatLocalized('%d %B %Y') }}</td>
 								
 								<td width="90">
 								<div class="btn-group">

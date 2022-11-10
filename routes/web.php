@@ -76,10 +76,7 @@ Route::group(['middleware'=> ['role:Administrador|Super-admin|Editor']], functio
 	Route::get('/backup_database', [App\Http\Controllers\HomeController::class, 'backup_database']) ->name('backup_database');
     Route::post('/restoreDatabase', [App\Http\Controllers\HomeController::class, 'restoreDatabase']) ->name('restoreDatabase');
 	
-	//Route::view('restoreDatabase', 'HomeController')->middleware('auth');
-	//Route::view('restoreDatabase', [App\Http\Controllers\HomeController::class, 'export']);
 
-	Route::post('/restaurarDB',[HomeController::class, 'pruebaRestore'])->name('restaurarDB');
 	Route::get('/backup', function() {
 		$exit  = Artisan::call('backup:run --disable-notifications');
 		return Artisan::output();

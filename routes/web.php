@@ -50,6 +50,8 @@ Route::group(['middleware'=> ['role:Administrador|Super-admin|Editor']], functio
 	Route::view('profesores', 'livewire.profesores.index')->middleware('auth');
 	Route::view('estudiantes', 'livewire.estudiantes.index')->middleware('auth');
 	Route::view('CopiaSeguridad', 'livewire.backups.index')->middleware('auth');
+	Route::view('restaurar', 'livewire.restaurars.index' )->middleware('auth');
+
 	Route::get('/exportar/{id}', [App\Http\Controllers\HomeController::class, 'export']);
 	Route::get('/bienvenida', [App\Http\Controllers\HomeController::class, 'generatePDF']);
 	Route::match(['get', 'post'], '/botman', [App\Http\Controllers\BotManController::class, 'handle']);
@@ -76,11 +78,6 @@ Route::group(['middleware'=> ['role:Administrador|Super-admin|Editor']], functio
 	
 	//Route::view('restoreDatabase', 'HomeController')->middleware('auth');
 	//Route::view('restoreDatabase', [App\Http\Controllers\HomeController::class, 'export']);
-	Route::get('/restaurar', function () {
-           return view('restoreDatabase');
-
-
-	});
 
 	Route::post('/restaurarDB',[HomeController::class, 'pruebaRestore'])->name('restaurarDB');
 	Route::get('/backup', function() {

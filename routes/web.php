@@ -24,7 +24,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/home', function () {
 });
 
 
-Auth::routes();
+//Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/prueba', [App\Http\Controllers\HomeController::class, 'prueba'])->name('prueba');

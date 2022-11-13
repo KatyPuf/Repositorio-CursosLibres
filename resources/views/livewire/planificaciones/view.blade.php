@@ -198,7 +198,8 @@ use App\Http\Livewire\Inscripciones;
                                     </div>
                                     <br>
 
-
+                                    @if(Auth::user()->hasRole('Super-admin') ||
+                                    Auth::user()->hasRole('Administrador') )
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-info btn-sm dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -255,7 +256,7 @@ use App\Http\Livewire\Inscripciones;
 
                                         </div>
                                     </div>
-
+                                    @endif
                                     <div class="btn-group">
 
                                         <?php $cantidad = Planificaciones::VerificarInscripcion($row->PlanificacionId)  ?>

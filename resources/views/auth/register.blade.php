@@ -38,6 +38,50 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="cedula" class="col-md-4 col-form-label text-md-right">{{ __('No. Cédula') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="cedula" type="text" class="form-control @error('cedula') is-invalid @enderror" name="cedula" value="{{ old('cedula') }}" required autocomplete="cedula" autofocus>
+
+                                @error('cedula')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="celular" class="col-md-4 col-form-label text-md-right">{{ __('Celular') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="celular" type="text" class="form-control @error('celular') is-invalid @enderror" name="celular" value="{{ old('celular') }}" required autocomplete="celular" autofocus>
+
+                                @error('celular')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="empresaTelefonica" class="col-md-4 col-form-label text-md-right">{{ __('Empresa Telefónica') }}</label>
+
+                            <div class="col-md-6">
+                                <select id="empresaTelefonica" name="empresaTelefonica" class="form-control 
+                                @error("empresaTelefonica") is-invalid @enderror" required>
+                                <option value="">Seleccionar telefonía</option>
+                                @foreach ($telefonias as $telefonia)
+                                <option value="{{$telefonia->Nombre}}">{{$telefonia->Nombre}}</option>
+                                @endforeach
+                            </select>
+                                @error('empresaTelefonica')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                         
 
                         <div class="form-group row">

@@ -32,7 +32,7 @@ class Backup extends Component
         return view('livewire.backups.view', compact('backups'));
     }
 
-    public function copiaParcial()
+    public function copiaParcial() 
     {
         
         $url = 'http://localhost/proyecto_cursos_libres/public/backup-partial';

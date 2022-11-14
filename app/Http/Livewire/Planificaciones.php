@@ -358,7 +358,9 @@ class Planificaciones extends Component
        // $this->curso = $record->Trimestre;
         $this->nombres = auth()->user()->name; 
         $this->apellidos = auth()->user()->lastname; 
-        $this->cedula = $record->cedula; 
+        $this->cedula = auth()->user()->cedula; 
+        $this->celular = auth()->user()->celular; 
+        $this->EmpresaTelefonica = auth()->user()->empresaTelefonica; 
         $this->correo = auth()->user()->email; 
         $this->Trimestre = $record->Trimestre;
         $this->modalidad = $record->modalidad;

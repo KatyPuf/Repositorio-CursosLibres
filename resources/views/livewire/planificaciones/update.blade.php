@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <div class="form-group">
-                                        <label for="HorarioFin">Hoarario de finalización</label>
+                                        <label for="HorarioFin">Horario de finalización</label>
                                         <input wire:model="HorarioFin" type="time" class="form-control" id="HorarioFin" placeholder="HorarioFin">@error('HorarioFin') <span class="error text-danger">{{ $message }}</span> @enderror
                                     </div>
                                 </div>

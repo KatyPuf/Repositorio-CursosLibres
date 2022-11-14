@@ -11,7 +11,8 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+//ToDo: implements MustVerifyEmail
+class User extends Authenticatable 
 {
     use HasRoles;
     use HasApiTokens;
@@ -19,7 +20,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-
+    use Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -28,6 +29,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'lastname',
+        'cedula',
+        'celular',
+        'empresaTelefonica',
         'email',
         'password',
     ];

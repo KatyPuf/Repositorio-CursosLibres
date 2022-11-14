@@ -33,8 +33,8 @@ class RolesAndPermissionSeeder extends Seeder
          $user = User::create([
             'name' => 'Francisco',
             'lastname' => 'Zepeda',
-            'email' => 'superAdminCL@gmail.com',
-            'password' => bcrypt('Super@dminCL2022')
+            'email' => 'cursoslibrescomputacion@gmail.com',
+            'password' => bcrypt('CursosLibres2022')
         ]);
         $user->assignRole('Super-admin');
         $role->givePermissionTo(Permission::all());

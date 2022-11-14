@@ -25,6 +25,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/home', function () {
 
 
 Auth::routes();
+//Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/prueba', [App\Http\Controllers\HomeController::class, 'prueba'])->name('prueba');
@@ -87,3 +88,5 @@ Route::group(['middleware'=> ['role:Administrador|Super-admin|Editor']], functio
 		
 		return Artisan::output();
 	});
+
+	Route::post('/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');

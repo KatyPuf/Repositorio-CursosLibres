@@ -58,17 +58,18 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
+                                
+                               @if (Route::has('password.request'))
+                               <a class="btn btn-link" href="{{ route('password.request') }}">
+                                   {{ __('¿Olvidó su contraseña?') }}
+                               </a><br><br>
+                                @endif 
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Acceder') }}
                                 </button>
 
                                 <a href="/" class="btn btn-primary" role="button" >Volver</a>
 
-                               @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('¿Olvidó su contraseña?') }}
-                                    </a>
-                                @endif 
 
                                 
                             </div>

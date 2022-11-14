@@ -30,15 +30,17 @@
     <!-- Toastr.js Después -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" media="screen"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
 
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     @livewireStyles
-    
-  
+
+
 </head>
 
 <body>
@@ -62,7 +64,8 @@
                         <ul class="navbar-nav ml-auto">
 
                             @if(Auth::check())
-                            @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') || Auth::user()->hasRole('Editor') )
+                            @if(Auth::user()->hasRole('Super-admin') || Auth::user()->hasRole('Administrador') ||
+                            Auth::user()->hasRole('Editor') )
 
                             <li class="nav-item dropdown active p-2">
 
@@ -136,7 +139,7 @@
                                     <i class="fas fa-user-edit"></i>
                                     <span>Inscripciones</span></a>
                             </li>
-                            
+
                             @if(Auth::user()->hasRole('Super-admin'))
                             <li class="nav-item dropdown active p-2">
                                 <a class="nav-link dropdown-toggle nav-link h6 btn btn-info btn-sm" href="#"
@@ -194,7 +197,7 @@
                             </li>
                             @endcan
                             @endif
-                            
+
                             @guest
                             @if (Route::has('login'))
                             <li class="nav-item active p-2">
@@ -233,7 +236,6 @@
                 </div>
             </nav>
         </header>
-
         <div id="content" class="pt-2">
             <!-- <div id="content" class="p-4 p-md-5">-->
 
@@ -241,10 +243,11 @@
             <main>
                 <!-- class="py-2" -->
                 @yield('content')
-               
-               <!--  <div class="sticky-container">
+                @guest
+
+                <div class="sticky-container">
                     <ul class="sticky">
-                        
+
                         <li>
                             <img src="Galeria/face.png" width="32" height="32">
                             <p><a href="https://www.facebook.com/DeptoCompu/" target="_blank">Siguenos en
@@ -257,17 +260,19 @@
 
 
                     </ul>
-                </div>-->
+                </div>
+                @endguest
+
             </main>
         </div>
     </div>
 
     @livewireScripts
-       
-  <!--  <script src="js/jquery.min.js"></script>
+
+    <!--  <script src="js/jquery.min.js"></script>
     <script src="js/popper.js"></script> 
     <script src = "js/main.js" ></script> -->
-    
+
     <script type="text/javascript">
         window.livewire.on('closeModal', () => {
             $('#exampleModal').modal('hide');
@@ -304,7 +309,7 @@
             });
         });
     </script>
-   
+
     @stack('js')
 
 </body>

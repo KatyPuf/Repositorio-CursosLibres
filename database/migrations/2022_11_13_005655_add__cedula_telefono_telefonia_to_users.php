@@ -15,9 +15,9 @@ class AddCedulaTelefonoTelefoniaToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->string("cedula")->after("lastname");
-            $table->string("celular")->after("cedula");
-            $table->string("empresaTelefonica")->after("celular");
+            $table->string("cedula")->after("lastname")->default('');
+            $table->string("celular")->after("cedula")->default('');
+            $table->string("empresaTelefonica")->after("celular")->default('');
 
 
         });

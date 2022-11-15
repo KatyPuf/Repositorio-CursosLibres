@@ -200,6 +200,7 @@
 
                             @guest
                             @if (Route::has('login'))
+                           
                             <li class="nav-item active p-2">
                                 <a class="nav-link h6 btn btn-info btn-sm"
                                     href="{{ route('login') }}">{{ __('Iniciar sesión') }}</a>
@@ -237,9 +238,7 @@
             </nav>
         </header>
         <div id="content" class="pt-2">
-            <!-- <div id="content" class="p-4 p-md-5">-->
 
-            <!-- <h2 class="mb-4">Sidebar #01</h2> --->
             <main>
                 <!-- class="py-2" -->
                 @yield('content')
